@@ -1,0 +1,120 @@
+	<!--借款管理-->
+			<div class="container loan-manage" id="loan-manage">
+				
+				<!--订单数统计面板-->
+					<div class="panel">
+						<div class="panel-count">
+							<!--今日预计利息-->
+							<div class="panel-count-item today-predict">
+								<span class="panel-count-number-box">
+									<span class="panel-count-number">20.32</span>
+									<span class="tips">
+										<i class="iconfont">&#xe67f;</i>
+										<div class="tips-content">
+											<span class="tips-text">提示：系统计息按打款上传日期开始，还款凭证上传日期结束，实际利息结算，以线下对账为准。</span>
+											<span class="arrow arrow-left left-outer"></span>
+											<span class="arrow arrow-left left-inner"></span>
+										</div>
+									</span>
+								</span>
+								<br />
+								<span class="panel-count-name">今日预计利息（元）</span>
+								<a href="#" class="view-interest">查看利息明细</a>
+							</div>
+							<!--今日提交订单-->
+							<div class="panel-count-item today-commit">
+								<span class="panel-count-number-box">
+									<span class="panel-count-number">64</span>
+								</span>
+								<br />
+								<span class="panel-count-name">今日提交订单（笔）</span>
+							</div>
+							<!--今日打款订单-->
+							<div class="panel-count-item today-curtain">
+								<span class="panel-count-number-box">
+									<span class="panel-count-number">64</span>
+								</span>
+								<br />
+								<span class="panel-count-name">今日打款订单（笔）</span>
+							</div>
+						</div>
+					</div>
+				<!--订单数面板   end-->
+				
+				
+				<!--tab切换栏(借款管理)-->
+				<div class="tab-bar tab-bar-special">
+					<ul class="role-bar-ul clearfix">
+						<li class="role-bar-li"><a href="#" class="role-item role-item-active">待资金方审核</a></li>
+						<li class="role-bar-li"><a href="#" class="role-item">待资金垫资</a></li>
+						<li class="role-bar-li"><a href="#" class="role-item">待还款</a></li>
+						<li class="role-bar-li"><a href="#" class="role-item">所有订单</a></li>
+					</ul>
+					<input type="text" class="input-text" placeholder="订单号/借款人姓名/身份证"/>
+				</div>
+				<!--tab切换栏(借款管理)   end-->
+				
+				<!--tab对应栏  -->
+				<div class="tab-content">
+					
+					<div class="tab-content-item layout no-top-border tab-content-item-layout">
+						
+						<!--借款管理表格  end-->
+						<table border="0" cellpadding="" width="100%" class="orders-table">
+							<thead>
+								<tr class="orders-bar-title">
+									<td class="orders-item-data">订单号</td>
+									<td class="orders-item-data">申请垫资日期</td>
+									<td class="orders-item-data">用款时间</td>
+									<td class="orders-item-data">借款人</td>
+									<td class="orders-item-data">垫资金额（元）</td>
+									<td class="orders-item-data">收款方</td>
+									<td class="orders-item-data">操作</td>
+								</tr>
+							</thead>
+							<tbody id="loanManageTable">
+								
+							</tbody>
+						</table>
+						<!--借款管理表格  end-->
+						
+					</div>
+				</div>
+				<!--tab对应栏  end-->
+				
+			</div>
+			<!--借款管理   end-->
+			
+			<!--分页插件-->
+			<div id="pageToolbar" class="pageToolbar" data-request="pageCtrl['loanManage'].paging" data-pages="50" data-current="1"></div>
+
+			<script type="text/x-dot-template" id="loanManageListTmpl">
+				{{ var len = it.length; if(len) { }}
+					{{for(var i = 0; i < len; i++) { var row = it[i]; }}
+						{{ if(i == 0) { }}
+						<tr class="tr-noborder">
+						{{ } else { }}
+						<tr>
+						{{ } }}
+							<td class="orders-item-data">{{=row.orderNo}}</td>
+							<td class="orders-item-data">{{=row.applyTime}}</td>
+							<td class="orders-item-data">{{=row.useTime}}</td>
+							<td class="orders-item-data"><span>{{=row.user}}</span><br /><span>（{{=row.idc}}）</span></td>
+							<td class="orders-item-data">{{=row.paidMoney}}</td>
+							<td class="orders-item-data">{{=row.payee}}</td>
+							<td class="orders-item-data">
+								<a data-href="loanManage/ordersDetail" data-id="{{=row.orderNo}}" class="button button-mini button-gray">查看</a>
+							</td>
+						</tr>
+					{{ } }}
+				{{ } else { }}
+				<tr class="tr-noborder">
+					<td colspan="7" class="orders-blank">
+						<div class="blank-box">
+							<img src="/hr2.0/dist/static/css/img/orders_blank.png" alt="" title="暂无订单！">
+							<p>暂无待办任务！</p>
+						</div>
+					</td>
+				</tr>	
+				{{ } }}
+			</script>
