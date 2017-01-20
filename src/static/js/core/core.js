@@ -27,7 +27,7 @@
 	*/
 	_.$http = {};
 	_.$http.api = function(method) {
-		return 'http://127.0.0.1:8083/mock/' + method;
+		return 'http://127.0.0.1:8082/mock/' + method;
 		// return 'http://192.168.0.113:8080/' + method;
 	}
 	_.$http.authorization = function(key) {
