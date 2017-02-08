@@ -26,8 +26,9 @@
 	* 全局http请求配置
 	*/
 	_.$http = {};
-	_.$http.api = function(method) {
-		return 'http://127.0.0.1:8082/mock/' + method;
+	_.$http.api = function(url) {
+		return url;
+		//Todo 发布时增加prefix
 		// return 'http://192.168.0.113:8080/' + method;
 	}
 	_.$http.authorization = function(key) {
@@ -52,33 +53,39 @@
 		}
 	};
 	_.$http.apiMap = {
-		menu: 'menu',
-		loanList: 'loan.list',
-		myCustomer: 'myCustomer',
-		loanManage: 'loan.manage',
-		marginManage: 'marginManage',
-		moneyBussinessAuditPrint: 'moneyBussinessAuditPrint',
-		mortgageProcess: 'mortgage.process',
-		mortgageAudit: 'mortgage.audit',
-		mortgageStatis: 'mortgage.statis',
-		operationsAnalysis: 'operationsAnalysis',
-		organizationManage: 'organizationManage',
-		licenceProcess: 'licence.process',
-		licenceAudit: 'licence.audit',
-		licenceStatis: 'licence.statis',
-		expireProcess: 'expire.process',
-		moneyBusinessAuditPrint: 'moneyBusinessAuditPrint',
-		auditPrint: 'auditPrint',
-		operationsAnalysis: 'operationsAnalysis',
-		organizationManage: 'organizationManage',
-		loanInfo: 'loan.infoBak',
-		serviceType: 'serviceType',
-		shangpaidi: 'shangpaidi',
-		loanAudit: 'loan.info',
-		cardAudit: 'loan.info',
-		lendAudit: 'loan.info',
-		eleCheck: 'electric.check',
-		carTwohand: 'car.towhand'
+		menu: 'http://127.0.0.1:8083/mock/menu',
+		loanList: 'http://127.0.0.1:8083/mock/loan.list',
+		myCustomer: 'http://192.168.0.114:8080/loanOrder/getMyCustomer',
+		orderModifyAudit: 'http://127.0.0.1:8083/mock/orderModifyAudit',
+		cancelOrderAudit: 'http://127.0.0.1:8083/mock/cancelOrderAudit',
+		loanManage: 'http://127.0.0.1:8083/mock/loan.manage',
+		marginManage: 'http://127.0.0.1:8083/mock/marginManage',
+		moneyBussinessAuditPrint: 'http://127.0.0.1:8083/mock/moneyBussinessAuditPrint',
+		mortgageProcess: 'http://127.0.0.1:8083/mock/mortgage.process',
+		mortgageAudit: 'http://127.0.0.1:8083/mock/mortgage.audit',
+		mortgageStatis: 'http://192.168.0.114:8080/loanPledge/getLoanPledgeList',
+		operationsAnalysis: 'http://127.0.0.1:8083/mock/operationsAnalysis',
+		organizationManage: 'http://127.0.0.1:8083/mock/organizationManage',
+		licenceProcess: 'http://127.0.0.1:8083/mock/licence.process',
+		licenceAudit: 'http://127.0.0.1:8083/mock/licence.audit',
+		licenceStatis: 'http://192.168.0.114:8080/loanRegistration/getLoanRegistrationList',
+		expireProcess: 'http://127.0.0.1:8083/mock/expire.process',
+		creditArchiveDownload: 'http://192.168.0.114:8080/creditUser/getCreditMaterials',
+		loadArchiveDownload: 'http://192.168.0.114:8080/creditUser/getCreditMaterials',
+		moneyBusinessAuditPrint: 'http://192.168.0.114:8080/loanUserStage/getFinancialData',
+		auditPrint: 'http://192.168.0.114:8080/loanUserStage/getFinancialData',
+		operationsAnalysis: 'http://127.0.0.1:8083/mock/operationsAnalysis',
+		organizationManage: 'http://127.0.0.1:8083/mock/organizationManage',
+		creditInput: 'http://127.0.0.1:8083/mock/creditInput',
+		loanInfo: 'http://127.0.0.1:8083/mock/loan.infoBak',
+//		loanInfo: 'http://127.0.0.1:8083/mock/loan.infoBakChange',
+		serviceType: 'http://127.0.0.1:8083/mock/serviceType',
+		shangpaidi: 'http://127.0.0.1:8083/mock/shangpaidi',
+		loanAudit: 'http://127.0.0.1:8083/mock/loan.info',
+		cardAudit: 'http://127.0.0.1:8083/mock/loan.info',
+		lendAudit: 'http://127.0.0.1:8083/mock/loan.info',
+		eleCheck: 'http://127.0.0.1:8083/mock/electric.check',
+		carTwohand: 'http://127.0.0.1:8083/mock/car.towhand'
 	};
 	$(document).ajaxError(function(event, request, settings, error) {
 		//todo show global error
@@ -93,5 +100,23 @@
 	tool.pages = function(total, pageSize) {
 		if(!total) return 0;
 		return Math.floor(total / pageSize) + (total % pageSize == 0 ? 0 : 1);
+	}
+	/**
+	 * 添加日期格式化方法
+	 */
+	tool.formatDate = function(_time) {
+		var cDate = new Date(_time);
+		return cDate.getFullYear() + '-' + tool.leftPad(cDate.getMonth() + 1, 2) + '-' + tool.leftPad(cDate.getDate(), 2);
+	}
+	tool.leftPad = function (s, n) {
+		var l = '';
+		s = s + '';
+		if(s.length < n) {
+			for(var i = 0, len = n - s.length; i < len; i++) {
+				l += "0";
+			}
+			return l + s;
+		}
+		return s;
 	}
 })(window);
