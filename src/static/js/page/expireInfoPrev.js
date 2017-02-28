@@ -12,12 +12,12 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 	* @params {function} cb 回调函数
 	*/
 	var pageData={};
-	pageData['importId']=79;
+	pageData['importId']=80;
 	pageData['status']=0;
 
 	var loadExpireProcessList = function(params, cb) {
 		$.ajax({
-			url: $http.api('loanOverdueImport/queryImportDetails','wl'),
+			url: 'http://192.168.0.113:8888/loanOverdueImport/queryImportDetails',
 			data: pageData,
 			type: 'post',
 			dataType: 'json',
@@ -84,22 +84,115 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 		loadExpireProcessList(apiParams);
 	});
 	/**
-	* 绑定立即处理事件
+	* 全选、不选
+	* 
 	*/
+	//全选或全不选
+	$(document).on('click', '#all', function() {
+		if(!$(this).attr('checked')) {
+			$(this).addClass('checked').attr('checked',true);
+			$(this).html('<i class="iconfont">&#xe659;</i>');
+        	$("#list .checkbox").each(function(){
+				$(this).addClass('checked').attr('checked',true);
+				$(this).html('<i class="iconfont">&#xe659;</i>');
+        	})
+    	}else{   
+			$(this).removeClass('checked').attr('checked', false);
+			$(this).html();
+        	$("#list .checkbox").each(function(){
+				$(this).removeClass('checked').attr('checked', false);
+				$(this).html();
+        	})
+    	}   
+ 	}); 
+ 
+	//获取选中选项的值
+	$(document).on('click', '#getValue', function() {
+		var valArr = new Array;
+        $("#list .checked").each(function(i){
+			valArr[i] = $(this).data('id');
+        });
+		var vals = valArr.join(',');
+      	console.log(vals);
+    });
+	$(document).on('click', '#list .checkbox', function() {
+		var detailId = $(this).data('id');
+		var dataP={};
+			dataP['detailId']=detailId;
+			
+		if(!$(this).attr('checked')) {
+			$(this).addClass('checked').attr('checked',true);
+			$(this).html('<i class="iconfont">&#xe659;</i>');
+			dataP['isFoundTask']=1;
+			$.ajax({
+				url: $http.api('loanOverdueImport/isCreateOverdue','wl'),
+				data: dataP,
+				type: 'post',
+				dataType: 'json',
+				success: $http.ok(function(result) {
+					console.log(result.msg)
+				})
+			})
+		} else {
+			$(this).removeClass('checked').attr('checked', false);
+			$(this).html();
+			$('#all').removeClass('checked').attr('checked', false);
+			$('#all').html();
+			dataP['isFoundTask']=0;
+			$.ajax({
+				url: $http.api('loanOverdueImport/isCreateOverdue','wl'),
+				data: dataP,
+				type: 'post',
+				dataType: 'json',
+				success: $http.ok(function(result) {
+					console.log(result.msg)
+				})
+			})
+		}
+	});
 	/**
-	 * 提交订单按钮
+	* 详情页面确定取消按钮
+	*/
+	$(document).on('click', '#cancle', function() {
+		$("#chooseOrderDetail").hide();
+	});
+	$(document).on('click', '#submitPass', function() {
+		var data = {};
+		var boolCheck=$('input:radio[name="detailId"]');
+		boolCheck.each(function(){
+			if($(this).is(":checked")){
+				data['detailId'] = $(this).val();
+				data['orderNo'] = $(this).siblings('input:hidden[name="orderNo"]').val();
+			}
+		})
+		$.ajax({
+			url: $http.api('loanOverdueImport/chooseOverdueOrder','wl'),
+			data: data,
+			type: 'post',
+			dataType: 'json',
+			success: $http.ok(function(result) {
+				$("#chooseOrderDetail").hide();
+			})
+		})
+	});
+	
+	/**
+	 * 点击查看详情
 	 */
-	$(document).on('click', '#submitOrders', function() {
+	$(document).on('click', '.selOrderDetail', function() {
 		$("#chooseOrderDetail").show();
+//		chooseOrderTable
+		var that =$("#chooseOrderTable");
 		var detailData = {};
-			detailData['detailId']=1;
+			detailData['detailId']=$(this).data('detail');
+//			detailData['detailId']=1;
 		$.ajax({
 			url: $http.api('loanOverdueImport/checkOverdueOrderList','wl'),
 			data: detailData,
 			type: 'post',
 			dataType: 'json',
-			success: $http.ok(function(result) {
-				render.compile($scope.$el.$orderDetail, $scope.def.orderDetailTmpl, result.data, true);
+			success: $http.ok(function(xhr) {
+				render.compile(that, $scope.def.orderDetailTmpl, xhr.data, true);
 //				if(cb && typeof cb == 'function') {
 //					cb();
 //				}
@@ -116,7 +209,6 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 		$scope.def.scrollBarTmpl = render.$console.find('#scrollBarTmpl').html();
 		$scope.$el = {
 			$tbl: $console.find('#expireInfoPrevTable'),
-			$orderDetail: $console.find('#chooseOrderTable'),
 			$paging: $console.find('#pageToolbar'),
 			$scrollBar: $console.find('#scrollBar')
 		}
