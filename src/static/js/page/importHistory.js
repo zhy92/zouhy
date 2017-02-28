@@ -1,5 +1,5 @@
 'use strict';
-page.ctrl('expireInfoPrev', [], function($scope) {
+page.ctrl('importHistory', [], function($scope) {
 	var $console = render.$console,
 		$params = $scope.$params,
 		apiParams = {
@@ -11,14 +11,10 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 	* @params {object} params 请求参数
 	* @params {function} cb 回调函数
 	*/
-	var pageData={};
-	pageData['importId']=79;
-	pageData['status']=0;
 
 	var loadExpireProcessList = function(params, cb) {
 		$.ajax({
-			url: $http.api('loanOverdueImport/queryImportDetails','wl'),
-			data: pageData,
+			url: $http.api('loanOverdueImport/importReordList','wl'),
 			type: 'post',
 			dataType: 'json',
 			success: $http.ok(function(result) {
@@ -27,7 +23,6 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 				setupScroll(result.page, function() {
 					pageChangeEvt();
 				});
-				$("#chooseOrderDetail").hide();
 				if(cb && typeof cb == 'function') {
 					cb();
 				}
@@ -86,37 +81,19 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 	/**
 	* 绑定立即处理事件
 	*/
-	/**
-	 * 提交订单按钮
-	 */
-	$(document).on('click', '#submitOrders', function() {
-		$("#chooseOrderDetail").show();
-		var detailData = {};
-			detailData['detailId']=1;
-		$.ajax({
-			url: $http.api('loanOverdueImport/checkOverdueOrderList','wl'),
-			data: detailData,
-			type: 'post',
-			dataType: 'json',
-			success: $http.ok(function(result) {
-				render.compile($scope.$el.$orderDetail, $scope.def.orderDetailTmpl, result.data, true);
-//				if(cb && typeof cb == 'function') {
-//					cb();
-//				}
-			})
-		})
-	});
+//	$(document).on('click', '#expireProcessTable .button', function() {
+//		var that = $(this);
+//		router.render(that.data('href'), {orderNo: that.data('id')});
+//	});
 
 	/***
 	* 加载页面模板
 	*/
-	render.$console.load(router.template('iframe/expire-info-prev'), function() {
-		$scope.def.listTmpl = render.$console.find('#expireInfoPrevTmpl').html();
-		$scope.def.orderDetailTmpl = render.$console.find('#chooseOrderTmpl').html();
+	render.$console.load(router.template('iframe/import-history'), function() {
+		$scope.def.listTmpl = render.$console.find('#importHistoryTmpl').html();
 		$scope.def.scrollBarTmpl = render.$console.find('#scrollBarTmpl').html();
 		$scope.$el = {
-			$tbl: $console.find('#expireInfoPrevTable'),
-			$orderDetail: $console.find('#chooseOrderTable'),
+			$tbl: $console.find('#importHistoryTable'),
 			$paging: $console.find('#pageToolbar'),
 			$scrollBar: $console.find('#scrollBar')
 		}

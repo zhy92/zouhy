@@ -137,13 +137,13 @@
 			title: '提车材料上传',
 			page: 'pickMaterialsUpload'
 		},
+		'loanProcess/loanMaterialsChoose': {
+			title: '贷款材料选择',
+			page: 'loanMaterialsChoose'
+		},
 		'myCustomer/ordersDetail': {
 			title: '订单详情',
 			page: 'ordersDetail'
-		},
-		'licenceProcess/licenceProcessDetail': {
-			title: '上牌办理详情',
-			page: 'licenceDetail'
 		},
 		'loanProcess/loanInfo': {
 			title: '信息表修改',
@@ -197,6 +197,10 @@
 			title: '提车审核',
 			page: 'carAudit'
 		},
+		'expireProcess/importHistory':{
+			title: '逾期导入历史记录',
+			page: 'importHistory'
+		},
 		'expireProcess/expireProcessDetail':{
 			title: '逾期处理',
 			page: 'expireProcessDetail'
@@ -225,6 +229,10 @@
 			title: '逾期记录',
 			page: 'expireSingleDetail'
 		},
+		'licenceProcess/licenceProcessDetail': {
+			title: '上牌办理详情',
+			page: 'licenceProcessDetail'
+		},
 		'licenceAudit/licenceAuditDetail': {
 			title: '上牌审核详情',
 			page: 'licenceAuditDetail'
@@ -244,6 +252,14 @@
 		'mortgageStatis/mortgageStatisDetail': {
 			title: '抵押办理进度详情',
 			page: 'mortgageStatisDetail'
+		},
+		'organizationManage/newBank': {
+			title: '新建合作银行',
+			page: 'newBank'
+		},
+		'organizationManage/newCar': {
+			title: '新建合作车商',
+			page: 'newCar'
 		}
 		
 

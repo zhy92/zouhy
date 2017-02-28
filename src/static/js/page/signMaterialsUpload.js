@@ -12,7 +12,7 @@ page.ctrl('signMaterialsUpload', function($scope) {
 			// url: 'http://127.0.0.1:8083/mock/loanMaterialUpload',
 			// type: flag,
 			type: 'post',
-			url: $http.api('signMaterials/index'),
+			url: $http.api('signMaterials/index', 'zyj'),
 			data: {
 				// taskId: $scope.$params.taskId
 				taskId: 4
@@ -96,11 +96,8 @@ page.ctrl('signMaterialsUpload', function($scope) {
 	}
 
 	$console.load(router.template('iframe/loan-material-upload'), function() {
-		// $scope.def.tabTmpl = $console.find('#creditUploadTabsTmpl').html();
 		$scope.def.listTmpl = $console.find('#loanUploadTmpl').html();
-		// console.log($console.find('#creditResultPanel'))
 		$scope.$el = {
-			// $tab: $console.find('#creditTabs'),
 			$loanPanel: $console.find('#loanUploadPanel')
 		}
 		loadOrderInfo();
