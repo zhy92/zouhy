@@ -47,7 +47,7 @@
 									<input type="hidden" name="isSecond" value="{{= it.data.DDXX.isSecond}}" />
 								</span>
 							</div>
-							{{ };if(seg.code == 'serviceType'){ }}
+							{{ };if(seg.code == 'serviceTypeCode'){ }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -75,7 +75,7 @@
 									<input type="hidden" name="demandBankId" value="{{= it.data.DDXX.demandBankId}}" />
 								</span>
 							</div>
-							{{  };if(seg.code == 'busiSourceType'){  }}
+							{{  };if(seg.code == 'busiSourceTypeCode'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -90,7 +90,7 @@
 									<input type="hidden" name="busiSourceTypeCode" value="{{= it.data.DDXX.busiSourceTypeCode}}" />
 								</span>
 							</div>
-							{{  };if(seg.code == 'busiArea'){  }}
+							{{  };if(seg.code == 'busiAreaCode'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -101,11 +101,11 @@
 									<div></div>
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="busiAreaCode" value="{{= it.data.DDXX.busiArea.busiAreaCode}} />
-									<!--<input type="hidden" name="busiAreaName" value="{{= it.data.DDXX.busiArea.busiAreaName}} />-->
+									<input type="hidden" name="busiAreaCode" value="{{= it.data.DDXX.busiAreaCode}} />
+									<!--<input type="hidden" name="busiAreaName" value="{{= it.data.DDXX.busiAreaName}} />-->
 								</span>
 							</div>
-							{{  };if(seg.code == 'busiSourceName'){  }}
+							{{  };if(seg.code == 'busiSourceId'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -120,7 +120,7 @@
 									<input type="hidden" id="busiSourceId" name="busiSourceId" value="{{= it.data.DDXX.busiSourceId}}" />
 								</span>
 							</div>
-							{{  };if(seg.code == 'remitAccount'){  }}
+							{{  };if(seg.code == 'remitAccountNumber'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -216,7 +216,7 @@
 									<input type="hidden" name="isOperationVehicle" />
 								</span>
 							</div>
-							{{  };if(seg.code == 'onLicensePlace'){  }}
+							{{  };if(seg.code == 'onLicensePlaceCode'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -240,7 +240,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="licenseCategory" value="{{= it.data.CLXX.licenseCategory}}" /></span>
 							</div>
-							{{  };if(seg.code == 'car'){  }}
+							{{  };if(seg.code == 'carName'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -248,6 +248,7 @@
 									{{ } }} 
 									{{= seg.name}}：</span>
 								<span data-key="carName" class="info-value selecter">
+									<span class="inputSearch"><input class="searchInp" data-key = "carNameSearch" type="text" /></span>
 									<div></div>
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
@@ -532,7 +533,7 @@
 									<input type="hidden" id="bxxbInput" name="renewalMode" />
 								</span>
 							</div>
-							{{ var renewal=it.data.FQXX.renewalInfoList; }}
+							{{ var renewal=it.data.FQXX.renewalInfo; }}
 							<div class="info-key-value-box bxxbYear" id="year1">
 								<span class="info-key">
 									<!--{{ if(seg.empty == '0'){ }}-->
@@ -546,7 +547,7 @@
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
 									{{ if(renewal[0]){ }}
-									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[0].value}}" />
+									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[0]}}" />
 									{{ }else{ }}
 									<input type="hidden" class="bxxbyearIpt" value="555" />
 									{{ } }}
@@ -565,7 +566,7 @@
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
 									{{ if(renewal[1]){ }}
-									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[1].value}}" />
+									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[1]}}" />
 									{{ }else{ }}
 									<input type="hidden" class="bxxbyearIpt" value="555" />
 									{{ } }}
@@ -584,7 +585,7 @@
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
 									{{ if(renewal[2]){ }}
-									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[2].value}}" />
+									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[2]}}" />
 									{{ }else{ }}
 									<input type="hidden" class="bxxbyearIpt" value="555" />
 									{{ } }}
@@ -603,7 +604,7 @@
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
 									{{ if(renewal[3]){ }}
-									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[3].value}}" />
+									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[3]}}" />
 									{{ }else{ }}
 									<input type="hidden" class="bxxbyearIpt" value="555" />
 									{{ } }}
@@ -622,7 +623,7 @@
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
 									{{ if(renewal[4]){ }}
-									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[4].value}}" />
+									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[4]}}" />
 									{{ }else{ }}
 									<input type="hidden" class="bxxbyearIpt" value="555" />
 									{{ } }}
@@ -641,7 +642,7 @@
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
 									{{ if(renewal[5]){ }}
-									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[5].value}}" />
+									<input type="hidden" class="bxxbyearIpt" value="{{= renewal[5]}}" />
 									{{ }else{ }}
 									<input type="hidden" class="bxxbyearIpt" value="555" />
 									{{ } }}
@@ -832,7 +833,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="familyZipcode" value="{{= mainPerson.familyZipcode }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campany'){  }}
+							{{  };if(seg.code == 'company'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -841,7 +842,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="company" value="{{= mainPerson.company }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyTel'){  }}
+							{{  };if(seg.code == 'companyTel'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -850,7 +851,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="companyTel" value="{{= mainPerson.companyTel }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyAddress'){  }}
+							{{  };if(seg.code == 'companyAddress'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -859,7 +860,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="companyAddress" value="{{= mainPerson.companyAddress }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyZipcode'){  }}
+							{{  };if(seg.code == 'companyZipcode'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1007,7 +1008,7 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<span data-key="sex" class="info-value selecter">
+								<span data-type='self' data-key="sex" class="info-value selecter">
 									<div></div>
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
@@ -1068,7 +1069,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="familyZipcode" value="{{= mainPerson.familyZipcode }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campany'){  }}
+							{{  };if(seg.code == 'company'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1077,7 +1078,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="company" value="{{= mainPerson.company }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyTel'){  }}
+							{{  };if(seg.code == 'companyTel'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1086,7 +1087,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="companyTel" value="{{= mainPerson.companyTel }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyAddress'){  }}
+							{{  };if(seg.code == 'companyAddress'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1095,7 +1096,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="companyAddress" value="{{= mainPerson.companyAddress }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyZipcode'){  }}
+							{{  };if(seg.code == 'companyZipcode'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1241,7 +1242,7 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<span data-key="sex" class="info-value selecter">
+								<span data-type='self' data-key="sex" class="info-value selecter">
 									<div></div>
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
@@ -1302,7 +1303,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="familyZipcode" value="{{= mainPerson.familyZipcode }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campany'){  }}
+							{{  };if(seg.code == 'company'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1311,7 +1312,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="company" value="{{= mainPerson.company }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyTel'){  }}
+							{{  };if(seg.code == 'companyTel'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1320,7 +1321,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="companyTel" value="{{= mainPerson.companyTel }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyAddress'){  }}
+							{{  };if(seg.code == 'companyAddress'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1329,7 +1330,7 @@
 									{{= seg.name}}：</span>
 								<span class="info-value"><input type="text" name="companyAddress" value="{{= mainPerson.companyAddress }}" /></span>
 							</div>
-							{{  };if(seg.code == 'campanyZipcode'){  }}
+							{{  };if(seg.code == 'companyZipcode'){  }}
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1437,7 +1438,7 @@
 						{{for(var j = 0, len2 = it.data.JJLXR.length; j < len2; j++) { var role = it.data.JJLXR[j]; }}
 							<div>
 							<form>
-							{{for(var x = 0, lenthx = sec.segments.length; x < lenthx; x++) { var seg = sec.segments[x];if(seg.code == 'name'){ }}
+							{{for(var x = 0, lenthx = sec.segments.length; x < lenthx; x++) { var seg = sec.segments[x];if(seg.code == 'name1'){ }}
 								<div class="info-key-value-box">
 									<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1446,7 +1447,7 @@
 									联系人{{= j+1 }}&nbsp;姓名：</span>
 									<span class="info-value"><input type="text" name="name" value="{{= role.name }}" /></span>
 								</div>
-							{{  };if(seg.code == 'relationship'){  }}
+							{{  };if(seg.code == 'relationship1'){  }}
 								<div class="info-key-value-box">
 									<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1460,7 +1461,7 @@
 										<input type="hidden" name="relationship" />
 									</span>
 								</div>
-							{{  };if(seg.code == 'phone'){  }}
+							{{  };if(seg.code == 'phone1'){  }}
 								<div class="info-key-value-box">
 									<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
@@ -1625,6 +1626,10 @@
 						<li data-key="{{= op1.areaId}}">{{= op1.areaName}}</li>
 						{{ }else if(op1.bankId){ }}
 						<li data-key="{{= op1.bankId}}">{{= op1.bankName}}</li>
+						{{ }else if(op1.brandId){ }}
+						<li data-key="{{= op1.brandId}}">{{= op1.carBrandName}}</li>
+						{{ }else if(op1.brandId){ }}
+						<li data-key="{{= op1.brandId}}">{{= op1.name}}</li>
 						{{ }else{ }}
 						<li data-key="{{= op1.value}}">{{= op1.name}}</li>
 						{{ } }}

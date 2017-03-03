@@ -85,10 +85,12 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 	});
 	/**
 	* 全选、不选
-	* 
 	*/
 	//全选或全不选
 	$(document).on('click', '#all', function() {
+		var importId = $(this).data('id');
+		var dataP={};
+			dataP['importId']=importId;
 		if(!$(this).attr('checked')) {
 			$(this).addClass('checked').attr('checked',true);
 			$(this).html('<i class="iconfont">&#xe659;</i>');
@@ -96,6 +98,16 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 				$(this).addClass('checked').attr('checked',true);
 				$(this).html('<i class="iconfont">&#xe659;</i>');
         	})
+			dataP['isFoundTask']=1;
+			$.ajax({
+				url: $http.api('loanOverdueImport/checkAllOverdue','wl'),
+				data: dataP,
+				type: 'post',
+				dataType: 'json',
+				success: $http.ok(function(result) {
+					console.log(result.msg)
+				})
+			})
     	}else{   
 			$(this).removeClass('checked').attr('checked', false);
 			$(this).html();
@@ -103,6 +115,16 @@ page.ctrl('expireInfoPrev', [], function($scope) {
 				$(this).removeClass('checked').attr('checked', false);
 				$(this).html();
         	})
+			dataP['isFoundTask']=0;
+			$.ajax({
+				url: $http.api('loanOverdueImport/checkAllOverdue','wl'),
+				data: dataP,
+				type: 'post',
+				dataType: 'json',
+				success: $http.ok(function(result) {
+					console.log(result.msg)
+				})
+			})
     	}   
  	}); 
  
@@ -114,6 +136,15 @@ page.ctrl('expireInfoPrev', [], function($scope) {
         });
 		var vals = valArr.join(',');
       	console.log(vals);
+		$.ajax({
+			url: $http.api('loanOverdueImport/prepareConfirmed','wl'),
+			data: dataP,
+			type: 'post',
+			dataType: 'json',
+			success: $http.ok(function(result) {
+				console.log(result.msg)
+			})
+		})
     });
 	$(document).on('click', '#list .checkbox', function() {
 		var detailId = $(this).data('id');

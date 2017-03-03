@@ -8,35 +8,34 @@ page.ctrl('loanInfo', function($scope) {
 			page: $params.page || 1,
 			pageSize: 20
 		};
-	var urlStr1 = "http://192.168.0.144:8080";
-	var urlStr = "http://127.0.0.1:8083";
+	var urlStr1 = "http://192.168.0.136:8080";
+	var urlStr = "http://192.168.0.136:8080";
+//	var apiMap = {
+//		"serviceType": urlStr+"/mock/serviceType",
+//		"brand": urlStr+"/mock/demandBankId",
+//		"busiSourceType": urlStr+"/mock/busiSourceType",
+//		"busiArea": urlStr+"/mock/busiArea",
+//		"busiSourceName": urlStr+"/mock/busiSourceName",
+//		"busiSourceNameSearch": urlStr+"/mock/searchCarShop",
+//		"onLicensePlace": urlStr+"/mock/busiSourceName",
+//		"busimode": urlStr+"/mock/busimode",
+//		"carName": urlStr+"/mock/busiSourceName",
+//		"repaymentTerm": urlStr+"/mock/repaymentTerm",
+//		"remitAccountNumber": urlStr+"/mock/bankNo"
+//	};
 	var apiMap = {
-//		"sex": urlStr+"/mock/sex",
-//		"isSecond": urlStr+"/mock/isSecond",
-		"serviceType": urlStr+"/mock/serviceType",
-		"brand": urlStr+"/mock/demandBankId",
-		"busiSourceType": urlStr+"/mock/busiSourceType",
-		"busiArea": urlStr+"/mock/busiArea",
-		"busiSourceName": urlStr+"/mock/busiSourceName",
-		"busiSourceNameSearch": urlStr+"/mock/searchCarShop",
-//		"busiSourceName": urlStr+"/carshop/list",
-//		"licenseType": urlStr+"/mock/busiSourceName",
-//		"isFinanceLeaseVehicle": urlStr+"/mock/busiSourceName",
-//		"isOperationVehicle": urlStr+"/mock/busiSourceName",
-		"onLicensePlace": urlStr+"/mock/busiSourceName",
-//		"isInstallGps": urlStr+"/mock/yesOrNo",
-		"busimode": urlStr+"/mock/busimode",
-		"isDiscount": urlStr+"/mock/busiSourceName",
-		"carName": urlStr+"/mock/busiSourceName",
-		"repaymentTerm": urlStr+"/mock/repaymentTerm",
-//		"renewalMode": urlStr+"/mock/busiSourceName",
-//		"isAdvanced": urlStr+"/mock/busiSourceName",
-		"maritalStatus": urlStr+"/mock/busiSourceName",
-//		"houseStatus": urlStr+"/mock/busiSourceName",
-//		"isEnterprise": urlStr+"/mock/busiSourceName",
-//		"userRelationship": urlStr+"/mock/busiSourceName",
-		"remitAccountNumber": urlStr+"/mock/bankNo"
-//		"relationship": urlStr+"/mock/busiSourceName"
+		"serviceType": urlStr+"/loanConfigure/getItem",//业务类型
+		"brand": urlStr+"/demandBank/selectBank",//经办银行
+		"busiSourceType": urlStr+"/loanConfigure/getItem",//业务来源类型
+		"busiArea": "http://127.0.0.1:8020/mock/busiArea",//三级下拉省市县
+		"busiSourceName": urlStr+"/carshop/list",//业务来源方名称
+		"busiSourceNameSearch": urlStr+"/carshop/searchCarShop",//业务来源方名称模糊搜索
+		"onLicensePlace": "http://127.0.0.1:8020/mock/busiSourceName",//三级下拉省市县
+		"busimode": urlStr+"/loanConfigure/getItem",//业务模式
+		"carName": urlStr+"/car/carBrandList",//三级车辆型号:车辆品牌
+		"carNameSearch":  urlStr+"/car/searchCars",//车辆型号模糊搜索
+		"repaymentTerm": urlStr+"/loanConfigure/getItem", //还款期限
+		"remitAccountNumber": urlStr+"/demandCarShopAccount/getAccountList" //打款账号
 	};
 	var dataMap = {
 		    "sex":[
@@ -210,12 +209,15 @@ page.ctrl('loanInfo', function($scope) {
 		var data={};
 			data['taskId']=80871;
 		$.ajax({
-			url: $http.api('loan.infoBak'),
-//			url: $http.api('loanInfoInput/info','jbs'),
+//			 url: $http.api('loan.infoBak'),
+			// url: $http.api('loanInfoInput/info','jbs'),
+			url: urlStr1+'/loanInfoInput/info',
 			data: data,
 			dataType: 'json',
 			async:false,
 			success: $http.ok(function(result) {
+				result.data.FQXX.renewalInfo = result.data.FQXX.renewalInfo.split(',');
+				console.log(result.data.FQXX.renewalInfo);
 				render.compile($scope.$el.$tbl, $scope.def.listTmpl, result, true);
 				if(cb && typeof cb == 'function') {
 					cb();
@@ -226,17 +228,6 @@ page.ctrl('loanInfo', function($scope) {
 				loanFinishedGps();
 				loanFinishedBxxb();
 			})
-		});
-	}
-//页面加载完成对所有输入框进行样式设定
-	var loanFinishedCss = function(){
-		var boxes = $(".info-key-value-box");
-		boxes.each(function(i){
-			if(i % 2 == 0){
-				$(this).css('text-align','left');
-			}else{
-				$(this).css('text-align','right');
-			}
 		});
 	}
 //页面加载完成对所有带“*”的input进行必填绑定
@@ -295,7 +286,6 @@ page.ctrl('loanInfo', function($scope) {
 				var text = $(this).text();
 				var keybank = $(this).data('bank');
 				var keyname = $(this).data('name');
-
 				if(value1 == val){
 					$(this).parent().parent().siblings(".placeholder").html(text);
 					$(this).parent().parent().siblings("input").val(val);
@@ -337,7 +327,7 @@ page.ctrl('loanInfo', function($scope) {
 //点击下拉框拉取选项
 	$(document).on('click','.selecter', function() {
 		var that =$("div",$(this));
-		var inputSearch =$(".searchInp",$(this));
+		var inputSearch =$(".searchInp",$(this));01
 		var key = $(this).data('key');
 		var boxKey = key + 'Box';
 		var datatype = $(this).data('type');
@@ -347,6 +337,7 @@ page.ctrl('loanInfo', function($scope) {
 			console.log(dataMap[key]);
 			var selectOptBox = $(".selectOptBox",$(this));
 			selectOptBox.style.display = 'block';
+//			selectOptBox.show();
 			console.log(selectOptBox);
 			
 		}else{
@@ -360,6 +351,7 @@ page.ctrl('loanInfo', function($scope) {
 			}else{
 				data['code'] = key;
 			}
+			console.log(data);
 			$.ajax({
 				url: apiMap[key],
 				data: data,
