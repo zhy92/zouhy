@@ -8,29 +8,15 @@ page.ctrl('loanInfo', function($scope) {
 			page: $params.page || 1,
 			pageSize: 20
 		};
-	var urlStr1 = "http://192.168.0.136:8080";
-	var urlStr = "http://192.168.0.136:8080";
-//	var apiMap = {
-//		"serviceType": urlStr+"/mock/serviceType",
-//		"brand": urlStr+"/mock/demandBankId",
-//		"busiSourceType": urlStr+"/mock/busiSourceType",
-//		"busiArea": urlStr+"/mock/busiArea",
-//		"busiSourceName": urlStr+"/mock/busiSourceName",
-//		"busiSourceNameSearch": urlStr+"/mock/searchCarShop",
-//		"onLicensePlace": urlStr+"/mock/busiSourceName",
-//		"busimode": urlStr+"/mock/busimode",
-//		"carName": urlStr+"/mock/busiSourceName",
-//		"repaymentTerm": urlStr+"/mock/repaymentTerm",
-//		"remitAccountNumber": urlStr+"/mock/bankNo"
-//	};
+	var urlStr = "http://192.168.0.193:8080";
 	var apiMap = {
 		"serviceType": urlStr+"/loanConfigure/getItem",//业务类型
 		"brand": urlStr+"/demandBank/selectBank",//经办银行
 		"busiSourceType": urlStr+"/loanConfigure/getItem",//业务来源类型
-		"busiArea": "http://127.0.0.1:8020/mock/busiArea",//三级下拉省市县
+		"busiArea": urlStr+"/area/get",//三级下拉省市县
 		"busiSourceName": urlStr+"/carshop/list",//业务来源方名称
 		"busiSourceNameSearch": urlStr+"/carshop/searchCarShop",//业务来源方名称模糊搜索
-		"onLicensePlace": "http://127.0.0.1:8020/mock/busiSourceName",//三级下拉省市县
+		"onLicensePlace": urlStr+"/area/get",//三级下拉省市县
 		"busimode": urlStr+"/loanConfigure/getItem",//业务模式
 		"carName": urlStr+"/car/carBrandList",//三级车辆型号:车辆品牌
 		"carNameSearch":  urlStr+"/car/searchCars",//车辆型号模糊搜索
@@ -110,7 +96,7 @@ page.ctrl('loanInfo', function($scope) {
 		    ],
 		    "renewalMode":[
 		        {
-		            "name":"自行承保",
+		            "name":"自行办理",
 		            "value":"0"
 		        },
 		        {
@@ -120,11 +106,11 @@ page.ctrl('loanInfo', function($scope) {
 		    ],
 		    "renewalModeList":[
 		        {
-		            "name":"自营",
+		            "name":"自行办理",
 		            "value":"0"
 		        },
 		        {
-		            "name":"非自营",
+		            "name":"单位承保",
 		            "value":"1"
 		        }
 		    ],
@@ -190,14 +176,14 @@ page.ctrl('loanInfo', function($scope) {
 		    ]
 		};
 	var postUrl = {
-		"saveOrderInfo": urlStr1+"/loanInfoInput/updLoanOrder",
-		"saveCarInfo": urlStr1+"/loanInfoInput/updLoanUserCar",
-		"saveStageInfo": urlStr1+"/loanInfoInput/updLoanUserStage",
-		"saveCommonInfo": urlStr1+"/loanInfoInput/updLoanUser",
-		"saveEmergencyInfo": urlStr1+"/loanInfoInput/updLoanEmergencyConact",
-		"saveloanPayCardInfo": urlStr1+"/loanInfoInput/updLoanPayCard",
-		"saveFYXXInfo": urlStr1+"/loanInfoInput/updLoanFee",
-		"saveQTXX": urlStr1+"/loanInfoInput/updLoanIndividuation"
+		"saveOrderInfo": urlStr+"/loanInfoInput/updLoanOrder",
+		"saveCarInfo": urlStr+"/loanInfoInput/updLoanUserCar",
+		"saveStageInfo": urlStr+"/loanInfoInput/updLoanUserStage",
+		"saveCommonInfo": urlStr+"/loanInfoInput/updLoanUser",
+		"saveEmergencyInfo": urlStr+"/loanInfoInput/updLoanEmergencyConact",
+		"saveloanPayCardInfo": urlStr+"/loanInfoInput/updLoanPayCard",
+		"saveFYXXInfo": urlStr+"/loanInfoInput/updLoanFee",
+		"saveQTXX": urlStr+"/loanInfoInput/updLoanIndividuation"
 	};
 
 	/**
@@ -211,11 +197,15 @@ page.ctrl('loanInfo', function($scope) {
 		$.ajax({
 //			 url: $http.api('loan.infoBak'),
 			// url: $http.api('loanInfoInput/info','jbs'),
-			url: urlStr1+'/loanInfoInput/info',
+			url: urlStr+'/loanInfoInput/info',
 			data: data,
 			dataType: 'json',
 			async:false,
 			success: $http.ok(function(result) {
+				$scope.result = result;
+				// 启动面包屑
+				var _loanUser = $scope.result.data.ZJKR[0].userName;
+				setupLocation(_loanUser);
 				result.data.FQXX.renewalInfo = result.data.FQXX.renewalInfo.split(',');
 				console.log(result.data.FQXX.renewalInfo);
 				render.compile($scope.$el.$tbl, $scope.def.listTmpl, result, true);
@@ -229,6 +219,21 @@ page.ctrl('loanInfo', function($scope) {
 				loanFinishedBxxb();
 			})
 		});
+	}
+	/**
+	* 设置面包屑
+	*/
+	var setupLocation = function(loanUser) {
+		if(!$scope.$params.path) return false;
+		var $location = $console.find('#location');
+		var _orderDate = tool.formatDate($scope.$params.date, true);
+		$location.data({
+			backspace: $scope.$params.path,
+			loanUser: loanUser,
+			current: '贷款信息录入',
+			orderDate: _orderDate
+		});
+		$location.location();
 	}
 //页面加载完成对所有带“*”的input进行必填绑定
 	var loanFinishedInput = function(){
@@ -327,7 +332,7 @@ page.ctrl('loanInfo', function($scope) {
 //点击下拉框拉取选项
 	$(document).on('click','.selecter', function() {
 		var that =$("div",$(this));
-		var inputSearch =$(".searchInp",$(this));01
+		var inputSearch =$(".searchInp",$(this));
 		var key = $(this).data('key');
 		var boxKey = key + 'Box';
 		var datatype = $(this).data('type');
@@ -444,6 +449,13 @@ page.ctrl('loanInfo', function($scope) {
 			})
 		}
 	}
+	
+//保险续保及还款期限联动
+	$(document).on('click', '.dateBtn', function() {
+		$('#loaningDate').datepicker();
+	})
+	
+
 //保险续保及还款期限联动
 	$(document).on('click', '#repaymentTermBox li', function() {
 		loanFinishedrepay();
@@ -460,54 +472,54 @@ page.ctrl('loanInfo', function($scope) {
 		
 		if(bxxbLength == 1){
 			$("#year1").show();
-			$("#year1").find('input').val(0);
-			$("#year1").find('.placeholder').html("自营");
+			$("#year1").find('input').val(1);
+			$("#year1").find('.placeholder').html("单位承保");
 		}else if(bxxbLength == 2){
 			$("#year1").show();
 			$("#year2").show();
-			$("#year1").find('input').val(0);
-			$("#year1").find('.placeholder').html("自营");
-			$("#year2").find('input').val(0);
-			$("#year2").find('.placeholder').html("自营");
+			$("#year1").find('input').val(1);
+			$("#year1").find('.placeholder').html("单位承保");
+			$("#year2").find('input').val(1);
+			$("#year2").find('.placeholder').html("单位承保");
 		}else if(bxxbLength == 3){
 			$("#year1").show();
 			$("#year2").show();
 			$("#year3").show();
-			$("#year1").find('input').val(0);
-			$("#year1").find('.placeholder').html("自营");
-			$("#year2").find('input').val(0);
-			$("#year2").find('.placeholder').html("自营");
-			$("#year3").find('input').val(0);
-			$("#year3").find('.placeholder').html("自营");
+			$("#year1").find('input').val(1);
+			$("#year1").find('.placeholder').html("单位承保");
+			$("#year2").find('input').val(1);
+			$("#year2").find('.placeholder').html("单位承保");
+			$("#year3").find('input').val(1);
+			$("#year3").find('.placeholder').html("单位承保");
 		}else if(bxxbLength == 4){
 			$("#year1").show();
 			$("#year2").show();
 			$("#year3").show();
 			$("#year4").show();
-			$("#year1").find('input').val(0);
-			$("#year1").find('.placeholder').html("自营");
-			$("#year2").find('input').val(0);
-			$("#year2").find('.placeholder').html("自营");
-			$("#year3").find('input').val(0);
-			$("#year3").find('.placeholder').html("自营");
-			$("#year4").find('input').val(0);
-			$("#year4").find('.placeholder').html("自营");
+			$("#year1").find('input').val(1);
+			$("#year1").find('.placeholder').html("单位承保");
+			$("#year2").find('input').val(1);
+			$("#year2").find('.placeholder').html("单位承保");
+			$("#year3").find('input').val(1);
+			$("#year3").find('.placeholder').html("单位承保");
+			$("#year4").find('input').val(1);
+			$("#year4").find('.placeholder').html("单位承保");
 		}else if(bxxbLength == 5){
 			$("#year1").show();
 			$("#year2").show();
 			$("#year3").show();
 			$("#year4").show();
 			$("#year5").show();
-			$("#year1").find('input').val(0);
-			$("#year1").find('.placeholder').html("自营");
-			$("#year2").find('input').val(0);
-			$("#year2").find('.placeholder').html("自营");
-			$("#year3").find('input').val(0);
-			$("#year3").find('.placeholder').html("自营");
-			$("#year4").find('input').val(0);
-			$("#year4").find('.placeholder').html("自营");
-			$("#year5").find('input').val(0);
-			$("#year5").find('.placeholder').html("自营");
+			$("#year1").find('input').val(1);
+			$("#year1").find('.placeholder').html("单位承保");
+			$("#year2").find('input').val(1);
+			$("#year2").find('.placeholder').html("单位承保");
+			$("#year3").find('input').val(1);
+			$("#year3").find('.placeholder').html("单位承保");
+			$("#year4").find('input').val(1);
+			$("#year4").find('.placeholder').html("单位承保");
+			$("#year5").find('input').val(1);
+			$("#year5").find('.placeholder').html("单位承保");
 		}else{
 			$("#year1").show();
 			$("#year2").show();
@@ -515,23 +527,27 @@ page.ctrl('loanInfo', function($scope) {
 			$("#year4").show();
 			$("#year5").show();
 			$("#year6").show();
-			$("#year1").find('input').val(0);
-			$("#year1").find('.placeholder').html("自营");
-			$("#year2").find('input').val(0);
-			$("#year2").find('.placeholder').html("自营");
-			$("#year3").find('input').val(0);
-			$("#year3").find('.placeholder').html("自营");
-			$("#year4").find('input').val(0);
-			$("#year4").find('.placeholder').html("自营");
-			$("#year5").find('input').val(0);
-			$("#year5").find('.placeholder').html("自营");
-			$("#year6").find('input').val(0);
-			$("#year6").find('.placeholder').html("自营");
+			$("#year1").find('input').val(1);
+			$("#year1").find('.placeholder').html("单位承保");
+			$("#year2").find('input').val(1);
+			$("#year2").find('.placeholder').html("单位承保");
+			$("#year3").find('input').val(1);
+			$("#year3").find('.placeholder').html("单位承保");
+			$("#year4").find('input').val(1);
+			$("#year4").find('.placeholder').html("单位承保");
+			$("#year5").find('input').val(1);
+			$("#year5").find('.placeholder').html("单位承保");
+			$("#year6").find('input').val(1);
+			$("#year6").find('.placeholder').html("单位承保");
 		}
 	}
-
-
+	
+	
 	/***
+	* 时间插件
+	*/
+	
+    /***
 	* 保存按钮
 	*/
 	$(document).on('click', '.saveBtn', function() {

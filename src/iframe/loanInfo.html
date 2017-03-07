@@ -1,8 +1,8 @@
 	<!--贷款信息录入zhy-->
 			<div class="container" id="loan-info">
-				<!-- 返回列表 -->
-				<!--<div id="location"></div>-->
-				<!-- 返回列表 end-->
+				<!--返回列表-->
+				<div id="location"></div>
+				<!--返回列表 end-->
 				
 				<!--面板-->
 				<div id="loanInfoTable" class="mt15"></div>
@@ -102,7 +102,6 @@
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
 									<input type="hidden" name="busiAreaCode" value="{{= it.data.DDXX.busiAreaCode}} />
-									<!--<input type="hidden" name="busiAreaName" value="{{= it.data.DDXX.busiAreaName}} />-->
 								</span>
 							</div>
 							{{  };if(seg.code == 'busiSourceId'){  }}
@@ -140,7 +139,7 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<span class="info-value"><input id="bankName" type="text" disabled="disabled" /></span>
+								<span class="info-value"><input id="bankName" type="text" readonly="readonly" /></span>
 							</div>
 							<div class="info-key-value-box">
 								<span class="info-key">
@@ -148,12 +147,13 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<span class="info-value"><input id="accountName" type="text" disabled="disabled" /></span>
+								<span class="info-value"><input id="accountName" type="text" readonly="readonly" /></span>
 							</div>
 							{{ } }}
 							{{ } }}
 							<input type="hidden" name="id" value="{{= it.data.DDXX.id}}" />
 							<input type="hidden" name="orderNo" value="{{= it.data.ORDERNO}}" />
+							
 						</div>
 						</form>
 					</div>
@@ -678,7 +678,9 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<span class="info-value"><input type="text" name="utilityTime" value="{{= it.data.FQXX.utilityTime}}" /></span>
+								<span class="info-value">
+									<input id="loaningDate" type="text" class="dateBtn" readonly="readonly" name="utilityTime" value="{{= it.data.FQXX.utilityTimeStr}}" />
+								</span>
 							</div>
 							{{ } }}
 							{{ } }}
@@ -1626,13 +1628,17 @@
 						<li data-key="{{= op1.areaId}}">{{= op1.areaName}}</li>
 						{{ }else if(op1.bankId){ }}
 						<li data-key="{{= op1.bankId}}">{{= op1.bankName}}</li>
-						{{ }else if(op1.brandId){ }}
+						<!--{{ }else if(op1.brandId){ }}
 						<li data-key="{{= op1.brandId}}">{{= op1.carBrandName}}</li>
 						{{ }else if(op1.brandId){ }}
-						<li data-key="{{= op1.brandId}}">{{= op1.name}}</li>
+						<li data-key="{{= op1.brandId}}">{{= op1.name}}</li>-->
 						{{ }else{ }}
 						<li data-key="{{= op1.value}}">{{= op1.name}}</li>
 						{{ } }}
 					{{ } }}
 				</ul>
 			</script>
+
+
+
+

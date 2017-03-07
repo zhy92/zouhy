@@ -143,110 +143,25 @@ $(document).on('hover', '#navigator .user', function() {
 		}
 	})
 
-
-
-
-
-
-
-/**
-* 从对象数组中删除属性为objPropery，值为objValue元素的对象
-* @param Array arrPerson 数组对象
-* @param String objPropery 对象的属性
-* @param String objPropery 对象的值
-* @return Array 过滤后数组
-*/
-function remove(arrPerson, objPropery, objValue){
-    return $.grep(arrPerson,
-    function(cur, i) {
-        return cur[objPropery] != objValue;
-    });
-}
-
-/**
-* 从对象数组中获取属性为objPropery，值为objValue元素的对象
-* @param Array arrPerson 数组对象
-* @param String objPropery 对象的属性
-* @param String objPropery 对象的值
-* @return Array 过滤后的数组
-*/
-function get(arrPerson, objPropery, objValue){
-    return $.grep(arrPerson,
-    function(cur, i) {
-        return cur[objPropery] == objValue;
-    });
-}
-
-/**
-* 显示对象数组信息
-* @param String info 提示信息
-* @param Array arrPerson 对象数组
-*/
-function showPersonInfo(info, arrPerson){
-    $.each(arrPerson,
-    function(index, callback) {
-        info += "Person id:" + arrPerson[index].id + " name:" + arrPerson[index].name + " sex:" + arrPerson[index].sex + " age:" + arrPerson[index].age + "\r\t";
-    });
-    alert(info);
-}
-
-//测试数据
-var arrPerson = new Array();
-var person = new Object();
-person.id = 1;
-person.name = "帅哥";
-person.sex = "男";
-person.age = 30;
-arrPerson.push(person);
-person = new Object();
-person.id = 2;
-person.name = "美眉甲";
-person.sex = "女";
-person.age = 28;
-arrPerson.push(person);
-person = new Object();
-person.id = 3;
-person.name = "美眉乙";
-person.sex = "女";
-person.age = 20;
-arrPerson.push(person);
-console.log(person);
-//测试删除
-showPersonInfo("原始数组：\r\t", arrPerson);
-arrPerson = remove(arrPerson, "id", 1);
-showPersonInfo("删除之后：\r\t", arrPerson);
-//测试获取
-arrPerson = get(arrPerson, "id", 3);
-showPersonInfo("只获取ID为3的元素：\r\t", arrPerson);
-console.log(arrPerson);
-
-
-
-	function startData(){
-		var dataArr = [
-		    {
-		        "code":"isSecond",
-		        "empty":0,
-		        "fieldName":"isSecond",
-		        "name":"新车还是二手车",
-		        "orderBy":0,
-		        "type":3
-		    },
-		    {
-		        "code":"orderNo",
-		        "empty":0,
-		        "fieldName":"orderNo",
-		        "name":"订单编号",
-		        "orderBy":0,
-		        "type":0
-		    }
-		];
-		var changeArr = {};
-		for(var i=0;i<dataArr.length;i++){
-			if(dataArr[i].code == 'isSecond'){
-				dataArr[i].join(changeArr);
-				return changeArr;
-			}
-		}
-		console.log(changeArr);
-	}
+		function timeShow() {        
+			$('.dateBtn').mobiscroll().datetime({
+				theme: 'android-ics light', //皮肤样式
+		        display: 'modal', //显示方式 
+		        mode: 'scroller', //日期选择模式
+		    	dateOrder: 'yyMdd',
+				dateFormat: 'yy-mm-dd',
+				showNow: true,
+				setText: "确定",
+				nowText: "今天",
+				cancelText: "取消",
+				timeWheels: 'HHii',
+				timeFormat: 'HH:ii',
+		        minuteText: '分',
+		        hourText: '时',
+		        dayText: '日',
+		        monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+		        monthText: '月',
+		        yearText: '年',
+		        startYear: 2015, //开始年份
+		    });
+		}	

@@ -22,6 +22,25 @@ page.ctrl('phoneAudit', function($scope) {
 		"ccounty": urlStr+"/mock/country",
 		"isSecond": urlStr+"/mock/busiSourceName"
 		}
+	var rendMap = {
+		"phoneAudit": "phoneAudit.js",
+		"loanInfo": "loanInfo.js",
+		}
+	/**
+	* 设置面包屑
+	*/
+	var setupLocation = function(loanUser) {
+		if(!$scope.$params.path) return false;
+		var $location = $console.find('#location');
+		var _orderDate = tool.formatDate($scope.$params.date, true);
+		$location.data({
+			backspace: $scope.$params.path,
+			loanUser: loanUser,
+			current: '审核列表',
+			orderDate: _orderDate
+		});
+		$location.location();
+	}
 	/**
 	* 加载车贷办理数据
 	* @params {object} params 请求参数
@@ -32,6 +51,10 @@ page.ctrl('phoneAudit', function($scope) {
 			url: $http.api('phoneAudit'),
 			data: params,
 			success: $http.ok(function(result) {
+//				$scope.result = result;
+//				// 启动面包屑
+//				var _loanUser = $scope.result.data[0].loanUserCredits[0].userName;
+//				setupLocation(_loanUser);
 				render.compile($scope.$el.$tbl, $scope.def.listTmpl, result.data, true);
 				if(cb && typeof cb == 'function') {
 					cb();
@@ -145,17 +168,16 @@ page.ctrl('phoneAudit', function($scope) {
 	/***
 	* 加载页面模板
 	*/
-	render.$console.load(router.template('phoneAudit'), function() {
-		$scope.def.listTmpl = render.$console.find('#eleChecktmpl').html();
-//		$scope.def.selectOpttmpl =  render.$console.find('#selectOpttmpl').html();
+	$console.load(router.template('iframe/phoneAudit'), function() {
+//		$scope.def.tabTmpl = $console.find('#checkResultTabsTmpl').html();
+		$scope.def.listTmpl = $console.find('#eleChecktmpl').html();
+//		$scope.def.selectOpttmpl = $console.find('#selectOpttmpl').html();
 		$scope.$el = {
-			$tbl: $console.find('#eleCheck'),
-		}
-		if($params.process) {
-			
+//			$tab: $console.find('#checkTabs'),
+			$tbl: $console.find('#eleCheck')
 		}
 		loadLoanList(apiParams);
-	});
+	})
 });
 
 
