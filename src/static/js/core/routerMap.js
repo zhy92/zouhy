@@ -106,7 +106,8 @@
 			page: 'organizationManage'
 		},
 		'loanProcess/detail': {
-			page: 'detail'
+			page: 'detail',
+			title: '贷款办理'
 		},
 		'loanProcess/creditMaterialsUpload': {
 			title: '征信材料上传',
@@ -165,8 +166,8 @@
 			page: 'secondhandInput'
 		},
 		'loanProcess/loanTelApproval': {
-			title: '审核列表',
-			page: 'checkAudit'
+			title: '电核',
+			page: 'phoneAudit'
 		},
 		'loanProcess/loanAudit': {
 			title: '贷款审核',
@@ -176,12 +177,21 @@
 			title: '放款审核',
 			page: 'lendAudit'
 		},
-//		'loanProcess/cardAudit': {
-//			title: '开卡审核',
-//			page: 'cardAudit'
-//		},
+		'loanProcess/applyModify': {
+			title: '申请修改贷款信息',
+			page: 'applyModify'
+		},
+		'loanProcess/loanLog': {
+			title: '订单日志',
+			page: 'loanLog'
+		},
 		'loanProcess/cardAudit': {
 			title: '开卡审核',
+			page: 'cardAudit'
+		},
+		'loanProcess/cardInfoInput': {
+			title: '开卡审核',
+//			page: 'cardAudit'
 			page: 'openCardSheet'
 		},
 		'loanProcess/creditAudit':{
@@ -195,6 +205,10 @@
 		'loanProcess/carAudit':{
 			title: '提车审核',
 			page: 'carAudit'
+		},
+		'loanProcess/creditApproval': {
+			title: '征信结果录入',
+			page: 'creditApproval'
 		},
 		'expireProcess/importHistory':{
 			title: '逾期导入历史记录',
@@ -260,7 +274,58 @@
 			title: '新建合作车商',
 			page: 'newCar'
 		}
-		
-
 	}
+	g.subRouterMap = {
+		'T0047': 'loanInfoInput',
+		'T0013': 'loanMaterialsUpload',
+		'T0049': 'homeMaterialsUpload'
+	}
+	var todoMap = {'T0004': '',
+	'T0005': '',
+	'T0006': '',
+	'T0007': '',
+	'T0008': '',
+	'T0009': '',
+	'T0010': '',
+	'T0046': '',
+	'T0047': '',
+	'T0048': '',
+	'T0013': '',
+	'T0049': '',
+	'T0015': '',
+	'T0016': '',
+	'T0017': '',
+	'T0018': '',
+	'T0050': '',
+	'T0051': '',
+	'T0052': '',
+	'T0023': '',
+	'T0053': '',
+	'T0054': '',
+	'T0024': '',
+	'T0055': '',
+	'T0058': '',
+	'T0025': '',
+	'T0026': '',
+	'T0027': '',
+	'T0028': '',
+	'T0029': '',
+	'T0033': '',
+	'T0034': '',
+	'T0035': '',
+	'T0036': '',
+	'T0037': '',
+	'T0056': '',
+	'T0038': '',
+	'T0057': '',
+	'T0059': '',
+	'T0040': '',
+	'T0041': '',
+	'T0042': '',
+	'T0043': '',
+	'T0044': '',
+	'T0045': '',
+	'T0001': '',
+	'T0060': '',
+	'T0061': ''}
 })(window);

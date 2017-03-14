@@ -1,54 +1,23 @@
 
 // 待办提醒框
-var isOpen = false; 
-$(document).on('click', '#remind-tips', function (){
-	if(!isOpen) {
-		$('#remind').animate({
-			right: '155px'
-		},200);
-		$(this).find('.iconfont').html('&#xe605;');
-		isOpen = true;
-	} else {
-		$('#remind').animate({
-			right: '0'
-		},200);
-		$(this).find('.iconfont').html('&#xe697;');
-		isOpen = false;
-	}
-});
-
-//复选框
-$(document).on('selectstart', '.checkbox-normal', false);
-// $(document).on('click', '.checkbox-normal', function() {
-// 	var keyData = $(this).attr("data-key");
-// 	var keyCode = $(this).attr("data-code");
-// 	var keyMark = $(this).attr("data-mark");
-// 	if(keyData){
-// 		$(".hklx").each(function(){
-// 			$(this).removeClass('checked').attr('checked',false);
-// 			$(this).html('');
-// 		})
-// 	}
-// 	if(keyCode){
-// 		$(".gzd").each(function(){
-// 			$(this).removeClass('checked').attr('checked',false);
-// 			$(this).html('');
-// 		})
-// 	}
-// 	if(keyMark){
-// 		$(".jzlx").each(function(){
-// 			$(this).removeClass('checked').attr('checked',false);
-// 			$(this).html('');
-// 		})
-// 	}
-// 	if(!$(this).attr('checked')) {
-// 		$(this).addClass('checked').attr('checked',true);
-// 		$(this).html('<i class="iconfont">&#xe659;</i>');
+// var isOpen = false; 
+// $(document).on('click', '#remind-tips', function (){
+// 	if(!isOpen) {
+// 		$('#remind').animate({
+// 			right: '155px'
+// 		},200);
+// 		$(this).find('.iconfont').html('&#xe605;');
+// 		isOpen = true;
 // 	} else {
-// 		$(this).removeClass('checked').attr('checked',false);
-// 		$(this).html('');
+// 		$('#remind').animate({
+// 			right: '0'
+// 		},200);
+// 		$(this).find('.iconfont').html('&#xe697;');
+// 		isOpen = false;
 // 	}
-// })
+// });
+
+
 
 //单选框
 $(document).on('selectstart', '.radio', false);
@@ -143,25 +112,3 @@ $(document).on('hover', '#navigator .user', function() {
 		}
 	})
 
-		function timeShow() {        
-			$('.dateBtn').mobiscroll().datetime({
-				theme: 'android-ics light', //皮肤样式
-		        display: 'modal', //显示方式 
-		        mode: 'scroller', //日期选择模式
-		    	dateOrder: 'yyMdd',
-				dateFormat: 'yy-mm-dd',
-				showNow: true,
-				setText: "确定",
-				nowText: "今天",
-				cancelText: "取消",
-				timeWheels: 'HHii',
-				timeFormat: 'HH:ii',
-		        minuteText: '分',
-		        hourText: '时',
-		        dayText: '日',
-		        monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-		        monthText: '月',
-		        yearText: '年',
-		        startYear: 2015, //开始年份
-		    });
-		}	

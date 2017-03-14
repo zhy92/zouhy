@@ -3,7 +3,8 @@ page.ctrl('loan', function($scope) {
 	var $console = render.$console,
 		$params = $scope.$params,
 		apiParams = {
-			pageNum: $params.pageNum || 1
+			pageNum: $params.pageNum || 1,
+			process: $params.process || ''
 		};
 	/**
 	* 加载车贷办理数据
@@ -15,8 +16,8 @@ page.ctrl('loan', function($scope) {
 			// type: 'get',
 			// url: 'http://192.168.0.144:8080/loanOrder/workbench',
 			// dataType:"json",
-			// data: params,
 			url: $http.api('loan.list'),
+			data: params,
 			// url: $http.api('material/addOrUpdate', 'wl'),
 			success: $http.ok(function(result) {
 				$scope.pageData = result.data;
@@ -28,10 +29,7 @@ page.ctrl('loan', function($scope) {
 				// 测试复选框
 				$scope.$checks = $('.checkbox').checking();
 
-				$scope.$checks[0].$checking.onChange(function(a) {
-					console.log(a);
-				})
-
+				$scope.$checks[0].$checking.onChange();
 
 				// 测试弹窗
 				$console.find('#newBusiness').on('click', function() {
@@ -41,7 +39,6 @@ page.ctrl('loan', function($scope) {
 						content: "<div>测试弹窗功能</div>"
 					})
 				})
-
 				if(cb && typeof cb == 'function') {
 					cb();
 				}  
@@ -60,14 +57,25 @@ page.ctrl('loan', function($scope) {
 		$('#pageToolbar').paging();
 	}
 
+	/**
+	* 日历控件
+	*/
+	var setupDatepicker = function() {
+		$('.dateBtn').datepicker();
+	}
+
+	/**
+	* 绑定表格中立即处理事件
+	*/
 	var setupEvent = function() {
-		
+		$console.find('#processTagClose').on('click', function() {
+			router.render('loanProcess');
+		})
 		/**
 		* 绑定搜索事件
 		**/
 		$console.find('#search').on('keydown', function(evt) {
 			if(evt.which == 13) {
-				alert("查询");
 				var that = $(this),
 					searchText = $.trim(that.val());
 				if(!searchText) {
@@ -88,20 +96,22 @@ page.ctrl('loan', function($scope) {
 			var that = $(this);
 			var idx = that.data('idx');
 			var loanTasks = $scope.pageData[idx].loanTasks;
-			var taskObj = {};
+			var taskObj = [];
 			for(var i = 0, len = loanTasks.length; i < len; i++) {
 				var obj = loanTasks[i];
-				taskObj[obj.category] = {
-					taskId: obj.id,
-					scene: obj.sceneName
-				}
+				taskObj.push({
+					key: obj.category,
+					id: obj.id,
+					name: obj.sceneName
+				})
 			}
 			router.render(that.data('href'), {
+				taskId: that.data('id'), 
+				orderNo: that.data('orderNo'),
 				tasks: taskObj,
 				path: 'loanProcess'
 			});
 		});
-		// $('.select').dropdown($scope);
 
 		/**
 		* 任务类型点击显示/隐藏
@@ -122,31 +132,34 @@ page.ctrl('loan', function($scope) {
 			}
 		})
 
-		/**
-		* 任务类型点击排序
-		*/
 	}
- 	
- 	// 订单列表的排序
-	$(document).on('click', '#time-sort', function() {
-		var that = $(this);
-		if(!that.data('sort')) {
-			apiParams.createTimeSort = 1;
-			$params.createTimeSort = 1;
-			loadLoanList(apiParams, function() {
-				that.data('sort', true);
-				that.removeClass('time-sort-up').addClass('time-sort-down');
-			});
 
-		} else {
-			delete apiParams.createTimeSort;
-			delete $params.createTimeSort;
-			loadLoanList(apiParams, function() {
-				that.data('sort', false);
-				that.removeClass('time-sort-down').addClass('time-sort-up');
-			});
-		}
-	});
+	/**
+	* 页面首次载入时绑定事件
+	*/
+ 	var setupEvt = function() {
+ 		// 订单列表的排序
+		$console.find('#time-sort').on('click', function() {
+			var that = $(this);
+			if(!that.data('sort')) {
+				apiParams.createTimeSort = 1;
+				$params.createTimeSort = 1;
+				loadLoanList(apiParams, function() {
+					that.data('sort', true);
+					that.removeClass('time-sort-up').addClass('time-sort-down');
+				});
+
+			} else {
+				delete apiParams.createTimeSort;
+				delete $params.createTimeSort;
+				loadLoanList(apiParams, function() {
+					that.data('sort', false);
+					that.removeClass('time-sort-down').addClass('time-sort-up');
+				});
+			}
+		});
+ 	}
+ 	
 	/***
 	* 加载页面模板
 	*/
@@ -157,18 +170,119 @@ page.ctrl('loan', function($scope) {
 			$paging: $console.find('#pageToolbar')
 		}
 		if($params.process) {
-			
+			$('#processTag').data('category', $params.process).text($params.name);
+		} else {
+			$('#processTag').parent().remove();
 		}
-		loadLoanList(apiParams);
+		loadLoanList(apiParams, function() {
+			setupEvt();
+		});
+		setupDropDown();
 	});
 
 	$scope.paging = function(_page, _size, $el, cb) {
 		apiParams.pageNum = _page;
 		$params.pageNum = _page;
 		// router.updateQuery($scope.$path, $params);
-		
 		loadLoanList(apiParams);
+		setupDatepicker();
 		cb();
+	}
+
+	$scope.carPicker = function(picked) {
+		console.log(picked);
+	}
+	$scope.bankPicker = function(picked) {
+		console.log(picked);
+	}
+
+	/**dropdown 测试*/
+	function setupDropDown() {
+		$console.find('.select').dropdown();
+	}
+
+	var car = {
+		brand: function(cb) {
+			$.ajax({
+				url: 'http://localhost:8083/mock/carBrandlist',
+				success: function(xhr) {
+					var sourceData = {
+						items: xhr.data,
+						id: 'brandId',
+						name: 'carBrandName'
+					}
+					cb(sourceData);
+				}
+			})
+		},
+		series: function(brandId, cb) {
+			$.ajax({
+				url: 'http://localhost:8083/mock/carSeries',
+				data: {brandId: brandId},
+				success: function(xhr) {
+					var sourceData = {
+						items: xhr.data,
+						id: 'id',
+						name: 'serieName'
+					}
+					cb(sourceData);
+				}
+			})
+		},
+		specs: function(seriesId, cb) {
+			$.ajax({
+				url: 'http://localhost:8083/mock/carSpecs',
+				data: {
+					serieId: seriesId
+				},
+				success: function(xhr) {
+					var sourceData = {
+						items: xhr.data,
+						id: 'carSerieId',
+						name: 'specName'
+					};
+
+					cb(sourceData);
+				}
+			})
+		}
+	}
+
+	$scope.dropdownTrigger = {
+		car: function(tab, parentId, cb) {
+			if(!cb && typeof cb != 'function') {
+				cb = $.noop;
+			}
+			if(!tab) return cb();
+			switch (tab) {
+				case '品牌':
+					car.brand(cb);
+					break;
+				case "车系":
+					car.series(parentId, cb);
+					break;
+				case "车型":
+					car.specs(parentId, cb);
+					break;
+				default:
+					break;
+			}
+		},
+		bank: function(t, p, cb) {
+			$.ajax({
+				// url: $http.api('demandBank/selectBank', 'zyj'),
+				url: 'http://localhost:8083/mock/carSpecs',
+				dataType: 'json',
+				success: $http.ok(function(xhr) {
+					var sourceData = {
+						items: xhr.data,
+						id: 'id',
+						name: 'specName'
+					};
+					cb(sourceData);
+				})
+			})
+		}
 	}
 });
 

@@ -1,7 +1,11 @@
 'use strict';
 page.ctrl('homeMaterialsUpload', function($scope) {
-	var $console = render.$console;
-	
+	var $params = $scope.$params,
+		$console = $params.refer ? $($params.refer) : render.$console;
+		
+	$scope.tasks = $params.tasks;
+	$scope.activeTaskIdx = $params.selected || 0;
+
 	/**
 	* 加载上门材料上传数据
 	* @params {object} params 请求参数
@@ -21,13 +25,14 @@ page.ctrl('homeMaterialsUpload', function($scope) {
 			success: $http.ok(function(result) {
 				console.log(result);
 				$scope.result = result;
-				// 编译面包屑
-				setupLocation();
-				// 设置退回原因
+				$scope.result.tasks = $params.tasks.length;
+				if($params.path) {
+					setupLocation();	
+				}
 				setupBackReason(result.data.loanTask.backApprovalInfo);
-				// 绑定立即处理事件
-				render.compile($scope.$el.$loanPanel, $scope.def.listTmpl, result, true);
-				setupEvent();
+				render.compile($scope.$el.$loanPanel, $scope.def.listTmpl, result, function() {
+					setupEvt();
+				}, true);
 				if(cb && typeof cb == 'function') {
 					cb();
 				}
@@ -43,7 +48,7 @@ page.ctrl('homeMaterialsUpload', function($scope) {
 		var $location = $console.find('#location');
 		$location.data({
 			backspace: $scope.$params.path,
-			current: $scope.result.cfgData.name,
+			current: $scope.result.data.loanTask.sceneName,
 			loanUser: $scope.result.data.loanTask.loanOrder.realName,
 			orderDate: tool.formatDate($scope.result.data.loanTask.createDate, true)
 		});
@@ -70,9 +75,9 @@ page.ctrl('homeMaterialsUpload', function($scope) {
 	}
 
 	/**
-	 * 编译完成后绑定事件
+	 * 页面首次加载立即处理事件
 	 */
-	var setupEvent = function () {
+	var evt = function () {
 
 		// 增加征信人员
 		$console.find('#addCreditUser').on('click', function() {
@@ -83,18 +88,71 @@ page.ctrl('homeMaterialsUpload', function($scope) {
 		$console.find('#submitOrder').on('click', function() {
 			alert("提交订单");
 		})
+	}
 
+	/**
+	 * 多次渲染页面立即处理事件
+	 */
+	var setupEvt = function() {
+		// 图片控件
 		$scope.$el.$loanPanel.find('.uploadEvt').imgUpload();
 	}
 
+	/**
+	* 并行任务切换触发事件
+	* @params {int} idx 触发的tab下标
+	* @params {object} item 触发的tab对象
+	*/
+	var tabChange = function (idx, item) {
+		console.log(item);
+		router.render('loanProcess/' + item.key, {
+			tasks: $scope.tasks,
+			selected: idx,
+			path: 'loanProcess'
+		});
+	}
+
+	/**
+	 * 加载页面模板
+	 */
 	$console.load(router.template('iframe/material-upload'), function() {
-		// $scope.def.tabTmpl = $console.find('#creditUploadTabsTmpl').html();
-		$scope.def.listTmpl = $console.find('#loanUploadTmpl').html();
-		// console.log($console.find('#creditResultPanel'))
+		$scope.def = {
+			listTmpl: $console.find('#loanUploadTmpl').html()
+		}
 		$scope.$el = {
-			// $tab: $console.find('#creditTabs'),
 			$loanPanel: $console.find('#loanUploadPanel')
 		}
-		loadOrderInfo();
+		loadOrderInfo(function() {
+			router.tab($console.find('#tabPanel'), $scope.tasks, $scope.activeTaskIdx, tabChange);
+			evt();
+		});
 	})
+
+	/**
+	 * 监听其它材料最后一个控件的名称
+	 */
+	var otherMaterialsListen = function() {
+		var $imgel = $console.find('.otherMaterials .uploadEvt');
+		$imgel.last().data('name', '其它材料' + $imgel.length);
+		$imgel.last().data('count', $imgel.length);
+		$imgel.last().find('.input-text input').val('其它材料' + $imgel.length);
+	}
+	
+	/***
+	* 删除图片后的回调函数
+	*/
+	$scope.deletecb = function(self) {
+		self.$el.remove();
+		otherMaterialsListen();
+	}
+
+	/***
+	* 上传图片成功后的回调函数
+	*/
+	$scope.uploadcb = function(self) {
+		self.$el.after(self.outerHTML);
+		otherMaterialsListen();
+		self.$el.next().imgUpload();
+
+	}
 });

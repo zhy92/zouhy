@@ -3,24 +3,9 @@
 				<!--返回列表-->
 				<div id="location"></div>
 				
-				<!--tab切换-->
-				<div class="tab-bar tab-bar-special">
-					<ul class="role-bar-ul clearfix">
-						<li class="role-bar-li"><a href="#" class="role-item role-item-active">电话审核表</a></li>
-						<li class="role-bar-li"><a href="#" class="role-item">贷款信息表</a></li>
-						<li class="role-bar-li"><a href="#" class="role-item">征信结果</a></li>
-						<li class="role-bar-li"><a href="#" class="role-item">贷款材料</a></li>
-						<li class="role-bar-li"><a href="#" class="role-item">上门材料</a></li>
-						<li class="role-bar-li"><a href="#" class="role-item">订单日志</a></li>
-					</ul>
-				</div>
-				
-				<!-- tab切换栏 -->
-				<!--<div class="tab-bar mt15" id="userTabs">
-					<ul class="role-bar-ul clearfix" id="creditTabs"></ul>
-				</div>-->
-				<!-- tab切换栏 end-->
-				
+				<!--工作台左侧菜单面板-->
+				<div class="panel panel-menu mt15" id="checkTabs"></div>
+				<!--工作台左侧菜单面板 end-->
 				
 				<!-- tab栏对应项 -->
 				<!--<div class="creditResultPanel" id="checkResultPanel">
@@ -35,32 +20,73 @@
 				
 				
 				<!--面板-->
-				<div id="eleCheck"></div>
+				<div id="eleCheck" class="mt15"></div>
 				
 				<!--提交订单按钮-->
-				<div class="commit-orders-box">
+				<div class="commit-orders-box mt15" style="margin-left: 162px;">
 					<div id="" class="button saveBtn">提交订单</div>
 				</div>
 			</div>
 			
-			<!--<script type="text/x-dot-template" id="checkResultTabsTmpl">
-				{{ for(var i = 0, len = it.length; i < len; i++) { var row = it[i];  }}
-				<li class="role-bar-li"><a href="javascript:;" class="role-item{{= (i == 0 ? ' role-item-active':'')}} tabEvt" data-type="{{=row.userType}}">{{=row.userTypeName}}</a></li>
+			<script type="text/x-dot-template" id="checkResultTabsTmpl">
+				{{ for(var i = 0, len = it.frames.length; i < len; i++) { var row = it.frames[i];  }}
+					<a href="javascript:;" data-idx="{{= i}}" class="panel-menu-item{{= (i == 0 ? ' panel-menu-item-active':'')}} tabLeftEvt" data-type="{{=row.code}}">
+						{{=row.name}}
+						<span class='arrow arrow-right'></span>
+					</a>
 				{{ } }}
-			</script>-->
+			</script>
 			
 			
 			<script type="text/x-dot-template" id="eleChecktmpl">
-				<div class="panel panel-loan">
+				
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
-							<span class="panel-title-name">必问问题</span>
+							<span class="panel-title-name">客户信息</span>
 						</div>
 					</div>
 					<div class="panel-detail-content-layout">
 						<div class="loan-info">
-						{{for(var i = 0, len = it.length; i < len; i++) { var row = it[i]; }}
+							<div class="info-key-value-box">
+								<span class="info-key">
+									客户姓名：</span>
+								<span class="info-value"><input type="text" readonly="readonly" value="{{= it.KHXX.userName}}" /></span>
+							</div>
+							<div class="info-key-value-box">
+								<span class="info-key">
+									客户姓名：</span>
+								<span class="info-value"><input type="text" readonly="readonly" value="{{= it.KHXX.userName}}" /></span>
+							</div>
+							<div class="info-key-value-box">
+								<span class="info-key">
+									客户姓名：</span>
+								<span class="info-value"><input type="text" readonly="readonly" value="{{= it.KHXX.userName}}" /></span>
+							</div>
+							<div class="info-key-value-box">
+								<span class="info-key">
+									客户姓名：</span>
+								<span class="info-value"><input type="text" readonly="readonly" value="{{= it.KHXX.userName}}" /></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="panel panel-loan panel-detail">
+					<div class="panel-title-box">
+						<div class="panel-title">
+							<i class="iconfont">&#xe626;</i>
+							<span class="panel-title-name">必问问题</span>
+							<div class="button button-mini-nowidth saveBtn" data-key="saveOrderInfo">
+								保存
+							</div>
+						</div>
+					</div>
+					<div class="panel-detail-content-layout">
+						<div class="loan-info">
+						{{for(var i = 0, len = it.BWWT.length; i < len; i++) { var row = it.BWWT[i]; }}
 							<form>
 							<div class="question-box">
 								<div class="question-box-title">
@@ -74,7 +100,7 @@
 									<span class="info-value selecter">
 										<div>
 											<ul class="selectOptBox1">
-												{{for(var a = 0, len = row.configCheckOptionList.length; a < len; a++) { var op1 = row.configCheckOptionList[a]; }}
+												{{for(var a = 0, length = row.configCheckOptionList.length; a < length; a++) { var op1 = row.configCheckOptionList[a]; }}
 													<li data-select="{{= op1.selected}}" data-key="{{= op1.value}}">{{= op1.name}}</li>
 												{{ } }}
 											</ul>
@@ -87,7 +113,14 @@
 								<div class="question-box-cont">
 									<span class="info-key">备注：</span>
 									<span class="info-value info-value-long">
-										<textarea name="editInfo" rows="4" value="{{= row.editInfo}}"></textarea>
+									{{if(row.answer){ }}
+										<!--<textarea name="editInfo" rows="4" value="{{= row.editInfo}}"></textarea>-->
+										<div class="textArea" contenteditable="true">{{= row.editInfo}}</div>
+									{{ }else{ }}
+										<!--<textarea name="editInfo" rows="4"></textarea>-->
+										<div class="textArea" contenteditable="true"></div>
+									{{ } }}
+										<input type="hidden" name="editInfo" value="{{= row.editInfo}}" />
 									</span>
 								</div>
 							</div>
@@ -99,22 +132,27 @@
 						</div>
 					</div>
 				</div>
-				<div class="panel panel-loan">
+				
+				
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
 							<span class="panel-title-name">选问问题</span>
+							<div class="button button-mini-nowidth saveBtn" data-key="saveOrderInfo">
+								保存
+							</div>
 						</div>
 					</div>
 					<div class="panel-detail-content-layout">
 						<div class="loan-info">
-						{{for(var i = 0, len = it.length; i < len; i++) { var row = it[i]; }}
+						{{for(var j = 0, lenj = it.XWWT.length; j < len; j++) { var role = it.XWWT[j]; }}
 							<form>
 							<div class="question-box">
 								<div class="question-box-title">
-									<span class="que">{{= i+1}}.{{= row.question}}</span>
-									{{if(row.answer){ }}
-									<span class="ans">({{= row.answer}})</span>
+									<span class="que">{{= j+1}}.{{= role.question}}</span>
+									{{if(role.answer){ }}
+									<span class="ans">({{= role.answer}})</span>
 									{{ } }}
 								</div>
 								<div class="question-box-cont">
@@ -122,8 +160,8 @@
 									<span class="info-value selecter">
 										<div>
 											<ul class="selectOptBox1">
-												{{for(var a = 0, len = row.configCheckOptionList.length; a < len; a++) { var op1 = row.configCheckOptionList[a]; }}
-													<li data-select="{{= op1.selected}}" data-key="{{= op1.value}}">{{= op1.name}}</li>
+												{{for(var b = 0, lengthb = role.configCheckOptionList.length; b < lengthb; b++) { var opt = role.configCheckOptionList[b]; }}
+													<li data-select="{{= opt.selected}}" data-key="{{= opt.value}}">{{= opt.name}}</li>
 												{{ } }}
 											</ul>
 										</div>
@@ -135,23 +173,23 @@
 								<div class="question-box-cont">
 									<span class="info-key">备注：</span>
 									<span class="info-value info-value-long">
-										<textarea name="editInfo" rows="4" value="{{= row.editInfo}}"></textarea>
+									{{if(role.answer){ }}
+										<div class="textArea" contenteditable="true">{{= role.editInfo}}</div>
+										<!--<textarea name="editInfo" rows="4" value="{{= role.editInfo}}"></textarea>-->
+									{{ }else{ }}
+										<!--<textarea name="editInfo" rows="4"></textarea>-->
+										<div class="textArea" contenteditable="true"></div>
+									{{ } }}	
+										<input type="hidden" name="editInfo" value="{{= row.editInfo}}" />
 									</span>
 								</div>
 							</div>
-							<input type="hidden" name="qid" value="{{= row.id}}"  />
-							<input type="hidden" name="id" value="{{= row.id}}"  />
-							<input type="hidden" name="orderNo" value="{{= row.id}}"  />
+							<input type="hidden" name="qid" value="{{= role.id}}"  />
+							<input type="hidden" name="id" value="{{= role.id}}"  />
+							<input type="hidden" name="orderNo" value="{{= role.id}}"  />
 							</form>
 						{{ } }}
 						</div>
 					</div>
 				</div>
 			</script>
-			<!--<script type="text/x-dot-template" id="selectOpttmpl">
-				<ul class="selectOptBox">
-					{{for(var a = 0, len = it.length; a < len; a++) { var op1 = it[a]; }}
-						<li data-key="{{= op1.value}}">{{= op1.name}}</li>
-					{{ } }}
-				</ul>
-			</script>-->

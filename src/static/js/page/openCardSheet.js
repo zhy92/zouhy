@@ -31,8 +31,7 @@ page.ctrl('openCardSheet', function($scope) {
 		var data={};
 			data['taskId']=80871;
 		$.ajax({
-			url: $http.api($http.apiMap.cardAudit),
-//			url: urlStr1+'/icbcCreditCardForm/queryICBCCreditCardForm',
+			url: urlStr1+'/icbcCreditCardForm/queryICBCCreditCardForm',
 			data: data,
 			dataType: 'json',
 			success: $http.ok(function(result) {
@@ -91,7 +90,7 @@ page.ctrl('openCardSheet', function($scope) {
 				url: apiMap[key],
 				data: data,
 				dataType: 'json',
-				async:false,
+				  ,
 				success: $http.ok(function(result) {
 					render.compile(that, $scope.def.selectOpttmpl, result.data, true);
 //					$source.selectType = result.data;
@@ -131,8 +130,8 @@ page.ctrl('openCardSheet', function($scope) {
 
 //为完善项更改去掉错误提示
 	$(document).on('input','input', function() {
-			$(this).parents().removeClass("error-input");
-			$(this).siblings("i").remove();
+		$(this).parents().removeClass("error-input");
+		$(this).siblings("i").remove();
 	})
 	$(document).on('change','#creditCardImg', function() {
 		$(this).parent().removeClass("error-input");
@@ -287,7 +286,6 @@ page.ctrl('openCardSheet', function($scope) {
 	        
 			$.ajax({
 				type: 'POST',
-//				url: '127.0.0.1',
 				url: urlStr1+'/icbcCreditCardForm/saveICBCCreditCardForm',
 				data:JSON.stringify(data1),
 				dataType:"json",
