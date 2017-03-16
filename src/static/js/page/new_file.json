@@ -1,218 +1,1258 @@
 {
-    "code":0,
-    "data":{
-        "loanTask":{
-            "approvalId":1219155,
-            "category":"creditMaterialsUpload",
-            "configTasks":[
-
-            ],
-            "createDate":1486693959000,
-            "createDateStr":"2017-02-10 10:32",
-            "createUser":1,
-            "id":80885,
-            "loanOrder":{
-                "acceptId":8304,
-                "area":{
-                    "areaId":110000,
-                    "name":"北京市",
-                    "parentId":0,
-                    "sort":1,
-                    "wholeName":"北京市"
-                },
-                "bankCode":"2134",
-                "busiAreaCode":110000,
-                "busiSourceId":22,
-                "busiSourceTypeCode":"2",
-                "createDate":1477314549000,
-                "createUser":8304,
-                "demandBankId":12,
-                "deptId":62,
-                "id":334663,
-                "idCard":"110000198902281234",
-                "isNeedVisit":0,
-                "isSecond":0,
-                "orderNo":"nfdb2016102421082285",
-                "orgId":62,
-                "phone":"12315443",
-                "processInstId":"6",
-                "productId":35,
-                "realName":"蒋贵燕",
-                "remitAccountNumber":"12434242424",
-                "serviceTypeCode":"2",
-                "status":3,
-                "updateDate":1488971462000,
-                "updateUser":1111
-            },
-            "orderNo":"nfdb2016102421082285",
-            "orgId":12345,
-            "processDefKey":"NanfangNewCarProcess",
-            "processInstId":"92501",
-            "processTaskId":"92509",
-            "sceneName":"征信材料上传",
-            "status":2,
-            "taskCode":"NanfangNewCarProcess_usertask1",
-            "taskDefKey":"usertask1",
-            "updateDate":1488612008000,
-            "updateUser":1111
-        },
-        "creditUsers":{
-            "0":[
-                {
-                    "accountLocation":"涿州",
-                    "age":43,
-                    "averageDailyBalance":5000,
-                    "balance":200066600,
-                    "company":"四川大竹煤电有限责任公司柏林煤矿",
-                    "companyAddress":"大竹县柏林镇柏林煤矿厂",
-                    "companyTel":"0577-867596",
-                    "companyZipcode":"331331",
-                    "createUser":8304,
-                    "familyAddress":"四川省大竹县柏林镇街道柏煤街13号",
-                    "familyTel":"110110",
-                    "familyZipcode":"110110",
-                    "houseStatus":0,
-                    "idCard":"110000198902281234",
-                    "isDel":0,
-                    "isEnterprise":1,
-                    "isServe":1,
-                    "loanUserCredit":{
-                        "createUser":8304,
-                        "creditId":100005,
-                        "creditInputId":11,
-                        "creditLevel":1,
-                        "creditMaterials":[
-                            {
-                                "auditOpinion":"Really want a good game for ",
-                                "auditResult":2,
-                                "createDate":1488864451000,
-                                "createUser":1111,
-                                "creditId":100005,
-                                "id":128,
-                                "isDel":0,
-                                "materialsCode":"sfzzm",
-                                "materialsPic":"http://hjhjkh.oss-cn-hangzhou.aliyuncs.com/carloan-test/dd8d95a875791ded2a52ccba6b16451c.jpeg",
-                                "thumnailPic":"null?x-oss-process=style/carloan",
-                                "updateDate":1488944709000,
-                                "updateUser":1111
-                            }
-                        ],
-                        "creditReportFile":"111",
-                        "creditReportId":"08866",
-                        "creditStatus":0,
-                        "creditWay":0,
-                        "demandBankId":12,
-                        "idCard":"110000198902281234",
-                        "isDel":0,
-                        "isQualified":0,
-                        "orderNo":"nfdb2016102421082285",
-                        "orgName":"212",
-                        "remark":"备注0017590699999",
-                        "submitDate":1488971462000,
-                        "submitDateStr":"2017-03-08 19:11",
-                        "updateDate":1489134988000,
-                        "updateUser":1111,
-                        "userId":334322,
-                        "userName":"蒋贵燕",
-                        "userType":0
-                    },
-                    "maritalStatus":1,
-                    "mobile":"13551469162",
-                    "monthIncomeMoney":20000,
-                    "orderNo":"nfdb2016102421082285",
-                    "realnameResult":"一致",
-                    "residentType":"553,554",
-                    "sex":0,
-                    "updateDate":1489134988000,
-                    "updateUser":1111,
-                    "userId":334322,
-                    "userName":"蒋贵燕",
-                    "userRelationship":0,
-                    "userType":0,
-                    "userTypeCode":"JKRCL"
-                }
-            ],
-            "1":[
-                {
-                    "accountLocation":"并州",
-                    "age":42,
-                    "averageDailyBalance":100,
-                    "balance":150000,
-                    "company":"荆州分公司",
-                    "companyAddress":"湖北荆州分厂",
-                    "companyTel":"0577-867596",
-                    "companyZipcode":"334334",
-                    "familyAddress":"湖北省荆州皇叔街1号",
-                    "familyTel":"111111",
-                    "familyZipcode":"112112",
-                    "houseStatus":0,
-                    "idCard":"513029197305261956",
-                    "isDel":0,
-                    "isEnterprise":1,
-                    "isServe":0,
-                    "loanUserCredit":{
-                        "creditId":100006,
-                        "creditInputId":12,
-                        "creditLevel":1,
-                        "creditMaterials":[
-                            {
-                                "auditResult":0,
-                                "createDate":1488972117000,
-                                "createUser":1111,
-                                "creditId":100006,
-                                "id":139,
-                                "isDel":0,
-                                "materialsCode":"sfzfm",
-                                "materialsPic":"http://hjhjkh.oss-cn-hangzhou.aliyuncs.com/carloan-test/9034b8b339122b9d64ffcc16988dba90.jpg",
-                                "thumnailPic":"http://hjhjkh.oss-cn-hangzhou.aliyuncs.com/carloan-test/9034b8b339122b9d64ffcc16988dba90.jpg?x-oss-process=style/carloan"
-                            },
-                            {
-                                "auditResult":0,
-                                "createDate":1488972230000,
-                                "createUser":1111,
-                                "creditId":100006,
-                                "id":140,
-                                "isDel":0,
-                                "materialsCode":"zxsqs",
-                                "materialsPic":"http://hjhjkh.oss-cn-hangzhou.aliyuncs.com/carloan-test/c312bf5e660b3e49695fdf128ad7e364.jpg",
-                                "thumnailPic":"http://hjhjkh.oss-cn-hangzhou.aliyuncs.com/carloan-test/c312bf5e660b3e49695fdf128ad7e364.jpg?x-oss-process=style/carloan"
-                            }
-                        ],
-                        "creditReportFile":"xxxx/xxxx001/002.pdf",
-                        "creditReportId":"100002",
-                        "creditStatus":1,
-                        "creditWay":0,
-                        "demandBankId":12,
-                        "idCard":"513029197305261956",
-                        "isDel":0,
-                        "isQualified":0,
-                        "orderNo":"nfdb2016102421082285",
-                        "orgName":"212",
-                        "remark":"备注002",
-                        "submitDate":1488971462000,
-                        "submitDateStr":"2017-03-08 19:11",
-                        "updateDate":1488971462000,
-                        "updateUser":1111,
-                        "userId":1000002,
-                        "userName":"关云长",
-                        "userType":1
-                    },
-                    "maritalStatus":1,
-                    "mobile":"13551469999",
-                    "monthIncomeMoney":999900,
-                    "orderNo":"nfdb2016102421082285",
-                    "residentType":"553,554,563",
-                    "sex":0,
-                    "updateDate":1488971462000,
-                    "updateUser":1111,
-                    "userId":1000002,
-                    "userName":"关云长",
-                    "userRelationship":0,
-                    "userType":1,
-                    "userTypeCode":"GTHKRCL"
-                }
-            ]
-        }
-    },
-    "msg":"success"
+	"cfgData": {
+		"code": "loanInfoInput",
+		"frames": [
+			{
+				"code": "T0004",
+				"name": "贷款信息表录入",
+				"orderBy": 0,
+				"sections": [
+					{
+						"code": "DDXX",
+						"name": "订单信息",
+						"orderBy": 0,
+						"segments": [
+							{
+								"code": "isSecond",
+								"empty": 0,
+								"fieldName": "isSecond",
+								"name": "新车还是二手车",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "serviceTypeCode",
+								"empty": 0,
+								"fieldName": "serviceType",
+								"name": "业务类型",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "remitAccountNumber",
+								"empty": 0,
+								"fieldName": "remitAccount",
+								"name": "打款账号和账户名和开户行",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "demandBankId",
+								"empty": 0,
+								"fieldName": "demandBankId",
+								"name": "经办银行",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "busiAreaCode",
+								"empty": 0,
+								"fieldName": "busiArea",
+								"name": "业务区域",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "orderNo",
+								"empty": 0,
+								"fieldName": "orderNo",
+								"name": "订单编号",
+								"orderBy": 97,
+								"type": 0
+							}, {
+								"code": "busiSourceTypeCode",
+								"empty": 0,
+								"fieldName": "busiSourceType",
+								"name": "业务来源类型",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "busiSourceId",
+								"empty": 0,
+								"fieldName": "busiSourceName",
+								"name": "业务来源方名称",
+								"orderBy": 2,
+								"type": 3
+							}
+						]
+					}, {
+						"code": "CLXX",
+						"name": "车辆信息",
+						"orderBy": 1,
+						"segments": [
+							{
+								"code": "carPrice",
+								"empty": 0,
+								"fieldName": "carPrice",
+								"name": "车辆价格",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "billingDeptName",
+								"empty": 0,
+								"fieldName": "billingDeptName",
+								"name": "开票单位名称",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "licenseType",
+								"empty": 0,
+								"fieldName": "licenseType",
+								"name": "车辆上公牌还是私牌",
+								"orderBy": 0,
+								"type": 1
+							}, {
+								"code": "isFinanceLeaseVehicle",
+								"empty": 0,
+								"fieldName": "isFinanceLeaseVehicle",
+								"name": "车辆是否为融资租赁的乘用车",
+								"orderBy": 0,
+								"type": 1
+							}, {
+								"code": "isOperationVehicle",
+								"empty": 0,
+								"fieldName": "isOperationVehicle",
+								"name": "车辆是否为营运车",
+								"orderBy": 0,
+								"type": 1
+							}, {
+								"code": "onLicensePlaceCode",
+								"empty": 0,
+								"fieldName": "onLicensePlace",
+								"name": "上牌地",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "licenseCategory",
+								"empty": 0,
+								"fieldName": "licenseCategory",
+								"name": "牌照类型",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "carName",
+								"empty": 0,
+								"fieldName": "car",
+								"name": "车辆型号",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "systemCarPrice",
+								"empty": 0,
+								"fieldName": "systemCarPrice",
+								"name": "系统查询价",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "isInstallGps",
+								"empty": 0,
+								"fieldName": "isInstallGps",
+								"name": "是否加装GPS",
+								"orderBy": 0,
+								"type": 1
+							}, {
+								"code": "gpsNumber1",
+								"empty": 0,
+								"fieldName": "gpsNumber1",
+								"name": "GPS编号1",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "gpsNumber2",
+								"empty": 0,
+								"fieldName": "gpsNumber2",
+								"name": "GPS编号2",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "frameNo",
+								"empty": 0,
+								"fieldName": "frameNo",
+								"name": "车架号",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "engineNo",
+								"empty": 0,
+								"fieldName": "engineNo",
+								"name": "发动机号",
+								"orderBy": 0,
+								"type": 3
+							}
+						]
+					}, {
+						"code": "FQXX",
+						"name": "分期信息",
+						"orderBy": 2,
+						"segments": [
+							{
+								"code": "businessModel",
+								"empty": 0,
+								"fieldName": "businessModel",
+								"name": "业务模式",
+								"orderBy": 0,
+								"type": 1
+							}, {
+								"code": "sfProportion",
+								"empty": 0,
+								"fieldName": "sfProportion",
+								"name": "首付比例",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "sfMoney",
+								"empty": 0,
+								"fieldName": "sfMoney",
+								"name": "首付金额",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "commissionFeeRate",
+								"empty": 0,
+								"fieldName": "commissionFeeRate",
+								"name": "分期手续费率",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "loanMoney",
+								"empty": 0,
+								"fieldName": "loanMoney",
+								"name": "贷款金额",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "advancedMoney",
+								"empty": 0,
+								"fieldName": "advancedMoney",
+								"name": "垫资金额",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "stageMoney",
+								"empty": 0,
+								"fieldName": "stageMoney",
+								"name": "分期金额",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "firstMonthMoney",
+								"empty": 0,
+								"fieldName": "firstMonthMoney",
+								"name": "首月还款金额",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "isDiscount",
+								"empty": 0,
+								"fieldName": "isDiscount",
+								"name": "是否贴息",
+								"orderBy": 0,
+								"type": 1
+							}, {
+								"code": "bankFeeMoney",
+								"empty": 0,
+								"fieldName": "bankFeeMoney",
+								"name": "银行手续费",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "loanFeeMoney",
+								"empty": 0,
+								"fieldName": "loanFeeMoney",
+								"name": "办贷款手续费",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "contractSfMoney",
+								"empty": 0,
+								"fieldName": "contractSfMoney",
+								"name": "合同首付",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "contractSfRatio",
+								"empty": 0,
+								"fieldName": "contractSfRatio",
+								"name": "合同首付比例",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "repayPeriod",
+								"empty": 0,
+								"fieldName": "repayPeriod",
+								"name": "还款期限",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "bankBaseRates",
+								"empty": 0,
+								"fieldName": "bankBaseRates",
+								"name": "银行基准利率",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "bareRate",
+								"empty": 0,
+								"fieldName": "bareRate",
+								"name": "毛利率",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "discountRate",
+								"empty": 0,
+								"fieldName": "discountRate",
+								"name": "贴息利率",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "discountMoney",
+								"empty": 0,
+								"fieldName": "discountMoney",
+								"name": "贴息金额",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "renewalMode",
+								"empty": 0,
+								"fieldName": "renewalMode",
+								"name": "保险续保",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "cardNo",
+								"empty": 0,
+								"fieldName": "cardNo",
+								"name": "信用卡卡号",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "utilityTime",
+								"empty": 0,
+								"fieldName": "utilityTime",
+								"name": "用款时间",
+								"orderBy": 0,
+								"type": 3
+							}
+						]
+					}, {
+						"code": "ZJKR",
+						"name": "主借款人信息",
+						"orderBy": 3,
+						"segments": [
+							{
+								"code": "maritalStatus",
+								"empty": 0,
+								"fieldName": "maritalStatus",
+								"name": "主借款人目前婚姻状况",
+								"orderBy": 0,
+								"type": 4
+							}, {
+								"code": "houseStatus",
+								"empty": 0,
+								"fieldName": "houseStatus",
+								"name": "购车地房屋所有权情况",
+								"orderBy": 0,
+								"type": 4
+							}, {
+								"code": "isEnterprise",
+								"empty": 0,
+								"fieldName": "isEnterprise",
+								"name": "是否企业法人",
+								"orderBy": 0,
+								"type": 4
+							}, {
+								"code": "userName",
+								"empty": 0,
+								"fieldName": "userName",
+								"name": "姓名",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "idCard",
+								"empty": 0,
+								"fieldName": "idCard",
+								"name": "身份证号码",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "sex",
+								"empty": 0,
+								"fieldName": "sex",
+								"name": "性别",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "mobile",
+								"empty": 0,
+								"fieldName": "mobile",
+								"name": "联系电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "accountLocation",
+								"empty": 0,
+								"fieldName": "accountLocation",
+								"name": "户籍",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "age",
+								"empty": 0,
+								"fieldName": "age",
+								"name": "申请时年龄",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyAddress",
+								"empty": 0,
+								"fieldName": "familyAddress",
+								"name": "家庭地址",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyZipcode",
+								"empty": 0,
+								"fieldName": "familyZipcode",
+								"name": "家庭地址邮编",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyTel",
+								"empty": 0,
+								"fieldName": "familyTel",
+								"name": "家庭电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "company",
+								"empty": 0,
+								"fieldName": "company",
+								"name": "单位名称",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyAddress",
+								"empty": 0,
+								"fieldName": "companyAddress",
+								"name": "单位地址",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyZipcode",
+								"empty": 0,
+								"fieldName": "companyZipcode",
+								"name": "单位地址邮编",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyTel",
+								"empty": 0,
+								"fieldName": "companyTel",
+								"name": "单位电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "residentType",
+								"empty": 0,
+								"fieldName": "residentType",
+								"name": "本地常驻类型",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "monthIncomeMoney",
+								"empty": 0,
+								"fieldName": "monthIncomeMoney",
+								"name": "税后月收入",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "averageDailyBalance",
+								"empty": 0,
+								"fieldName": "averageDailyBalance",
+								"name": "日均存款余额",
+								"orderBy": 0,
+								"type": 5
+							}, {
+								"code": "balance",
+								"empty": 0,
+								"fieldName": "balance",
+								"name": "存款余额",
+								"orderBy": 0,
+								"type": 2
+							}
+						]
+					}, {
+						"code": "GTHK",
+						"name": "共同还款人信息",
+						"orderBy": 4,
+						"segments": [
+							{
+								"code": "userName",
+								"empty": 0,
+								"fieldName": "userName",
+								"name": "姓名",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "idCard",
+								"empty": 0,
+								"fieldName": "idCard",
+								"name": "身份证号码",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "sex",
+								"empty": 0,
+								"fieldName": "sex",
+								"name": "性别",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "mobile",
+								"empty": 0,
+								"fieldName": "mobile",
+								"name": "联系电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "accountLocation",
+								"empty": 0,
+								"fieldName": "accountLocation",
+								"name": "户籍",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "age",
+								"empty": 0,
+								"fieldName": "age",
+								"name": "申请时年龄",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyAddress",
+								"empty": 0,
+								"fieldName": "familyAddress",
+								"name": "家庭地址",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyZipcode",
+								"empty": 0,
+								"fieldName": "familyZipcode",
+								"name": "家庭地址邮编",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyTel",
+								"empty": 0,
+								"fieldName": "familyTel",
+								"name": "家庭电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "company",
+								"empty": 0,
+								"fieldName": "company",
+								"name": "单位名称",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyAddress",
+								"empty": 0,
+								"fieldName": "companyAddress",
+								"name": "单位地址",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyZipcode",
+								"empty": 0,
+								"fieldName": "companyZipcode",
+								"name": "单位地址邮编",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyTel",
+								"empty": 0,
+								"fieldName": "companyTel",
+								"name": "单位电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "residentType",
+								"empty": 0,
+								"fieldName": "residentType",
+								"name": "本地常驻类型",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "monthIncomeMoney",
+								"empty": 0,
+								"fieldName": "monthIncomeMoney",
+								"name": "税后月收入",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "averageDailyBalance",
+								"empty": 0,
+								"fieldName": "averageDailyBalance",
+								"name": "日均存款余额",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "balance",
+								"empty": 0,
+								"fieldName": "balance",
+								"name": "存款余额",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "userRelationship",
+								"empty": 0,
+								"fieldName": "userRelationship",
+								"name": "与借款人关系",
+								"orderBy": 0,
+								"type": 2
+							}
+						]
+					}, {
+						"code": "FDBR",
+						"name": "反担保人信息",
+						"orderBy": 5,
+						"segments": [
+							{
+								"code": "userName",
+								"empty": 0,
+								"fieldName": "userName",
+								"name": "姓名",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "idCard",
+								"empty": 0,
+								"fieldName": "idCard",
+								"name": "身份证号码",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "sex",
+								"empty": 0,
+								"fieldName": "sex",
+								"name": "性别",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "mobile",
+								"empty": 0,
+								"fieldName": "mobile",
+								"name": "联系电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "accountLocation",
+								"empty": 0,
+								"fieldName": "accountLocation",
+								"name": "户籍",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "age",
+								"empty": 0,
+								"fieldName": "age",
+								"name": "申请时年龄",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyAddress",
+								"empty": 0,
+								"fieldName": "familyAddress",
+								"name": "家庭地址",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyZipcode",
+								"empty": 0,
+								"fieldName": "familyZipcode",
+								"name": "家庭地址邮编",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "familyTel",
+								"empty": 0,
+								"fieldName": "familyTel",
+								"name": "家庭电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "company",
+								"empty": 0,
+								"fieldName": "company",
+								"name": "单位名称",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyAddress",
+								"empty": 0,
+								"fieldName": "companyAddress",
+								"name": "单位地址",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyZipcode",
+								"empty": 0,
+								"fieldName": "companyZipcode",
+								"name": "单位地址邮编",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "companyTel",
+								"empty": 0,
+								"fieldName": "companyTel",
+								"name": "单位电话",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "residentType",
+								"empty": 0,
+								"fieldName": "residentType",
+								"name": "本地常驻类型",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "monthIncomeMoney",
+								"empty": 0,
+								"fieldName": "monthIncomeMoney",
+								"name": "税后月收入",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "averageDailyBalance",
+								"empty": 0,
+								"fieldName": "averageDailyBalance",
+								"name": "日均存款余额",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "balance",
+								"empty": 0,
+								"fieldName": "balance",
+								"name": "存款余额",
+								"orderBy": 0,
+								"type": 2
+							}, {
+								"code": "userRelationship",
+								"empty": 0,
+								"fieldName": "userRelationship",
+								"name": "与借款人关系",
+								"orderBy": 0,
+								"type": 2
+							}
+						]
+					}, {
+						"code": "JJLXR",
+						"name": "紧急联系人信息",
+						"orderBy": 6,
+						"segments": [
+							{
+								"code": "name1",
+								"empty": 0,
+								"fieldName": "name",
+								"name": "姓名",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "relationship1",
+								"empty": 0,
+								"fieldName": "relationship",
+								"name": "关系",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "phone1",
+								"empty": 0,
+								"fieldName": "phone",
+								"name": "电话",
+								"orderBy": 0,
+								"type": 3
+							}
+						]
+					}, {
+						"code": "HKKXX",
+						"name": "还款卡信息",
+						"orderBy": 6,
+						"segments": [
+							{
+								"code": "accountNumber",
+								"empty": 0,
+								"fieldName": "accountNumber",
+								"name": "账号",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "bankName",
+								"empty": 0,
+								"fieldName": "bankName",
+								"name": "开户行",
+								"orderBy": 0,
+								"type": 3
+							}, {
+								"code": "accountName",
+								"empty": 0,
+								"fieldName": "accountName",
+								"name": "账户名",
+								"orderBy": 0,
+								"type": 3
+							}
+						]
+					}, {
+						"code": "FYXX",
+						"name": "费用信息",
+						"orderBy": 16,
+						"segments": [
+							{
+								"code": "feeField",
+								"empty": 0,
+								"fieldName": "feeField",
+								"name": "自定义费用字段",
+								"orderBy": 0,
+								"type": 9
+							}
+						]
+					}, {
+						"code": "QTXX",
+						"name": "其他信息",
+						"orderBy": 11,
+						"segments": [
+							{
+								"code": "otherField",
+								"empty": 0,
+								"fieldName": "otherField",
+								"name": "其他信息字段",
+								"orderBy": 0,
+								"type": 9
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"code": 0,
+	"data": {
+		"FYXX": [
+			{
+				"fieldCode": "benchmarkrate",
+				"fieldId": 3,
+				"fieldName": "银行基准利率",
+				"fieldType": 0,
+				"fieldUnit": "%",
+				"loanFeeId": 5,
+				"orgType": 1,
+				"value": ""
+			}, {
+				"fieldCode": "name",
+				"fieldId": 1,
+				"fieldName": "税务名称",
+				"fieldType": 0,
+				"loanFeeId": 1,
+				"orgType": 0,
+				"required": 0,
+				"value": "地税"
+			}, {
+				"fieldCode": "rate",
+				"fieldId": 2,
+				"fieldName": "费率",
+				"fieldType": 0,
+				"fieldUnit": "%",
+				"loanFeeId": 2,
+				"orgType": 0,
+				"required": 0,
+				"value": "费率"
+			}
+		],
+		"HKKXX": {
+			"accountName": "32452522",
+			"accountNumber": "ewr223",
+			"bankName": "中国银行",
+			"createDate": 1488086060000,
+			"createUser": 1,
+			"id": 2,
+			"orderNo": "nfdb2016102421082285",
+			"updateDate": 1488086065000,
+			"updateUser": 1
+		},
+		"GTHK": [
+			{
+				"accountLocation": "隆中",
+				"age": 42,
+				"averageDailyBalance": 100.0000,
+				"balance": 150000.0000,
+				"company": "隆中分公司",
+				"companyAddress": "湖北隆中分厂",
+				"companyTel": "0577-888887",
+				"companyZipcode": "336336",
+				"familyAddress": "湖北省隆中皇叔街1号",
+				"familyTel": "113113",
+				"familyZipcode": "114114",
+				"houseStatus": 0,
+				"idCard": "513029197305261956",
+				"isDel": 0,
+				"isEnterprise": 1,
+				"isServe": 0,
+				"maritalStatus": 1,
+				"mobile": "13551469165",
+				"monthIncomeMoney": 10000.000000,
+				"orderNo": "nfdb2016102421082285",
+				"residentType": "553,554,563",
+				"sex": 0,
+				"sortNo": 1,
+				"updateDate": 1489457622000,
+				"updateUser": 16054,
+				"userId": 1000002,
+				"userName": "关云长",
+				"userRelationship": 0,
+				"userType": 1,
+				"userTypeCode": "GTHKRCL"
+			}, {
+				"accountLocation": "益州",
+				"age": 41,
+				"averageDailyBalance": 5000.0000,
+				"balance": 150000.0000,
+				"company": "益州分公司",
+				"companyAddress": "四川益州分厂",
+				"companyTel": "0577-777777",
+				"companyZipcode": "335335",
+				"familyAddress": "四川省益州皇叔街1号",
+				"familyTel": "112112",
+				"familyZipcode": "13113",
+				"houseStatus": 0,
+				"idCard": "513029197305261957",
+				"isDel": 0,
+				"isEnterprise": 1,
+				"isServe": 0,
+				"maritalStatus": 1,
+				"mobile": "13556666666",
+				"monthIncomeMoney": 15000.000000,
+				"orderNo": "nfdb2016102421082285",
+				"residentType": "553,554,563",
+				"sex": 0,
+				"sortNo": 1,
+				"updateDate": 1489457633000,
+				"updateUser": 16054,
+				"userId": 1000003,
+				"userName": "张翼德",
+				"userRelationship": 1,
+				"userType": 1,
+				"userTypeCode": "GTHKRCL"
+			}
+		],
+		"loanTask": {
+			"category": "loanInfoInput",
+			"createDate": 1488967297000,
+			"createDateStr": "2017-03-08 18:01",
+			"createUser": 1,
+			"id": 80871,
+			"loanOrder": {
+				"acceptId": 8304,
+				"bankCode": "2134",
+				"busiAreaCode": 130200,
+				"busiSourceId": 22,
+				"busiSourceTypeCode": "2",
+				"createDate": 1477314549000,
+				"createUser": 8304,
+				"demandBankId": 12,
+				"deptId": 62,
+				"id": 334663,
+				"idCard": "110000198902281234",
+				"isNeedVisit": 0,
+				"isSecond": 0,
+				"orderNo": "nfdb2016102421082285",
+				"orgId": 62,
+				"phone": "12315443",
+				"processInstId": "6",
+				"productId": 35,
+				"realName": "蒋贵燕",
+				"remitAccountNumber": "7",
+				"serviceTypeCode": "2",
+				"status": 0,
+				"updateDate": 1489582420000,
+				"updateUser": 16054
+			},
+			"orderNo": "nfdb2016102421082285",
+			"orgId": 62,
+			"processDefKey": "dfsf",
+			"processInstId": "123",
+			"processTaskId": "4655",
+			"sceneName": "贷款信息录入",
+			"status": 2,
+			"taskCode": "dsfs",
+			"taskDefKey": "adg"
+		},
+		"ZJKR": [
+			{
+				"accountLocation": "涿州",
+				"age": 43,
+				"averageDailyBalance": 5000.0000,
+				"balance": 20600.0000,
+				"company": "四川大竹煤电有限责任公司柏林煤矿",
+				"companyAddress": "大竹县柏林镇柏林煤矿厂",
+				"companyTel": "0577-867596",
+				"companyZipcode": "333333",
+				"createUser": 8304,
+				"familyAddress": "四川省大竹县柏林镇街道柏煤街13号",
+				"familyTel": "18793855666",
+				"familyZipcode": "139958",
+				"houseStatus": 0,
+				"idCard": "110000198902281234",
+				"isDel": 0,
+				"isEnterprise": 1,
+				"isServe": 1,
+				"maritalStatus": 0,
+				"mobile": "25666366666",
+				"monthIncomeMoney": 20000.000000,
+				"orderNo": "nfdb2016102421082285",
+				"realnameResult": "一致",
+				"residentType": "553,554,563",
+				"sex": 0,
+				"sortNo": 1,
+				"updateDate": 1489582420000,
+				"updateUser": 16054,
+				"userId": 334322,
+				"userName": "蒋贵燕",
+				"userRelationship": 0,
+				"userType": 0,
+				"userTypeCode": "JKRCL"
+			}
+		],
+		"QTXX": [
+			{
+				"cIndividuationFieldList": [
+					{
+						"code": "other1",
+						"dataColumn": "extString01",
+						"individuationId": 95072,
+						"name": "其他信息1",
+						"otherRemark": "aaaa",
+						"required": 0,
+						"type": 2,
+						"value": "123.000"
+					}, {
+						"code": "other2",
+						"dataColumn": "extString02",
+						"individuationId": 95072,
+						"name": "其他信息2",
+						"otherRemark": "aaaa",
+						"required": 0,
+						"type": 2,
+						"value": "112.000"
+					}, {
+						"code": "other3",
+						"dataColumn": "extString03",
+						"individuationId": 95072,
+						"name": "其他信息3",
+						"otherRemark": "aaaa",
+						"required": 0,
+						"type": 2,
+						"value": "25.000"
+					}
+				],
+				"groupId": 300,
+				"groupName": "其他信息"
+			}
+		],
+		"CLXX": {
+			"billingDeptName": "pppppO",
+			"carId": 278342,
+			"carLogo": "xxxxcarlogo",
+			"carMode": 3156,
+			"carName": "标致-标致301-2014款 1.6L 手动舒适版CNG",
+			"carPrice": 333.00,
+			"carSerieId": 210,
+			"carType": 0,
+			"cardBrandId": 19,
+			"certificateNo": "1102230230",
+			"createDate": 1489627695000,
+			"createUser": 1,
+			"discountMoney": 0.00,
+			"discountRate": "0",
+			"engineNo": "SDFQAE2432",
+			"frameNo": "dfadfa324234",
+			"gpsNumber1": "110",
+			"gpsNumber2": "111",
+			"isDel": 0,
+			"isDiscount": 0,
+			"isFinanceLeaseVehicle": 0,
+			"isInstallGps": 0,
+			"isOperationVehicle": 0,
+			"licenseCategory": "浙a",
+			"licenseType": 0,
+			"onLicensePlaceCode": 130731,
+			"onLicensePlaceName": "河北省-张家口市-涿鹿县",
+			"orderNo": "nfdb2016102421082285",
+			"systemCarPrice": 9.57,
+			"updateDate": 1489582420000,
+			"updateUser": 16054
+		},
+		"JJLXR": [
+			{
+				"id": 3,
+				"isDel": 0,
+				"name": "张三",
+				"orderNo": "nfdb2016102421082285",
+				"phone": "18729732032",
+				"relationship": "亲戚",
+				"sortNo": 1,
+				"updateDate": 1489474895000,
+				"updateUser": 16054
+			}, {
+				"id": 4,
+				"isDel": 0,
+				"name": "王大爷",
+				"orderNo": "nfdb2016102421082285",
+				"phone": "139139",
+				"relationship": "旁系",
+				"sortNo": 2,
+				"updateDate": 1489474895000,
+				"updateUser": 16054
+			}, {
+				"id": 5,
+				"isDel": 0,
+				"name": "你姥姥",
+				"orderNo": "nfdb2016102421082285",
+				"phone": "188852334",
+				"relationship": "旁系",
+				"sortNo": 3,
+				"updateDate": 1489474895000,
+				"updateUser": 16054
+			}
+		],
+		"FQXX": {
+			"advancedMoney": 46000.0000,
+			"advancedWay": 0,
+			"bankBaseRates": 0.0000,
+			"bankBaseRatesTemp": 0.0000,
+			"bankFeeMoney": 20000.0000,
+			"bareRate": 10.0000,
+			"busiModeName": "资产管理",
+			"businessModel": "11",
+			"cardNo": "325464533",
+			"commissionFeeRate": "9.49",
+			"contractSfMoney": 300000.0000,
+			"contractSfRatio": 30.0000,
+			"createDate": 1489395977000,
+			"createUser": 8304,
+			"discountMoney": 400.0000,
+			"discountRate": "0",
+			"firstMonthMoney": 1473.1600,
+			"isDel": 0,
+			"isDiscount": 0,
+			"loanFeeMoney": 5000.0000,
+			"loanMoney": 48400.0000,
+			"monthMoney": 1472.0000,
+			"orderNo": "nfdb2016102421082285",
+			"renewalInfo": "0,0,0,1,1,1",
+			"renewalMode": 1,
+			"repayPeriod": 12,
+			"sfMoney": 28400.0000,
+			"sfProportion": 0.3817,
+			"stageId": 277792,
+			"stageMoney": 52993.1600,
+			"updateDate": 1489582420000,
+			"updateUser": 16054,
+			"utilityTime": 1489394940000,
+			"utilityTimeStr": "2017-03-13 16:49"
+		},
+		"ORDERNO": "nfdb2016102421082285",
+		"DDXX": {
+			"acceptId": 8304,
+			"bankCode": "2134",
+			"busiAreaCode": 130200,
+			"busiAreaName": "河北省-唐山市",
+			"busiSourceId": 22,
+			"busiSourceName": "宝马4S店",
+			"busiSourceTypeCode": "2",
+			"busiSourceTypeName": "业务自拓",
+			"createDate": 1477314549000,
+			"createUser": 8304,
+			"demandBankId": 12,
+			"demandBankName": "杭州部落银行",
+			"deptId": 62,
+			"id": 334663,
+			"idCard": "110000198902281234",
+			"isNeedVisit": 0,
+			"isSecond": 0,
+			"orderNo": "nfdb2016102421082285",
+			"orgId": 62,
+			"phone": "12315443",
+			"processInstId": "6",
+			"productId": 35,
+			"realName": "蒋贵燕",
+			"remitAccountNumber": "7",
+			"serviceTypeCode": "2",
+			"serviceTypeName": "担保",
+			"status": 0,
+			"updateDate": 1489582420000,
+			"updateUser": 16054
+		},
+		"FDBR": [
+			{
+				"accountLocation": "隆中",
+				"age": 40,
+				"averageDailyBalance": 2000.0000,
+				"balance": 100000.0000,
+				"company": "隆中分公司",
+				"companyAddress": "湖北隆中分厂",
+				"companyTel": "05776666666",
+				"companyZipcode": "336336",
+				"familyAddress": "湖北省隆中皇叔街1号",
+				"familyTel": "113113",
+				"familyZipcode": "114114",
+				"houseStatus": 0,
+				"idCard": "513029197305261958",
+				"isDel": 0,
+				"isEnterprise": 1,
+				"isServe": 0,
+				"maritalStatus": 1,
+				"mobile": "13551469165",
+				"monthIncomeMoney": 10000.000000,
+				"orderNo": "nfdb2016102421082285",
+				"residentType": "",
+				"sex": 0,
+				"sortNo": 1,
+				"updateDate": 1489459566000,
+				"updateUser": 16054,
+				"userId": 1000004,
+				"userName": "诸葛孔明",
+				"userRelationship": 1,
+				"userType": 2,
+				"userTypeCode": "FDBRCL"
+			}, {
+				"accountLocation": "常山",
+				"age": 39,
+				"averageDailyBalance": 1000.0000,
+				"balance": 100000.0000,
+				"company": "常山分公司",
+				"companyAddress": "河北常山分厂",
+				"companyTel": "0577-999996",
+				"companyZipcode": "337337",
+				"familyAddress": "河北省隆中皇叔街1号",
+				"familyTel": "114114",
+				"familyZipcode": "115115",
+				"houseStatus": 0,
+				"idCard": "513029197305261959",
+				"isDel": 0,
+				"isEnterprise": 1,
+				"isServe": 0,
+				"maritalStatus": 1,
+				"mobile": "13551469166",
+				"monthIncomeMoney": 10000.000000,
+				"orderNo": "nfdb2016102421082285",
+				"residentType": "553,564,583",
+				"sex": 0,
+				"sortNo": 1,
+				"updateDate": 1489459439000,
+				"updateUser": 16054,
+				"userId": 1000005,
+				"userName": "赵常山",
+				"userRelationship": 3,
+				"userType": 2,
+				"userTypeCode": "FDBRCL"
+			}
+		]
+	},
+	"msg": "success"
 }

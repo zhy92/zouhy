@@ -26,6 +26,9 @@
 .pt24{
     padding-top: 24px !important;
 }
+.pt15{
+    padding-top: 15px !important;
+}
 .pl200 {
     padding-left: 200px !important;
 }
@@ -34,6 +37,12 @@
 }
 .pr150 {
     padding-right: 150px !important;
+}
+.pb50 {
+    padding-bottom: 50px !important;
+}
+.pt50 {
+    padding-top: 50px !important;
 }
 .mb15{
     margin-bottom: 15px !important;
@@ -50,6 +59,7 @@
 .padding20 {
     padding: 20px !important;
 }
+
 .positionRela{
     position: relative;
 }
@@ -382,6 +392,11 @@ input[disabled]{
             .select-name, input {
                 color: @borderColor;
             } 
+        }
+        .select-name {
+            i {
+                color: @msgErr;
+            }
         }
         .select {
             float: left;
@@ -994,7 +1009,7 @@ input[disabled]{
                 line-height: 32px;
             }
             .panel-value-area {
-                overflow: hidden;
+                // overflow: hidden;
                 margin-left: 210px;
                 //文字元素给行高保持与左侧水平
                 .panel-value-item {
@@ -1022,6 +1037,7 @@ input[disabled]{
                         height: 32px;
                         width: 92px;
                         opacity: 0;
+                        filter: alpha(opacity=0);
                     }
                 }
                 //备注信息
@@ -1267,6 +1283,17 @@ input[disabled]{
         right: 0;
         .stopUse {
             margin-right: 30px;
+        }
+    }
+}
+
+.policy {
+    margin-bottom: 10px;
+    .search-item {
+        float: left;
+        .select-name {
+            display: inline-block;
+            width: 50px;
         }
     }
 }
@@ -1914,7 +1941,14 @@ input[disabled]{
         }
     }
     .gps{
-        width: 64px !important;
+        width: 62px !important;
+    }
+    .gpssel{
+        width: 76px !important;
+    }
+    .select{
+        width: 200px !important;
+        text-align: left;
     }
 }
 //左右结构的输入框及下拉框布局下面的多选check zhy
@@ -1994,6 +2028,14 @@ input[disabled]{
 //贷款信息录入 zhy
 .loan-info {
     padding: 24px 125px;
+    &.select-search-bar {
+        .search-item {
+            .select-name {
+                width: 80px;
+                text-align: right;
+            }
+        }
+    }
 }
 //车商管理 zhy
 .carShop-manage {

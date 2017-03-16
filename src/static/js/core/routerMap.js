@@ -167,11 +167,15 @@
 		},
 		'loanProcess/loanTelApproval': {
 			title: '电核',
+			page: 'phoneCheck'
+		},
+		'loanProcess/phoneAudit': {
+			title: '电核',
 			page: 'phoneAudit'
 		},
-		'loanProcess/loanAudit': {
+		'loanProcess/loanInfoAudit': {
 			title: '贷款审核',
-			page: 'loanAudit'
+			page: 'loanInfoAudit'
 		},
 		'loanProcess/makeLoanApproval': {
 			title: '放款审核',
@@ -267,16 +271,17 @@
 			page: 'mortgageStatisDetail'
 		},
 		'organizationManage/newBank': {
-			title: '新建合作银行',
+			title: '新建/编辑合作银行',
 			page: 'newBank'
 		},
 		'organizationManage/newCar': {
-			title: '新建合作车商',
+			title: '新建/编辑合作车商',
 			page: 'newCar'
 		}
 	}
 	g.subRouterMap = {
-		'T0047': 'loanInfoInput',
+		'T0046': 'phoneAudit',
+		'T0047': 'loanInfoAudit',
 		'T0013': 'loanMaterialsUpload',
 		'T0049': 'homeMaterialsUpload'
 	}

@@ -1,25 +1,15 @@
-	<!--贷款信息录入zhy-->
-			<div class="container" id="loan-info">
-				<!--返回列表-->
-				<div id="location"></div>
-				<!--返回列表 end-->
+	<!--贷款信息审核zhy-->
+			<div class="container loan-info-check" id="loan-info-check">
 				
 				<!--面板-->
-				<div id="loanInfoTable" class="mt15"></div>
+				<div id="loanAudit"></div>
 				
-				
-				<!--提交订单按钮-->
-				<div class="commit-orders-box">
-					<div id="" class="button">提交订单</div>
-				</div>
 			</div>
 			
-
-
 			<script type="text/x-dot-template" id="loanlisttmpl">
 				{{for(var z = 0, lenthz = it.cfgData.frames.length; z < lenthz; z++) { var cfg = it.cfgData.frames[z]; }}
 				{{for(var y = 0, lenthy = cfg.sections.length; y < lenthy; y++) { var sec = cfg.sections[y]; if(!sec.segments || !sec.segments.length) {continue;} if(sec.code == 'DDXX'){ }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -54,8 +44,8 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<div class="select select-common" data-selected="{{= it.data.DDXX.serviceTypeName}}" data-dropdown="page.$scope['loanInfo'].serviceTypePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.serviceType"></div>
-								<input type="hidden" name="serviceTypeCode" value="{{= it.data.DDXX.serviceTypeCode}}" />
+								<div class="select select-common" data-dropdown="page.$scope['loanInfo'].serviceTypePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.serviceType"></div>
+
 								<!--<span data-key="serviceType" class="info-value selecter">
 									<div></div>
 									<span class="placeholder" id="selectType">请选择</span>
@@ -70,8 +60,7 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<div class="select select-common" data-selected="{{= it.data.DDXX.demandBankName}}" data-dropdown="page.$scope['loanInfo'].brandPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.brand"></div>
-								<input type="hidden" name="demandBankId" value="{{= it.data.DDXX.demandBankId}}" />
+								<div class="select select-common" data-dropdown="page.$scope['loanInfo'].brandPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.brand"></div>
 								<!--<span data-key="brand" class="info-value selecter">
 									<div></div>
 									<span class="placeholder">请选择</span>
@@ -87,8 +76,8 @@
 									{{ } }} 
 									{{= seg.name}}：
 								</span>
-								<div class="select select-common" data-selected="{{= it.data.DDXX.busiSourceTypeName}}" data-dropdown="page.$scope['loanInfo'].busiSourceTypePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busiSourceType"></div>
-								<input type="hidden" name="busiSourceTypeCode" value="{{= it.data.DDXX.busiSourceTypeCode}}" />
+								<div class="select select-common" data-selected="{{= it.data.DDXX.busiSourceTypeCode}}" data-dropdown="page.$scope['loanInfo'].busiSourceTypePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busiSourceType"></div>
+
 								<!--<span data-key="busiSourceType" class="info-value selecter">
 									<div></div>
 									<span class="placeholder">请选择</span>
@@ -104,8 +93,7 @@
 									{{ } }} 
 									{{= seg.name}}：</span>
 								<span class="info-value">
-									<div class="select twoLiTab" data-selected="{{= it.data.DDXX.busiAreaName}}" data-tabs="省|市" data-dropdown="page.$scope['loanInfo'].areaPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.areaSel"></div>
-									<input type="hidden" name="busiAreaCode" value="{{= it.data.DDXX.busiAreaCode}}" />
+									<div class="select twoLiTab" style="width: 300px;" data-tabs="省|市" data-dropdown="page.$scope['loanInfo'].areaPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.areaSel"></div>
 								</span>
 								<!--<span data-key="busiArea" class="info-value selecter">
 									<div></div>
@@ -121,8 +109,7 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<div class="select select-common" data-selected="{{= it.data.DDXX.busiSourceName}}" data-dropdown="page.$scope['loanInfo'].busiSourceNamePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busiSourceName"></div>
-								<input type="hidden" id="busiSourceId" name="busiSourceId" value="{{= it.data.DDXX.busiSourceId}}" />
+								<div class="select select-common" data-dropdown="page.$scope['loanInfo'].busiSourceNamePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busiSourceName"></div>
 								<!--<span data-key="busiSourceName" class="info-value selecter">
 									<span class="inputSearch"><input class="searchInp" data-key = "busiSourceNameSearch" type="text" /></span>
 									<div></div>
@@ -137,31 +124,30 @@
 									{{ if(seg.empty == '0'){ }}
 									<i>*</i>
 									{{ } }} 
-									打款账号：</span>
-								<!--<div class="select select-common" data-selected="{{= it.data.DDXX.remitAccountNumber}}" data-dropdown="page.$scope['loanInfo'].remitAccountNumberPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.remitAccountNumber"></div>
-								<input type="hidden" name="remitAccountNumber" value="{{= it.data.DDXX.remitAccountNumber}}" />-->
-								<span data-key="remitAccountNumber" class="info-value selecter">
+									{{= seg.name}}：</span>
+								<div class="select select-common" data-dropdown="page.$scope['loanInfo'].remitAccountNumberPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.remitAccountNumber"></div>
+								<!--<span data-key="remitAccountNumber" class="info-value selecter">
 									<div></div>
 									<span class="placeholder">{{= it.data.DDXX.remitAccountNumber}}</span>
 									<span class="arrow arrow-bottom right8px"></span>
 									<input type="hidden" name="remitAccountNumber" value="{{= it.data.DDXX.remitAccountNumber}}" />
-								</span>
+								</span>-->
 							</div>
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
 									<i>*</i>
 									{{ } }} 
-									开户行：</span>
-								<span class="info-value"><input id="bankName" type="text" readonly="readonly" value="{{= it.data.DDXX.bankName}}" /></span>
+									{{= seg.name}}：</span>
+								<span class="info-value"><input id="bankName" type="text" readonly="readonly" /></span>
 							</div>
 							<div class="info-key-value-box">
 								<span class="info-key">
 									{{ if(seg.empty == '0'){ }}
 									<i>*</i>
 									{{ } }} 
-									帐户名：</span>
-								<span class="info-value"><input id="accountName" type="text" readonly="readonly" value="{{= it.data.DDXX.accountName}}" /></span>
+									{{= seg.name}}：</span>
+								<span class="info-value"><input id="accountName" type="text" readonly="readonly" /></span>
 							</div>
 							{{ } }}
 							{{ } }}
@@ -174,7 +160,7 @@
 				</div>
 				</div>
 				{{ };if(sec.code == 'CLXX'){ }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -239,8 +225,7 @@
 									{{= seg.name}}：</span>
 								<!--<div class="select select-common" data-dropdown="page.$scope['loanInfo'].remitAccountNumberPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.remitAccountNumber"></div>-->
 								<span class="info-value">
-									<div class="select" data-selected="{{= it.data.CLXX.onLicensePlaceName}}" data-tabs="省|市|区" data-dropdown="page.$scope['loanInfo'].areaPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.areaSel"></div>
-									<input type="hidden" name="onLicensePlaceCode" value="{{= it.data.CLXX.onLicensePlaceCode}}" />
+									<div class="select" style="width: 300px;" data-tabs="省|市|区" data-dropdown="page.$scope['loanInfo'].areaPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.areaSel"></div>
 								</span>
 								<!--<span data-key="onLicensePlace" class="info-value selecter">
 									<div></div>
@@ -267,8 +252,7 @@
 									{{ } }} 
 									{{= seg.name}}：</span>
 								<span class="info-value">
-									<div class="select select-car" data-selected="{{= it.data.CLXX.carName}}" data-tabs="品牌|车系|车型" data-dropdown="page.$scope['loanInfo'].carPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.car"></div>
-									<input type="hidden" name="carMode" value="{{= it.data.CLXX.carMode}}" />
+									<div class="select select-car" data-tabs="品牌|车系|车型" data-dropdown="page.$scope['loanInfo'].carPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.car"></div>
 								</span>
 								<!--<span data-key="carName" class="info-value selecter">
 									<span class="inputSearch"><input class="searchInp" data-key = "carNameSearch" type="text" /></span>
@@ -306,16 +290,14 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<span class="info-value" style="padding: 0;border: none;">
-									<span data-type='self' data-key="isInstallGps" class="info-value selecter gpssel">
-										<div></div>
-										<span class="placeholder">请选择</span>
-										<span class="arrow arrow-bottom right8px"></span>
-										<input type="hidden" name="isInstallGps" id="gps" value="{{= it.data.CLXX.isInstallGps}}" />
-									</span>
-									<span class="info-value gps" id="gps1"><input type="text" name="gpsNumber1" value="{{= it.data.CLXX.gpsNumber1}}" /></span>
-									<span class="info-value gps" id="gps2"><input type="text" name="gpsNumber2" value="{{= it.data.CLXX.gpsNumber2}}" /></span>
+								<span data-type='self' data-key="isInstallGps" class="info-value selecter gpssel">
+									<div></div>
+									<span class="placeholder">请选择</span>
+									<span class="arrow arrow-bottom right8px"></span>
+									<input type="hidden" name="isInstallGps" id="gps" value="{{= it.data.CLXX.isInstallGps}}" />
 								</span>
+								<span class="info-value gps" id="gps1"><input type="text" name="gpsNumber1" value="{{= it.data.CLXX.gpsNumber1}}" /></span>
+								<span class="info-value gps" id="gps2"><input type="text" name="gpsNumber2" value="{{= it.data.CLXX.gpsNumber2}}" /></span>
 							</div>
 							{{  };if(seg.code == 'frameNo'){  }}
 							<div class="info-key-value-box">
@@ -354,7 +336,7 @@
 					</div>
 				</div>
 				{{ };if(sec.code == 'FQXX'){ }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -374,8 +356,7 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<div class="select select-common" data-selected="{{= it.data.FQXX.busiModeName}}" data-dropdown="page.$scope['loanInfo'].busimodePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busimode"></div>
-								<input type="hidden" name="businessModel" value="{{= it.data.FQXX.businessModel }}" />
+								<div class="select select-common" data-dropdown="page.$scope['loanInfo'].busimodePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busimode"></div>
 								<!--<span data-key="busimode" class="info-value selecter">
 									<div></div>
 									<span class="placeholder">请选择</span>
@@ -443,9 +424,8 @@
 									{{ if(seg.empty == '0'){ }}
 									<i>*</i>
 									{{ } }} 
-									{{= seg.name}}12：</span>
-								<div class="select select-common repaymentTermBox" data-selected="{{= it.data.FQXX.repayPeriod}}" data-dropdown="page.$scope['loanInfo'].repaymentTermPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.repaymentTerm"></div>
-								<input type="hidden" name="repayPeriod" id="repayPeriod" value="{{= it.data.FQXX.repayPeriod }}" />
+									{{= seg.name}}：</span>
+								<div class="select select-common" data-dropdown="page.$scope['loanInfo'].repaymentTermPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.repaymentTerm"></div>
 								<!--<span data-key="repaymentTerm" class="info-value selecter">
 									<div></div>
 									<span class="placeholder">请选择</span>
@@ -722,7 +702,7 @@
 				</div>
 				{{ };if(sec.code == 'ZJKR'){ }}
 				{{ var mainPerson1=it.data.ZJKR; for(var m = 0, lenthm = mainPerson1.length; m < lenthm; m++) { var mainPerson = mainPerson1[m]; }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -987,7 +967,7 @@
 				{{ } }}
 				{{ };if(sec.code == 'GTHK'){ }}
 				{{ var mainPerson1=it.data.GTHK; for(var m = 0, lenthm = mainPerson1.length; m < lenthm; m++) { var mainPerson = mainPerson1[m]; }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -1221,7 +1201,7 @@
 				{{ } }}
 				{{ };if(sec.code == 'FDBR'){ }}
 				{{ var mainPerson1=it.data.FDBR; for(var m = 0, lenthm = mainPerson1.length; m < lenthm; m++) { var mainPerson = mainPerson1[m]; }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -1454,7 +1434,7 @@
 				</div>
 				{{ } }}
 				{{ };if(sec.code == 'JJLXR'){ }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -1512,7 +1492,7 @@
 					</div>
 				</div>
 				{{ };if(sec.code == 'HKKXX'){ }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -1561,7 +1541,7 @@
 					</div>
 				</div>
 				{{ };if(sec.code == 'FYXX'){ }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -1601,7 +1581,7 @@
 				</div>
 				{{ };if(sec.code == 'QTXX'){ }}
 				{{for(var b = 0, lenthb = it.data.QTXX.length; b < lenthb; b++) { var other = it.data.QTXX[b]; }}
-				<div class="panel panel-loan">
+				<div class="panel panel-loan panel-detail">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -1667,7 +1647,3 @@
 					{{ } }}
 				</ul>
 			</script>
-
-
-
-

@@ -42,15 +42,15 @@
 			switch (name) {
 				// 周宜俭ip
 				case 'zyj':
-					return 'http://192.168.1.116:8080/' + method;
+					return 'http://192.168.1.108:8080/' + method;
 					break;
 				// 蔡延军ip
 				case 'cyj':
-					return 'http://192.168.1.116:8080/' + method;
+					return 'http://192.168.1.108:8080/' + method;
 					break;
 				// 季本松ip
 				case 'jbs':
-					return 'http://192.168.1.124:8080/' + method;
+					return 'http://192.168.1.108:8080/' + method;
 					break;
 				// 王亮ip 
 				case 'wl':
@@ -90,6 +90,24 @@
 					case -1:
 
 						break;
+					case 6011:
+						$.alert({
+							title: '提示',
+							content: '账户已存在',
+							useBootstrap: false,
+							boxWidth: '500px',
+							theme: 'light',
+							buttons:{
+								ok: {
+									text: '确定',
+									action: function() {
+										// location.href = 'login.html';
+										// alert(1)
+									}
+								}
+							}
+						})
+						break;
 					default:
 						// statements_def
 						break;
@@ -98,6 +116,28 @@
 			}
 		}
 	};
+	/**
+	 * 弹窗默认设置
+	 */
+	jconfirm.defaults = {
+		useBootstrap: false,
+		boxWidth: '500px',
+		theme: 'light',
+		draggable: true,
+		defaultButtons: {
+	        ok: {
+	        	text: '确定',
+	            action: function () {
+	            }
+	        },
+	        close: {
+	        	text: '取消',
+	            action: function () {
+	            }
+	        }
+	    }
+	}
+
 	var gUrl='http://127.0.0.1:8083/';
 	_.$http.apiMap = {
 		menu: gUrl+'mock/menu',
