@@ -42,7 +42,7 @@
 									{{= seg.name}}：</span>
 								<span data-type='self' data-key="isSecond" class="info-value selecter">
 									<div></div>
-									<span class="placeholder">{{= it.data.DDXX.isSecond}}</span>
+									<span class="placeholder"></span>
 									<span class="arrow arrow-bottom right8px"></span>
 									<input type="hidden" name="isSecond" value="{{= it.data.DDXX.isSecond}}" />
 								</span>
@@ -56,12 +56,6 @@
 									{{= seg.name}}：</span>
 								<div class="select select-common" data-selected="{{= it.data.DDXX.serviceTypeName}}" data-dropdown="page.$scope['loanInfo'].serviceTypePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.serviceType"></div>
 								<input type="hidden" name="serviceTypeCode" value="{{= it.data.DDXX.serviceTypeCode}}" />
-								<!--<span data-key="serviceType" class="info-value selecter">
-									<div></div>
-									<span class="placeholder" id="selectType">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="serviceTypeCode" value="{{= it.data.DDXX.serviceTypeCode}}" />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'demandBankId'){  }}
 							<div class="info-key-value-box">
@@ -72,12 +66,6 @@
 									{{= seg.name}}：</span>
 								<div class="select select-common" data-selected="{{= it.data.DDXX.demandBankName}}" data-dropdown="page.$scope['loanInfo'].brandPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.brand"></div>
 								<input type="hidden" name="demandBankId" value="{{= it.data.DDXX.demandBankId}}" />
-								<!--<span data-key="brand" class="info-value selecter">
-									<div></div>
-									<span class="placeholder">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="demandBankId" value="{{= it.data.DDXX.demandBankId}}" />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'busiSourceTypeCode'){  }}
 							<div class="info-key-value-box">
@@ -89,12 +77,6 @@
 								</span>
 								<div class="select select-common" data-selected="{{= it.data.DDXX.busiSourceTypeName}}" data-dropdown="page.$scope['loanInfo'].busiSourceTypePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busiSourceType"></div>
 								<input type="hidden" name="busiSourceTypeCode" value="{{= it.data.DDXX.busiSourceTypeCode}}" />
-								<!--<span data-key="busiSourceType" class="info-value selecter">
-									<div></div>
-									<span class="placeholder">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="busiSourceTypeCode" value="{{= it.data.DDXX.busiSourceTypeCode}}" />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'busiAreaCode'){  }}
 							<div class="info-key-value-box">
@@ -107,12 +89,6 @@
 									<div class="select twoLiTab" data-selected="{{= it.data.DDXX.busiAreaName}}" data-tabs="省|市" data-dropdown="page.$scope['loanInfo'].areaPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.areaSel"></div>
 									<input type="hidden" name="busiAreaCode" value="{{= it.data.DDXX.busiAreaCode}}" />
 								</span>
-								<!--<span data-key="busiArea" class="info-value selecter">
-									<div></div>
-									<span class="placeholder">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="busiAreaCode" value="{{= it.data.DDXX.busiAreaCode}} />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'busiSourceId'){  }}
 							<div class="info-key-value-box">
@@ -123,13 +99,6 @@
 									{{= seg.name}}：</span>
 								<div class="select select-common" data-selected="{{= it.data.DDXX.busiSourceName}}" data-dropdown="page.$scope['loanInfo'].busiSourceNamePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busiSourceName"></div>
 								<input type="hidden" id="busiSourceId" name="busiSourceId" value="{{= it.data.DDXX.busiSourceId}}" />
-								<!--<span data-key="busiSourceName" class="info-value selecter">
-									<span class="inputSearch"><input class="searchInp" data-key = "busiSourceNameSearch" type="text" /></span>
-									<div></div>
-									<span class="placeholder">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" id="busiSourceId" name="busiSourceId" value="{{= it.data.DDXX.busiSourceId}}" />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'remitAccountNumber'){  }}
 							<div class="info-key-value-box">
@@ -138,8 +107,6 @@
 									<i>*</i>
 									{{ } }} 
 									打款账号：</span>
-								<!--<div class="select select-common" data-selected="{{= it.data.DDXX.remitAccountNumber}}" data-dropdown="page.$scope['loanInfo'].remitAccountNumberPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.remitAccountNumber"></div>
-								<input type="hidden" name="remitAccountNumber" value="{{= it.data.DDXX.remitAccountNumber}}" />-->
 								<span data-key="remitAccountNumber" class="info-value selecter">
 									<div></div>
 									<span class="placeholder">{{= it.data.DDXX.remitAccountNumber}}</span>
@@ -199,7 +166,7 @@
 									<div></div>
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="licenseType" />
+									<input type="hidden" name="licenseType" value="{{= it.data.CLXX.licenseType}}" />
 								</span>
 							</div>
 							{{  };if(seg.code == 'isFinanceLeaseVehicle'){  }}
@@ -213,7 +180,7 @@
 									<div></div>
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="isFinanceLeaseVehicle" />
+									<input type="hidden" name="isFinanceLeaseVehicle" value="{{= it.data.CLXX.isFinanceLeaseVehicle}}" />
 								</span>
 							</div>
 							{{  };if(seg.code == 'isOperationVehicle'){  }}
@@ -227,7 +194,7 @@
 									<div></div>
 									<span class="placeholder">请选择</span>
 									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="isOperationVehicle" />
+									<input type="hidden" name="isOperationVehicle" value="{{= it.data.CLXX.isOperationVehicle}}" />
 								</span>
 							</div>
 							{{  };if(seg.code == 'onLicensePlaceCode'){  }}
@@ -237,18 +204,10 @@
 									<i>*</i>
 									{{ } }} 
 									{{= seg.name}}：</span>
-								<!--<div class="select select-common" data-dropdown="page.$scope['loanInfo'].remitAccountNumberPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.remitAccountNumber"></div>-->
 								<span class="info-value">
 									<div class="select" data-selected="{{= it.data.CLXX.onLicensePlaceName}}" data-tabs="省|市|区" data-dropdown="page.$scope['loanInfo'].areaPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.areaSel"></div>
 									<input type="hidden" name="onLicensePlaceCode" value="{{= it.data.CLXX.onLicensePlaceCode}}" />
 								</span>
-								<!--<span data-key="onLicensePlace" class="info-value selecter">
-									<div></div>
-									<span class="placeholder">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="onLicensePlaceCode" />
-									<input type="hidden" name="onLicensePlaceName" />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'licenseCategory'){  }}
 							<div class="info-key-value-box">
@@ -270,16 +229,6 @@
 									<div class="select select-car" data-selected="{{= it.data.CLXX.carName}}" data-tabs="品牌|车系|车型" data-dropdown="page.$scope['loanInfo'].carPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.car"></div>
 									<input type="hidden" name="carMode" value="{{= it.data.CLXX.carMode}}" />
 								</span>
-								<!--<span data-key="carName" class="info-value selecter">
-									<span class="inputSearch"><input class="searchInp" data-key = "carNameSearch" type="text" /></span>
-									<div></div>
-									<span class="placeholder">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="carName" value="奥迪a6" />
-									<input type="hidden" name="carSerieId" placeholder="车系" value="1111" />
-									<input type="hidden" name="cardBrandId" placeholder="车辆品牌" value="1111" />
-									<input type="hidden" name="carMode" placeholder="车型" value="1111" />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'carPrice'){  }}
 							<div class="info-key-value-box">
@@ -376,12 +325,6 @@
 									{{= seg.name}}：</span>
 								<div class="select select-common" data-selected="{{= it.data.FQXX.busiModeName}}" data-dropdown="page.$scope['loanInfo'].busimodePicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.busimode"></div>
 								<input type="hidden" name="businessModel" value="{{= it.data.FQXX.businessModel }}" />
-								<!--<span data-key="busimode" class="info-value selecter">
-									<div></div>
-									<span class="placeholder">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="businessModel" value="{{= it.data.FQXX.businessModel }}" />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'sfMoney'){  }}
 							<div class="info-key-value-box">
@@ -446,12 +389,6 @@
 									{{= seg.name}}12：</span>
 								<div class="select select-common repaymentTermBox" data-selected="{{= it.data.FQXX.repayPeriod}}" data-dropdown="page.$scope['loanInfo'].repaymentTermPicker" data-trigger="page.$scope['loanInfo'].dropdownTrigger.repaymentTerm"></div>
 								<input type="hidden" name="repayPeriod" id="repayPeriod" value="{{= it.data.FQXX.repayPeriod }}" />
-								<!--<span data-key="repaymentTerm" class="info-value selecter">
-									<div></div>
-									<span class="placeholder">请选择</span>
-									<span class="arrow arrow-bottom right8px"></span>
-									<input type="hidden" name="repayPeriod" id="repayPeriod" value="{{= it.data.FQXX.repayPeriod }}" />
-								</span>-->
 							</div>
 							{{  };if(seg.code == 'bankBaseRates'){  }}
 							<div class="info-key-value-box">
@@ -565,10 +502,7 @@
 							{{ var renewal=it.data.FQXX.renewalInfo; }}
 							<div class="info-key-value-box bxxbYear" id="year1">
 								<span class="info-key">
-									<!--{{ if(seg.empty == '0'){ }}-->
 									<i>*</i>
-									<!--{{ } }}--> 
-									<!--{{= seg.name}}：-->
 									第1年：
 								</span>
 								<span data-type='self' data-key="renewalModeList" class="info-value selecter">
@@ -584,10 +518,7 @@
 							</div>
 							<div class="info-key-value-box  bxxbYear" id="year2">
 								<span class="info-key">
-									<!--{{ if(seg.empty == '0'){ }}-->
 									<i>*</i>
-									<!--{{ } }}--> 
-									<!--{{= seg.name}}：-->
 									第2年：
 								</span>
 								<span data-type='self' data-key="renewalModeList" class="info-value selecter">
@@ -603,10 +534,7 @@
 							</div>
 							<div class="info-key-value-box  bxxbYear" id="year3">
 								<span class="info-key">
-									<!--{{ if(seg.empty == '0'){ }}-->
 									<i>*</i>
-									<!--{{ } }}--> 
-									<!--{{= seg.name}}：-->
 									第3年：
 								</span>
 								<span data-type='self' data-key="renewalModeList" class="info-value selecter">
@@ -622,10 +550,7 @@
 							</div>
 							<div class="info-key-value-box  bxxbYear" id="year4">
 								<span class="info-key">
-									<!--{{ if(seg.empty == '0'){ }}-->
 									<i>*</i>
-									<!--{{ } }}--> 
-									<!--{{= seg.name}}：-->
 									第4年：
 								</span>
 								<span data-type='self' data-key="renewalModeList" class="info-value selecter">
@@ -641,10 +566,7 @@
 							</div>
 							<div class="info-key-value-box  bxxbYear" id="year5">
 								<span class="info-key">
-									<!--{{ if(seg.empty == '0'){ }}-->
 									<i>*</i>
-									<!--{{ } }}--> 
-									<!--{{= seg.name}}：-->
 									第5年：
 								</span>
 								<span data-type='self' data-key="renewalModeList" class="info-value selecter">
@@ -660,10 +582,7 @@
 							</div>
 							<div class="info-key-value-box bxxbYear" id="year6">
 								<span class="info-key">
-									<!--{{ if(seg.empty == '0'){ }}-->
 									<i>*</i>
-									<!--{{ } }}--> 
-									<!--{{= seg.name}}：-->
 									第6年：
 								</span>
 								<span data-type='self' data-key="renewalModeList" class="info-value selecter">
@@ -1647,7 +1566,6 @@
 			</script>
 			<script type="text/x-dot-template" id="selectOpttmpl">
 				<ul class="selectOptBox">
-					<!--<li value="100001">请选择</li>-->
 					{{for(var a = 0, len = it.length; a < len; a++) { var op1 = it[a]; }}
 						{{if(op1.account){}}
 						<li data-bank='{{= op1.bankName}}' data-name = "{{= op1.accountName}}" data-key="{{= op1.account}}">{{= op1.account}}</li>
@@ -1657,10 +1575,6 @@
 						<li data-key="{{= op1.areaId}}">{{= op1.areaName}}</li>
 						{{ }else if(op1.bankId){ }}
 						<li data-key="{{= op1.bankId}}">{{= op1.bankName}}</li>
-						<!--{{ }else if(op1.brandId){ }}
-						<li data-key="{{= op1.brandId}}">{{= op1.carBrandName}}</li>
-						{{ }else if(op1.brandId){ }}
-						<li data-key="{{= op1.brandId}}">{{= op1.name}}</li>-->
 						{{ }else{ }}
 						<li data-key="{{= op1.value}}">{{= op1.name}}</li>
 						{{ } }}

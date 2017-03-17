@@ -37,17 +37,17 @@ page.ctrl('loanInfo', function($scope) {
 				setupLocation();
 				result.data.FQXX.renewalInfo = result.data.FQXX.renewalInfo.split(',');
 				render.compile($scope.$el.$tbl, $scope.def.listTmpl, result,true);
-				if(cb && typeof cb == 'function') {
-					cb();
-				}
 				loanFinishedInput();
 				loanFinishedSelect();
 				loanFinishedCheckbox();
 				loanFinishedGps();
 				loanFinishedBxxb();
-				$(".selectOptBox").each(function(){
-					$(this).hide();
-				});
+//				$(".selectOptBox").each(function(){
+//					$(this).hide();
+//				})
+				if(cb && typeof cb == 'function') {
+					cb();
+				}
 			})
 		});
 	}
@@ -112,9 +112,9 @@ page.ctrl('loanInfo', function($scope) {
 					data: data,
 					dataType: 'json',
 					success: $http.ok(function(result) {
-						render.compile(that, $scope.def.selectOpttmpl, result.data, true);
-						var selectOptBox = $(".selectOptBox");
-						selectOptBox.attr("id",key);
+						render.compile(that, $scope.def.selectOpttmpl, result.data, function(){
+							$("#remitAccountNumberBox").find(".selectOptBox").hide();
+						}, true);
 					})
 				})
 			}	
@@ -130,12 +130,13 @@ page.ctrl('loanInfo', function($scope) {
 					if(keybank && keyname){
 						$("#bankName").val(keybank);
 						$("#accountName").val(keyname);
+						
 					}
 					var value2 = $(this).parent().parent().siblings("input").val();
 					if(!value2){
 						$(this).parent().parent().siblings(".placeholder").html("请选择")
 					}
-					$(".selectOptBox").hide();
+					$(".selectOptBox").hide()
 				}
 			});
 		});
@@ -180,10 +181,8 @@ page.ctrl('loanInfo', function($scope) {
 			
 		}
 		if(key == 'remitAccountNumber'){
-			$(this).attr("id",boxKey);
 			var data={};
 				data['carShopId'] = $("#busiSourceId").val();
-			console.log(data);
 			$.ajax({
 				url:  urlStr+"/demandCarShopAccount/getAccountList",
 				data: data,
@@ -272,17 +271,17 @@ page.ctrl('loanInfo', function($scope) {
    })
 
 //gps
-	$(document).on('click', '#isInstallGps li', function() {
+	$(document).on('click', '#isInstallGpsBox li', function() {
 		loanFinishedGps();
 	})
 	var loanFinishedGps = function(){
 		var gps = $("#gps").val();
 		if(gps != 1){
-			$("#isInstallGpsBox").removeClass("gps");
+			$("#isInstallGpsBox").removeClass("gpssel");
 			$("#gps1").hide();
 			$("#gps2").hide();
 		}else{
-			$("#isInstallGpsBox").addClass("gps");
+			$("#isInstallGpsBox").addClass("gpssel");
 			$("#gps1").show();
 			$("#gps2").show();
 		}
@@ -509,7 +508,6 @@ page.ctrl('loanInfo', function($scope) {
 		console.log($scope.$el.$tbl);
 		loadLoanList(function(){
 			setupDropDown();
-			$("#remitAccountNumber").style.display = 'none';
 		});
 	});
 
