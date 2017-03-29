@@ -3,15 +3,15 @@
 				<div class="select-search-bar clearfix">
 					<div class="search-item">
 						<span class="select-name">抵押进度：</span>
-						<div class="select select-common" data-dropdown="page.$scope['mortgageProcess'].bankPicker" data-trigger="page.$scope['mortgageProcess'].dropdownTrigger.status"></div>
+						<div class="select select-common" data-selected="全部" data-placeholder="全部" data-dropdown="page.$scope['mortgageProcess'].statusPicker" data-trigger="page.$scope['mortgageProcess'].dropdownTrigger.status"></div>
 					</div>
 					<div class="search-item">
 						<span class="select-name">经办行：</span>
-						<div class="select select-common" data-dropdown="page.$scope['mortgageProcess'].bankPicker" data-trigger="page.$scope['mortgageProcess'].dropdownTrigger.demandBank"></div>
+						<div class="select select-common" data-selected="全部" data-placeholder="全部" data-dropdown="page.$scope['mortgageProcess'].demandBankPicker" data-trigger="page.$scope['mortgageProcess'].dropdownTrigger.demandBank"></div>
 					</div>
 					<div class="search-item">
 						<div class="input-text">
-							<input type="text" autocomplete="off" id="searchInput" placeholder="订单号\借款人姓名\身份证号手机号" />
+							<input type="text" autocomplete="off" id="searchInput" placeholder="订单号\借款人姓名\身份证号\手机号" />
 						</div>
 					</div>
 					<div class="search-item">
@@ -19,7 +19,7 @@
 						<div id="search" class="button button-mini button-deep">搜索</div>
 					</div>
 					<div class="search-item">
-						<div class="checkbox checkbox-normal" id="overdue"></div>
+						<div class="checkbox checkbox-normal" data-checked="false" id="overdue"></div>
 						<span>只显示已超期记录</span>
 					</div>
 				</div>
@@ -57,7 +57,7 @@
 						<tr class="orders-item tr-odd">
 						{{ } }}
 							<td class="orders-item-data">{{=row.orderNo}}</td>
-							<td class="orders-item-data"><span>{{=row.realName}}</span><br /><span>（{{=row.idCard}}）</span></td>
+							<td class="orders-item-data">{{=row.realName}}<br />（{{=row.idCard}}）</td>
 							<td class="orders-item-data">{{=row.bankName}}</td>
 							{{ if(row.status == 0){ }}
 							<td class="orders-item-data status-wait-verify">未办理</td>
@@ -70,14 +70,14 @@
 										{{ } }} 
 							<td class="orders-item-data">{{=tool.formatDate(row.pickDate)}}</td>
 							<td class="orders-item-data">{{=tool.formatDate(row.deadline)}}</td>
-							{{ if(row.status && row.status == 2) { }}
+							{{ if(row.status == 2) { }}
 							<td class="orders-item-data">--</td>
 							{{ } else if(tool.overdue(row.pickDate, row.deadline) == "已超期") { }}
 								<td class="orders-item-data status-back">{{=tool.overdue(row.pickDate, row.deadline)}}</td>
 								{{ } else { }}
 									<td class="orders-item-data">{{=tool.overdue(row.pickDate, row.deadline)}}</td>
 									{{ } }}
-							<td class="orders-item-data"><a data-href="mortgageProcess/mortgageProcessDetail" data-id="{{=row.orderNo}}" class="button button-mini button-gray">立即处理</a></td>
+							<td class="orders-item-data"><a data-href="mortgageProcess/mortgageProcessDetail" data-order-no="{{=row.orderNo}}" data-pledge-id="{{=row.id}}" class="button button-mini button-gray">立即处理</a></td>
 						</tr>
 					{{ } }}
 				{{ } else { }}

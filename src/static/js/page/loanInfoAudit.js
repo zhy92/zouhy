@@ -4,16 +4,17 @@ page.ctrl('loanInfoAudit', function($scope) {
 		$console = $params.refer ? $($params.refer) : render.$console,
 		$source = $scope.$source = {},
 		apiParams = {};
-	var urlStr = "http://192.168.1.108:8080";
 
 	var postUrl = {
-		"saveOrderInfo": urlStr+"/loanInfoInput/updLoanOrder",
-		"saveCarInfo": urlStr+"/loanInfoInput/updLoanUserCar",
-		"saveStageInfo": urlStr+"/loanInfoInput/updLoanUserStage",
-		"saveCommonInfo": urlStr+"/loanInfoInput/updLoanUser",
-		"saveEmergencyInfo": urlStr+"/loanInfoInput/updLoanEmergencyConact",
-		"saveloanPayCardInfo": urlStr+"/loanInfoInput/updLoanPayCard",
-		"saveFYXXInfo": urlStr+"/loanInfoInput/updLoanFee",
+		"saveDDXX": urlStr+"/loanInfoInput/updLoanOrder",
+		"saveCLXX": urlStr+"/loanInfoInput/updLoanUserCar",
+		"saveFQXX": urlStr+"/loanInfoInput/updLoanUserStage",
+		"saveZJKR": urlStr+"/loanInfoInput/updLoanUser",
+		"saveGTHK": urlStr+"/loanInfoInput/updLoanUser",
+		"saveFDBR": urlStr+"/loanInfoInput/updLoanUser",
+		"saveJJLXR": urlStr+"/loanInfoInput/updLoanEmergencyConact",
+		"saveHKKXX": urlStr+"/loanInfoInput/updLoanPayCard",
+		"saveFYXX": urlStr+"/loanInfoInput/updLoanFee",
 		"saveQTXX": urlStr+"/loanInfoInput/updLoanIndividuation"
 	};
 
@@ -24,29 +25,29 @@ page.ctrl('loanInfoAudit', function($scope) {
 	*/
 	var loadLoanList = function(cb) {
 		var data={};
-			data['taskId']=80871;
-//			data['taskId']=$params.taskId;
+			 data['taskId']=$params.taskId;
+			 data['frameCode']=$params.code;
 		$.ajax({
-//			 url: $http.api('loan.infoBak'),
-			// url: $http.api('loanInfoInput/info','jbs'),
-			 url: urlStr+'/loanInfoInput/info',
+//			url: $http.api('loanInfoInput/info','jbs'),
+			url: urlStr+'/loanInfoInput/info',
 			data: data,
+			type: 'post',
 			dataType: 'json',
 			success: $http.ok(function(result) {
 				$scope.result = result;
 				setupLocation();
-				result.data.FQXX.renewalInfo = result.data.FQXX.renewalInfo.split(',');
-				render.compile($scope.$el.$tbl, $scope.def.listTmpl, result,function(){
-					console.log("xuanranmuban")
-				}, true);
-				if(cb && typeof cb == 'function') {
-					cb();
+				if(result.data.FQXX && result.data.FQXX.renewalInfo){
+					result.data.FQXX.renewalInfo = result.data.FQXX.renewalInfo.split(',');
 				}
+				render.compile($scope.$el.$tbl, $scope.def.listTmpl, result,true);
 				loanFinishedInput();
 				loanFinishedSelect();
 				loanFinishedCheckbox();
 				loanFinishedGps();
 				loanFinishedBxxb();
+				if(cb && typeof cb == 'function') {
+					cb();
+				}
 			})
 		});
 	}
@@ -73,7 +74,7 @@ page.ctrl('loanInfoAudit', function($scope) {
 		$(".info-key").each(function(){
 			var jqObj = $(this);
 			if(jqObj.has('i').length > 0){
-				$(this).siblings().find("input").addClass("required");
+				$(this).parent().siblings().find("input").addClass("required");
 			}
 			loanFinishedInputReq();
 		});
@@ -99,25 +100,24 @@ page.ctrl('loanInfoAudit', function($scope) {
 			};
 			var boxKey = key + 'Box';
 			$(this).attr("id",boxKey);
-			var data={};
-                data['code'] = key;
-		var datatype = $(this).data('type');
-		if(datatype){
-			render.compile(that, $scope.def.selectOpttmpl, dataMap[key], true);
-		}
-//		else{
-//			$.ajax({
-//				url: urlApiMap[key],
-//				data: data,
-//				dataType: 'json',
-//				success: $http.ok(function(result) {
-//					render.compile(that, $scope.def.selectOpttmpl, result.data, true);
-//					$source.selectType = result.data;
-//					var selectOptBox = $(".selectOptBox");
-//					selectOptBox.attr("id",key);
-//				})
-//			})
-//		}	
+			var datatype = $(this).data('type');
+			if(datatype){
+				render.compile(that, $scope.def.selectOpttmpl, dataMap[key], true);
+			}
+			if(key == 'remitAccountNumber'){
+				var data={};
+					data['carShopId'] = $("#busiSourceId").val();
+				$.ajax({
+					url: urlStr+"/demandCarShopAccount/getAccountList",
+					data: data,
+					dataType: 'json',
+					success: $http.ok(function(result) {
+						render.compile(that, $scope.def.selectOpttmpl, result.data, function(){
+							$("#remitAccountNumberBox").find(".selectOptBox").hide();
+						}, true);
+					})
+				})
+			}	
 			var value1 = $("input",$(this)).val();
 			$("li",$(this)).each(function(){
 				var val = $(this).data('key');
@@ -130,38 +130,147 @@ page.ctrl('loanInfoAudit', function($scope) {
 					if(keybank && keyname){
 						$("#bankName").val(keybank);
 						$("#accountName").val(keyname);
+						
 					}
 					var value2 = $(this).parent().parent().siblings("input").val();
 					if(!value2){
 						$(this).parent().parent().siblings(".placeholder").html("请选择")
 					}
-					$(".selectOptBox").hide(); 
+					$(".selectOptBox").hide()
 				}
-			})
+			});
 		});
 	}
 	
-//模糊搜索
-	$(document).on('input','.searchInp', function() {
-		var that = $(this).parent().siblings("div");
-		var key = $(this).data('key');
-		var boxKey = key + 'Box';
-		$(this).attr("id",boxKey);
-		var data={};
-            data['keyword'] = $(this).val();
-		$.ajax({
-			url: urlApiMap[key],
-			data: data,
-			dataType: 'json',
-			success: $http.ok(function(result) {
-				render.compile(that, $scope.def.selectOpttmpl, result.data, true);
-//				$source.selectType = result.data;
-				var selectOptBox = $(".selectOptBox");
-				that.find('.selectOptBox').show();
-				selectOptBox.attr("id",key);
+	
+	
+	/**
+	* 绑定立即处理事件
+	*/
+	var keyType;
+	var setupEvt = function($el) {
+//		$console.find('.select').on('click', function() {
+//			var keyType = $(this).data('key');
+//			console.log(keyType);
+//		});
+		// 提交
+		$console.find('#submitOrder').on('click', function() {
+			console.log("提交订单");
+			var that = $(this);
+			// if( ) {
+			// 	//判断必填项是否填全
+			// } else {
+
+			// }
+			// 流程跳转
+			var params = {
+				taskIds: [$params.taskId],
+				orderNo: $params.orderNo
+			}
+			console.log(params)
+			$.ajax({
+				type: 'post',
+				url: $http.api('tasks/complete', 'zyj'),
+				data: JSON.stringify(params),
+				dataType: 'json',
+				contentType: 'application/json;charset=utf-8',
+				success: $http.ok(function(result) {
+					console.log(result);
+					var loanTasks = result.data;
+					var taskObj = [];
+					for(var i = 0, len = loanTasks.length; i < len; i++) {
+						var obj = loanTasks[i];
+						taskObj.push({
+							key: obj.category,
+							id: obj.id,
+							name: obj.sceneName
+						})
+					}
+					// target为即将跳转任务列表的第一个任务
+					var target = loanTasks[0];
+					router.render('loanProcess/' + target.category, {
+						taskId: target.id, 
+						orderNo: target.orderNo,
+						tasks: taskObj,
+						path: 'loanProcess'
+					});
+					// router.render('loanProcess');
+					// toast.hide();
+				})
 			})
+
+			//下面为周海洋提交接口
+			/*
+			$.confirm({
+				title: '提交',
+				content: dialogTml.wContent.suggestion,
+				useBootstrap: false,
+				boxWidth: '500px',
+				theme: 'light',
+				type: 'purple',
+				buttons: {
+					'取消': {
+			            action: function () {
+
+			            }
+			        },
+			        '确定': {
+			            action: function () {
+	            			var _reason = $('#suggestion').val();
+	            			console.log(_reason);
+	            			if(!_reason) {
+	            				$.alert({
+	            					title: '提示',
+									content: '<div class="w-content"><div>请填写处理意见！</div></div>',
+									useBootstrap: false,
+									boxWidth: '500px',
+									theme: 'light',
+									type: 'purple',
+									buttons: {
+										'确定': {
+								            action: function () {
+								            }
+								        }
+								    }
+	            				})
+	            				return false;
+	            			} else {
+	            				$.ajax({
+									type: 'post',
+//									url: urlStr+'/loanInfoInput/submit/'+$params.taskId,
+									url: urlStr+'/loanInfoInput/submit/80871',
+//									data: {
+//										taskId: $params.taskId,
+//										orderNo: $params.orderNo,
+//										reason: _reason
+//									},
+									dataType: 'json',
+									success: $http.ok(function(xhr) {
+										console.log(xhr);
+									})
+								})
+	            				$.ajax({
+									type: 'post',
+									url: $http.api('task/complete', 'jbs'),
+									data: {
+										taskId: $params.taskId,
+										orderNo: $params.orderNo,
+										reason: _reason
+									},
+									dataType: 'json',
+									success: $http.ok(function(result) {
+										console.log(result);
+									})
+								})
+	            			}
+			            }
+			        }
+			    }
+			})
+			*/
 		})
-	})
+	}		
+	
 //点击下拉框拉取选项
 	$(document).on('click','.selecter', function() {
 		var that =$("div",$(this));
@@ -179,41 +288,30 @@ page.ctrl('loanInfoAudit', function($scope) {
 			console.log(selectOptBox);
 			
 		}
-//		else{
-//			if(inputSearch){
-//				inputSearch.show();
-//			}
-//			$(this).attr("id",boxKey);
-//			var data={};
-//			if(key == 'remitAccountNumber'){
-//				data['carShopId'] = $("#busiSourceId").val();
-//			}else{
-//				data['code'] = key;
-//			}
-//			console.log(data);
-//			$.ajax({
-//				url: urlApiMap[key],
-//				data: data,
-//				dataType: 'json',
-//				success: $http.ok(function(result) {
-//					render.compile(that, $scope.def.selectOpttmpl, result.data, true);
-//					console.log(result.data);
-//					$source.selectType = result.data;
-//					var selectOptBox = $(".selectOptBox");
-//					selectOptBox.attr("id",key);
-//				})
-//			})
-//		}
+		if(key == 'remitAccountNumber'){
+			var data={};
+				data['carShopId'] = $("#busiSourceId").val();
+			$.ajax({
+				url:  urlStr+"/demandCarShopAccount/getAccountList",
+				data: data,
+				dataType: 'json',
+				success: $http.ok(function(result) {
+					render.compile(that, $scope.def.selectOpttmpl, result.data, true);
+					console.log(result.data);
+					var selectOptBox = $(".selectOptBox");
+					selectOptBox.attr("id",key);
+				})
+			})
+		}
 	})
-//
-//	$(document).on('click', '#remitAccountNumber li', function() {
-//		var keyvalue = $(this).data('key');
-//		var keybank = $(this).data('bank');
-//		var keyname = $(this).data('name');
-//		console.log(keyvalue);
-//		$("#bankName").val(keybank);
-//		$("#accountName").val(keyname);
-//	})
+	$(document).on('click', '#remitAccountNumber li', function() {
+		var keyvalue = $(this).data('key');
+		var keybank = $(this).data('bank');
+		var keyname = $(this).data('name');
+		console.log(keyvalue);
+		$("#bankName").val(keybank);
+		$("#accountName").val(keyname);
+	})
 //点击本地常驻类型复选框
 	$(document).on('click', '.checkbox', function() {
 		returnCheckboxVal();
@@ -281,17 +379,17 @@ page.ctrl('loanInfoAudit', function($scope) {
    })
 
 //gps
-	$(document).on('click', '#isInstallGps li', function() {
+	$(document).on('click', '#isInstallGpsBox li', function() {
 		loanFinishedGps();
 	})
 	var loanFinishedGps = function(){
 		var gps = $("#gps").val();
 		if(gps != 1){
-			$("#isInstallGpsBox").removeClass("gps");
+			$("#isInstallGpsBox").removeClass("gpssel");
 			$("#gps1").hide();
 			$("#gps2").hide();
 		}else{
-			$("#isInstallGpsBox").addClass("gps");
+			$("#isInstallGpsBox").addClass("gpssel");
 			$("#gps1").show();
 			$("#gps2").show();
 		}
@@ -313,99 +411,104 @@ page.ctrl('loanInfoAudit', function($scope) {
 					$(this).hide()
 				}
 			})
+			loanFinishedrepay();
 		}
 	}
 	
-//保险续保及还款期限联动
+//日期选择
 	$(document).on('click', '.dateBtn', function() {
 		$('#loaningDate').datepicker();
 	})
 	
 
 //保险续保及还款期限联动
-	$(document).on('click', '#repaymentTermBox li', function() {
-		loanFinishedrepay();
-	})
+//	$(document).on('click', '.repaymentTermBox .select-box .select-area li', function() {
+//		loanFinishedrepay();
+//	})
 	var loanFinishedrepay = function(){
 		var bxxbInput = $("#repayPeriod").val();
 		var bxxbLength = Math.ceil(bxxbInput/12);
-		console.log(bxxbLength);
-		$(".bxxbyearIpt").each(function(){
-			$(this).val('');
-			$(this).siblings('.placeholder').html("请选择");
-			$(this).parent().parent().hide();
-		});
-		
-		if(bxxbLength == 1){
-			$("#year1").show();
-			$("#year1").find('input').val(1);
-			$("#year1").find('.placeholder').html("单位承保");
-		}else if(bxxbLength == 2){
-			$("#year1").show();
-			$("#year2").show();
-			$("#year1").find('input').val(1);
-			$("#year1").find('.placeholder').html("单位承保");
-			$("#year2").find('input').val(1);
-			$("#year2").find('.placeholder').html("单位承保");
-		}else if(bxxbLength == 3){
-			$("#year1").show();
-			$("#year2").show();
-			$("#year3").show();
-			$("#year1").find('input').val(1);
-			$("#year1").find('.placeholder').html("单位承保");
-			$("#year2").find('input').val(1);
-			$("#year2").find('.placeholder').html("单位承保");
-			$("#year3").find('input').val(1);
-			$("#year3").find('.placeholder').html("单位承保");
-		}else if(bxxbLength == 4){
-			$("#year1").show();
-			$("#year2").show();
-			$("#year3").show();
-			$("#year4").show();
-			$("#year1").find('input').val(1);
-			$("#year1").find('.placeholder').html("单位承保");
-			$("#year2").find('input').val(1);
-			$("#year2").find('.placeholder').html("单位承保");
-			$("#year3").find('input').val(1);
-			$("#year3").find('.placeholder').html("单位承保");
-			$("#year4").find('input').val(1);
-			$("#year4").find('.placeholder').html("单位承保");
-		}else if(bxxbLength == 5){
-			$("#year1").show();
-			$("#year2").show();
-			$("#year3").show();
-			$("#year4").show();
-			$("#year5").show();
-			$("#year1").find('input').val(1);
-			$("#year1").find('.placeholder').html("单位承保");
-			$("#year2").find('input').val(1);
-			$("#year2").find('.placeholder').html("单位承保");
-			$("#year3").find('input').val(1);
-			$("#year3").find('.placeholder').html("单位承保");
-			$("#year4").find('input').val(1);
-			$("#year4").find('.placeholder').html("单位承保");
-			$("#year5").find('input').val(1);
-			$("#year5").find('.placeholder').html("单位承保");
+		var bxxbInputShow = $("#bxxbInput").val();
+		if(bxxbInputShow != 1){
+			$(".bxxbYear").hide();
 		}else{
-			$("#year1").show();
-			$("#year2").show();
-			$("#year3").show();
-			$("#year4").show();
-			$("#year5").show();
-			$("#year6").show();
-			$("#year1").find('input').val(1);
-			$("#year1").find('.placeholder').html("单位承保");
-			$("#year2").find('input').val(1);
-			$("#year2").find('.placeholder').html("单位承保");
-			$("#year3").find('input').val(1);
-			$("#year3").find('.placeholder').html("单位承保");
-			$("#year4").find('input').val(1);
-			$("#year4").find('.placeholder').html("单位承保");
-			$("#year5").find('input').val(1);
-			$("#year5").find('.placeholder').html("单位承保");
-			$("#year6").find('input').val(1);
-			$("#year6").find('.placeholder').html("单位承保");
-		}
+			$(".bxxbyearIpt").each(function(){
+				$(this).val('');
+				$(this).siblings('.placeholder').html("请选择");
+				$(this).parent().parent().hide();
+			});
+			
+			if(bxxbLength == 1){
+				$("#year1").show();
+				$("#year1").find('input').val(1);
+				$("#year1").find('.placeholder').html("单位承保");
+			}else if(bxxbLength == 2){
+				$("#year1").show();
+				$("#year2").show();
+				$("#year1").find('input').val(1);
+				$("#year1").find('.placeholder').html("单位承保");
+				$("#year2").find('input').val(1);
+				$("#year2").find('.placeholder').html("单位承保");
+			}else if(bxxbLength == 3){
+				$("#year1").show();
+				$("#year2").show();
+				$("#year3").show();
+				$("#year1").find('input').val(1);
+				$("#year1").find('.placeholder').html("单位承保");
+				$("#year2").find('input').val(1);
+				$("#year2").find('.placeholder').html("单位承保");
+				$("#year3").find('input').val(1);
+				$("#year3").find('.placeholder').html("单位承保");
+			}else if(bxxbLength == 4){
+				$("#year1").show();
+				$("#year2").show();
+				$("#year3").show();
+				$("#year4").show();
+				$("#year1").find('input').val(1);
+				$("#year1").find('.placeholder').html("单位承保");
+				$("#year2").find('input').val(1);
+				$("#year2").find('.placeholder').html("单位承保");
+				$("#year3").find('input').val(1);
+				$("#year3").find('.placeholder').html("单位承保");
+				$("#year4").find('input').val(1);
+				$("#year4").find('.placeholder').html("单位承保");
+			}else if(bxxbLength == 5){
+				$("#year1").show();
+				$("#year2").show();
+				$("#year3").show();
+				$("#year4").show();
+				$("#year5").show();
+				$("#year1").find('input').val(1);
+				$("#year1").find('.placeholder').html("单位承保");
+				$("#year2").find('input').val(1);
+				$("#year2").find('.placeholder').html("单位承保");
+				$("#year3").find('input').val(1);
+				$("#year3").find('.placeholder').html("单位承保");
+				$("#year4").find('input').val(1);
+				$("#year4").find('.placeholder').html("单位承保");
+				$("#year5").find('input').val(1);
+				$("#year5").find('.placeholder').html("单位承保");
+			}else{
+				$("#year1").show();
+				$("#year2").show();
+				$("#year3").show();
+				$("#year4").show();
+				$("#year5").show();
+				$("#year6").show();
+				$("#year1").find('input').val(1);
+				$("#year1").find('.placeholder').html("单位承保");
+				$("#year2").find('input').val(1);
+				$("#year2").find('.placeholder').html("单位承保");
+				$("#year3").find('input').val(1);
+				$("#year3").find('.placeholder').html("单位承保");
+				$("#year4").find('input').val(1);
+				$("#year4").find('.placeholder').html("单位承保");
+				$("#year5").find('input').val(1);
+				$("#year5").find('.placeholder').html("单位承保");
+				$("#year6").find('input').val(1);
+				$("#year6").find('.placeholder').html("单位承保");
+			}
+		}	
 	}
 	
 	
@@ -423,6 +526,7 @@ page.ctrl('loanInfoAudit', function($scope) {
 	*/
 	$(document).on('click', '.saveBtn', function() {
 		var isTure = true;
+		var btnType = $(this).data('type');
 		var requireList = $(this).parent().parent().siblings().find("form").find(".required");
 		requireList.each(function(){
 			var value = $(this).val();
@@ -454,6 +558,7 @@ page.ctrl('loanInfoAudit', function($scope) {
 	        if(formList.length == 1){
 		        var params = formList.serialize();
 	            params = decodeURIComponent(params,true);
+//	            params = decodeURI(params,true);
 	            var paramArray = params.split("&");
 	            var data1 = {};
 	            for(var i=0;i<paramArray.length;i++){
@@ -476,59 +581,34 @@ page.ctrl('loanInfoAudit', function($scope) {
 					data[index]=data1;
 		        })
 	        }
-	        console.log(data);
-	        
-			$.ajax({
-				type: 'POST',
-				url: postUrl[key],
-				data:JSON.stringify(data),
-				dataType:"json",
-				contentType : 'application/json;charset=utf-8',
-				success: function(result){
-					console.log(result.msg);
-				}
-			});
+	        var dataPost;
+	        if(btnType){
+	        	dataPost = JSON.stringify(data);
+				$.ajax({
+					type: 'POST',
+					url: postUrl[key],
+					data:dataPost,
+					dataType:"json",
+					contentType : 'application/json;charset=utf-8',
+					success: function(result){
+						console.log(result.msg);
+					}
+				});
+	        }else{
+	        	dataPost = data;
+				$.ajax({
+					type: 'POST',
+					url: postUrl[key],
+					data:dataPost,
+					dataType:"json",
+					success: function(result){
+						console.log(result.msg);
+					}
+				});
+	        }
 		}
 	})
-	
-	/***
-	* 加载页面模板
-	*/
-//	$console.load(router.template('iframe/loanInfo'), function() {
-//		$scope.def.listTmpl = $console.find('#loanlisttmpl').html();
-//		$scope.def.selectOpttmpl = $console.find('#selectOpttmpl').html();
-//		$scope.$el = {
-//			$tbl: $console.find('#loanInfoTable')
-//		}
-//		loadLoanList(apiParams);
-//		setupDropDown();
-//	})
-	
-	$console.load(router.template('iframe/loanInfoAudit'), function() {
-		$scope.def.listTmpl = render.$console.find('#loanlisttmpl').html();
-		$scope.def.selectOpttmpl = $console.find('#selectOpttmpl').html();
-		$scope.$el = {
-			$tbl: $console.find('#loanAudit')
-		}
-		console.log($scope.$el.$tbl);
-		loadLoanList(function(){
-			console.log('zhixing');
-			setupDropDown();
-//			dropLoaded();
-		});
-		
-		
-	});
 
-//var dropLoaded= function(){
-//	$(".select").each(function(){
-//		var selectedV = $(this).data("selected");
-//		if(selectedV){
-//			$(this).;
-//		}
-//	})
-//}
-	
 	$scope.areaPicker = function(picked) {
 		console.log(picked);
 	}
@@ -543,7 +623,7 @@ page.ctrl('loanInfoAudit', function($scope) {
 	}
 	$scope.busiSourceNamePicker = function(picked) {
 		console.log(picked);
-		$scope.busiSourceNameId = picked.id
+		$scope.busiSourceNameId = picked.id;
 	}
 	$scope.remitAccountNumberPicker = function(picked) {
 		console.log(picked);
@@ -555,6 +635,8 @@ page.ctrl('loanInfoAudit', function($scope) {
 	}
 	$scope.repaymentTermPicker = function(picked) {
 		console.log(picked);
+		$("#repayPeriod").val(picked.id);
+		loanFinishedrepay();
 	}
 	$scope.carPicker = function(picked) {
 		console.log(picked);
@@ -570,7 +652,7 @@ page.ctrl('loanInfoAudit', function($scope) {
 	var car = {
 		brand: function(cb) {
 			$.ajax({
-				url: 'http://localhost:8083/mock/carBrandlist',
+				url: urlStr+'/car/carBrandList',
 				success: function(xhr) {
 					var sourceData = {
 						items: xhr.data,
@@ -583,8 +665,10 @@ page.ctrl('loanInfoAudit', function($scope) {
 		},
 		series: function(brandId, cb) {
 			$.ajax({
-				url: 'http://localhost:8083/mock/carSeries',
-				data: {brandId: brandId},
+				url: urlStr+'/car/carSeries',
+				data: {
+					brandId: brandId
+				},
 				success: function(xhr) {
 					var sourceData = {
 						items: xhr.data,
@@ -597,7 +681,7 @@ page.ctrl('loanInfoAudit', function($scope) {
 		},
 		specs: function(seriesId, cb) {
 			$.ajax({
-				url: 'http://localhost:8083/mock/carSpecs',
+				url: urlStr+'/car/carSpecs',
 				data: {
 					serieId: seriesId
 				},
@@ -624,7 +708,6 @@ page.ctrl('loanInfoAudit', function($scope) {
 						id: 'areaId',
 						name: 'name'
 					};
-					console.log('省：'+sourceData);
 					cb(sourceData);
 				}
 			})
@@ -659,7 +742,6 @@ page.ctrl('loanInfoAudit', function($scope) {
 						id: 'areaId',
 						name: 'name'
 					};
-
 					cb(sourceData);
 				}
 			})
@@ -705,64 +787,31 @@ page.ctrl('loanInfoAudit', function($scope) {
 					break;
 			}
 		},
-		serviceType: function(t, p, cb) {
-			$.ajax({
-				url: urlStr+'/loanConfigure/getItem',
-				data:{
-					'code':'serviceType'
-				},
-				dataType: 'json',
-				success: $http.ok(function(xhr) {
-					var sourceData = {
-						items: xhr.data,
-						id: 'value',
-						name: 'name'
-					};
-					cb(sourceData);
-				})
-			})
-		}
-		,
-		brand: function(t, p, cb) {
-			$.ajax({
-				url: urlStr+"/demandBank/selectBank",
-				data:{
-					'code':'brand'
-				},
-				dataType: 'json',
-				success: $http.ok(function(xhr) {
-					var sourceData = {
-						items: xhr.data,
-						id: 'bankId',
-						name: 'bankName'
-					};
-					cb(sourceData);
-				})
-			})
+		selfPicker: function(t, p, cb) {
+			var keyType = this.$el.data('key');
+			var sourceData = {
+				items: dataMap[keyType],
+				id: 'value',
+				name: 'name'
+			};
+			cb(sourceData);
 		},
-		busiSourceType: function(t, p, cb) {
+		postPicker: function(t, p, cb) {
+			var keyType = this.$el.data('key');
+			var data={};
+			if(keyType == 'busiSourceTypeCode'){
+				data['code']='serviceType';
+			}else if(keyType == 'businessModel'){
+				data['code']='busimode';
+			}else if(keyType == 'repayPeriod'){
+				data['code']='repaymentTerm';
+			}else{	
+				data['code']=keyType;
+			}
+			
 			$.ajax({
-				url: urlStr+"/loanConfigure/getItem",
-				data:{
-					'code':'busiSourceType'
-				},
-				dataType: 'json',
-				success: $http.ok(function(xhr) {
-					var sourceData = {
-						items: xhr.data,
-						id: 'value',
-						name: 'name'
-					};
-					cb(sourceData);
-				})
-			})
-		},
-		busiSourceName: function(t, p, cb) {
-			$.ajax({
-				url: urlStr+"/carshop/list",
-				data:{
-					'code':'busiSourceName'
-				},
+				url: urlApiMap[keyType],
+				data:data,
 				dataType: 'json',
 				success: $http.ok(function(xhr) {
 					var sourceData = {
@@ -799,42 +848,37 @@ page.ctrl('loanInfoAudit', function($scope) {
 				})
 			}
 		},
-		busimode: function(t, p, cb) {
+		demandBankId: function(t, p, cb) {
 			$.ajax({
-				url: urlStr+"/loanConfigure/getItem",
-				data:{
-					'code':'busimode'
-				},
+				url: urlStr+"/demandBank/selectBank",
+//				data:{
+//					'code':'busimode'
+//				},
 				dataType: 'json',
 				success: $http.ok(function(xhr) {
 					var sourceData = {
 						items: xhr.data,
-						id: 'value',
-						name: 'name'
-					};
-					cb(sourceData);
-				})
-			})
-		},
-		repaymentTerm: function(t, p, cb) {
-			$.ajax({
-				url: urlStr+"/loanConfigure/getItem",
-				data:{
-					'code':'repaymentTerm'
-				},
-				dataType: 'json',
-				success: $http.ok(function(xhr) {
-					var sourceData = {
-						items: xhr.data,
-						id: 'value',
-						name: 'name'
+						id: 'bankId',
+						name: 'bankName'
 					};
 					cb(sourceData);
 				})
 			})
 		}
 	}
-
+	
+	$console.load(router.template('iframe/loanInfoAudit'), function() {
+		$scope.def.listTmpl = render.$console.find('#loanlisttmpl').html();
+		$scope.def.selectOpttmpl = $console.find('#selectOpttmpl').html();
+		$scope.$el = {
+			$tbl: $console.find('#loanAudit')
+		}
+		loadLoanList(function(){
+			console.log('zhixing');
+			setupDropDown();
+		});
+	});
+	
 	
 	
 	

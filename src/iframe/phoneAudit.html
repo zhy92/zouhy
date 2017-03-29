@@ -39,8 +39,7 @@
 			
 			
 			<script type="text/x-dot-template" id="eleChecktmpl">
-				
-				<div class="panel panel-loan panel-detail">
+				<div class="panel panel-loan">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
@@ -79,13 +78,12 @@
 					</div>
 				</div>
 				
-				
-				<div class="panel panel-loan panel-detail">
+				<div class="panel panel-loan">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
 							<span class="panel-title-name">必问问题</span>
-							<div class="button button-mini-nowidth saveBtn" data-key="saveOrderInfo">
+							<div class="button button-mini saveBtn" data-key="saveOrderInfo">
 								保存
 							</div>
 						</div>
@@ -121,12 +119,12 @@
 									<span class="info-value info-value-long">
 									{{if(row.answer){ }}
 										<!--<textarea name="editInfo" rows="4" value="{{= row.editInfo}}"></textarea>-->
-										<div class="textArea" contenteditable="true">{{= row.editInfo}}</div>
+										<div class="textArea" contenteditable="true">{{= row.remark}}</div>
 									{{ }else{ }}
 										<!--<textarea name="editInfo" rows="4"></textarea>-->
 										<div class="textArea" contenteditable="true"></div>
 									{{ } }}
-										<input type="hidden" name="editInfo" value="{{= row.editInfo}}" />
+										<input type="hidden" name="editInfo" value="{{= row.remark}}" />
 									</span>
 								</div>
 							</div>
@@ -138,14 +136,12 @@
 						</div>
 					</div>
 				</div>
-				
-				
-				<div class="panel panel-loan panel-detail">
+				<div class="panel panel-loan">
 					<div class="panel-title-box">
 						<div class="panel-title">
 							<i class="iconfont">&#xe626;</i>
 							<span class="panel-title-name">选问问题</span>
-							<div class="button button-mini-nowidth saveBtn" data-key="saveOrderInfo">
+							<div class="button button-mini saveBtn" data-key="saveOrderInfo">
 								保存
 							</div>
 						</div>
@@ -180,13 +176,13 @@
 									<span class="info-key">备注：</span>
 									<span class="info-value info-value-long">
 									{{if(role.answer){ }}
-										<div class="textArea" contenteditable="true">{{= role.editInfo}}</div>
+										<div class="textArea" contenteditable="true">{{= role.remark}}</div>
 										<!--<textarea name="editInfo" rows="4" value="{{= role.editInfo}}"></textarea>-->
 									{{ }else{ }}
 										<!--<textarea name="editInfo" rows="4"></textarea>-->
 										<div class="textArea" contenteditable="true"></div>
 									{{ } }}	
-										<input type="hidden" name="editInfo" value="{{= row.editInfo}}" />
+										<input type="hidden" name="editInfo" value="{{= row.remark}}" />
 									</span>
 								</div>
 							</div>

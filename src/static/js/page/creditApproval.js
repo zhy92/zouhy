@@ -4,6 +4,7 @@ page.ctrl('creditApproval', [], function($scope) {
 		$params = $scope.$params;
 	$scope.tabs = {};
 	$scope.idx = 0;
+	$scope.apiParams = [];
 
 	/**
 	* 设置面包屑
@@ -13,9 +14,9 @@ page.ctrl('creditApproval', [], function($scope) {
 		var $location = $console.find('#location');
 		$location.data({
 			backspace: $scope.$params.path,
-			loanUser: $scope.result.data[0][0].userName,
+			loanUser: $scope.result.data.loanTask.loanOrder.realName,
 			current: '征信预审核',
-			orderDate: '2017-12-12 12:12'
+			orderDate: $scope.result.data.loanTask.createDateStr
 		});
 		$location.location();
 	}
@@ -31,7 +32,7 @@ page.ctrl('creditApproval', [], function($scope) {
 			type: 'post',
 			url: $http.api('creditUser/getCreditInfo', 'jbs'),
 			data: {
-				taskId: 80878,
+				taskId: $params.taskId,
 				frameCode: 'T0061'
 			},
 			dataType: 'json',
@@ -39,16 +40,15 @@ page.ctrl('creditApproval', [], function($scope) {
 				console.log(result);
 				result.index = idx;
 				$scope.result = result;
-
+				$scope.result.editable = 0;
+				console.log($scope.result)
 				// 编译tab栏
 				setupTab($scope.result, function() {
 					setupTabEvt();
 				});
 
 				// 编译tab项对应内容
-				setupCreditPanel(idx, $scope.result, function() {
-					setupEvt();
-				});
+				setupCreditPanel(idx, $scope.result);
 
 				if(cb && typeof cb == 'function') {
 					cb();
@@ -56,6 +56,7 @@ page.ctrl('creditApproval', [], function($scope) {
 			})
 		})
 	}
+
 
 	/**
 	 * 渲染tab栏
@@ -84,7 +85,9 @@ page.ctrl('creditApproval', [], function($scope) {
 		// 编译对应idx的tab项内容，将目标编译tab项内容页显示，隐藏其他tab项内容
 		var _tabTrigger = $scope.$el.$tbls.eq(idx);
 		$scope.tabs[idx] = _tabTrigger;
-		render.compile(_tabTrigger, $scope.def.listTmpl, result, true);
+		render.compile(_tabTrigger, $scope.def.listTmpl, result, function() {
+			setupEvt(_tabTrigger);
+		}, true);
 		for(var i = 0, len = $scope.$el.$tbls.length; i < len; i++) {
 			if(i == idx) {
 				$scope.$el.$tbls.eq(i).show();
@@ -112,7 +115,7 @@ page.ctrl('creditApproval', [], function($scope) {
 				$scope.tabs[_type] = _tabTrigger;
 				$scope.result.index = _type;
 				render.compile(_tabTrigger, $scope.def.listTmpl, $scope.result, function() {
-					setupEvt();
+					setupEvt(_tabTrigger);
 				}, true);
 			}
 			$scope.$el.$tabs.eq($scope.idx).removeClass('role-item-active');
@@ -120,97 +123,286 @@ page.ctrl('creditApproval', [], function($scope) {
 			$scope.$el.$tbls.eq($scope.idx).hide();
 			$scope.$el.$tbls.eq(_type).show();
 			$scope.idx = _type;
-			$console.find('.uploadEvt').imgUpload();
-		})
-	}
-
-	var pdfCb = function(res, file, cb) {
-		if(!res) {
-			throw "can not get the license";
-		}
-		console.log(res);
-		// var suffix = file.name.substr(file.name.lastIndexOf('.'));
-		var key = res.dir + 'credit-report-file/' + file.name;
-		var fd = new FormData();
-		fd.append('OSSAccessKeyId', res.accessId);
-		fd.append('policy', res.policy);
-		fd.append('Signature', res.signature);
-		fd.append('key', key);
-		fd.append('file', file, file.name);
-		fd.append('success_action_status', 200);
-		$.ajax({
-			url: res.host,
-			data: fd,
-			type: 'post',
-			processData: false,
-			dataType: 'xml',
-			contentType: false,
-			success: function(response) {
-				// var _url = res.host + '/' + fd.get('key');
-				var _name = fd.get('key');
-				_name = _name.substr(_name.lastIndexOf('/') + 1);
-				if(cb && typeof cb == 'function') {
-					cb(_name);
-				}
-
-			}
 		})
 	}
 
 	/**
 	* 绑定立即处理事件
 	*/
-	var setupEvt = function() {
-		// 上传pdf文件
-		$console.find('.pdfUpload').on('change', function() {
-			var tml = '<div class="panel-value-item">\
-							<div class="input-text">\
-								<input type="text" value="{0}" readonly="true" />\
-							</div>\
-						</div>',
-				that = $(this),
-				$parent = that.parent().parent(),
-				file = this.files[0];
-			$.ajax({
-				url: 'http://112.74.99.75:8089/oss/video/sign',
-				dataType: 'json'
-			}).done(function(response) {
-				if(!response.code) {
-					pdfCb(response.data, file, function(reportName) {
-						console.log(reportName)
-						console.log(that.data('value'));
-						if(!that.data('value')) {
-							$parent.before(tml.format(reportName));
-							that.prev().html('重新上传');
-							that.data('value', true);
-						} else {
-							$parent.before(tml.format(reportName));
-						}
-					});
-				} else {
-					pdfCb(false, file);
-				}
-				
-			});
-			
-		});
-
-		$console.find('.uploadEvt').imgUpload();
+	var setupEvt = function($el) {
+		$el.find('.uploadEvt').imgUpload();
 	}
 
 	/**
 	* 页面首次加载绑定立即处理事件
 	*/
 	var evt = function() {
-		$console.find('#submitOrders').on('click', function() {
+		/**
+		 * 订单退回的条件选项分割
+		 */
+		var taskJumps = $scope.result.data.loanTask.taskJumps;
+		for(var i = 0, len = taskJumps.length; i < len; i++) {
+			taskJumps[i].jumpReason = taskJumps[i].jumpReason.split(',');
+		}
 
+		/**
+		 * 退回订单按钮
+		 */
+		$console.find('#backOrder').on('click', function() {
+			var that = $(this);
+			console.log($scope.result.data.loanTask.taskJumps)
+			$.alert({
+				title: '退回订单',
+				content: doT.template(dialogTml.wContent.back)($scope.result.data.loanTask.taskJumps),
+				onContentReady: function() {
+					dialogEvt(this.$content);
+				},
+				buttons: {
+					close: {
+						text: '取消',
+						btnClass: 'btn-default btn-cancel'
+					},
+					ok: {
+						text: '确定',
+						action: function () {
+							var _reason = $.trim(this.$content.find('#suggestion').val());
+							this.$content.find('.checkbox-radio').each(function() {
+								if($(this).hasClass('checked')) {
+									$scope.jumpId = $(this).data('id');
+								}
+							})
+
+							if(!_reason) {
+								$.alert({
+									title: '提示',
+									content: tool.alert('请填写处理意见！'),
+									buttons: {
+										ok: {
+											text: '确定',
+											action: function() {
+											}
+										}
+									}
+								});
+								return false;
+							} 
+							if(!$scope.jumpId) {
+								$.alert({
+									title: '提示',
+									content: tool.alert('请至少选择一项原因！'),
+									buttons: {
+										ok: {
+											text: '确定',
+											action: function() {
+											}
+										}
+									}
+								});
+								return false;
+							}
+							var _params = {
+								taskId: $params.taskId,
+								jumpId: $scope.jumpId,
+								reason: _reason
+							}
+							console.log(_params)
+							$.ajax({
+								type: 'post',
+								url: $http.api('task/jump', 'zyj'),
+								data: _params,
+								dataType: 'json',
+								success: $http.ok(function(result) {
+									console.log(result);
+									
+									// router.render('loanProcess');
+									// toast.hide();
+								})
+							})
+						}
+					}
+				}
+			})
+		});
+
+		/**
+		 * 拒绝受理（取消订单）按钮
+		 */
+		$console.find('#rejectOrder').on('click', function() {
+			$.confirm({
+				title: '拒绝受理',
+				content: dialogTml.wContent.suggestion,
+				buttons: {
+					'取消': {
+			            action: function () {}
+			        },
+			        '确定': {
+			            action: function () {
+	            			var _reason = $.trim(this.$content.find('#suggestion').val());
+            				if(!_reason) {
+								$.alert({
+									title: '提示',
+									content: tool.alert('请填写处理意见！'),
+									buttons: {
+										ok: {
+											text: '确定',
+											action: function() {
+											}
+										}
+									}
+								});
+								return false;
+							} 
+							$.ajax({
+								type: 'post',
+								url: $http.api('loanOrder/terminate', 'zyj'),
+								data: {
+									orderNo: $params.orderNo,
+									reason: _reason
+								},
+								dataType: 'json',
+								success: $http.ok(function(result) {
+									console.log(result);
+									router.render('loanProcess');
+									// toast.hide();
+								})
+							})
+			            }
+			        }
+			        
+			    }
+			});
+		})
+
+		/**
+		 * 审核通过按钮
+		 */
+		$console.find('#approvalPass').on('click', function() {
+			var that = $(this);
+			$.confirm({
+				title: '提交',
+				content: dialogTml.wContent.suggestion,
+				onContentReady: function() {
+					this.$content.find('#suggestion').val('#审核通过#');
+				},
+				buttons: {
+					'取消': {
+			            action: function () {
+
+			            }
+			        },
+			        '确定': {
+			            action: function () {
+	            			var _reason = $.trim(this.$content.find('#suggestion').val());
+	            			console.log(_reason);
+            				// 流程跳转
+            				var params = {
+								taskIds: [$params.taskId],
+								orderNo: $params.orderNo
+							}
+            				if(_reason) {
+            					params.reason = _reason;
+            				}
+							console.log(params)
+							$.ajax({
+								type: 'post',
+								url: $http.api('tasks/complete', 'zyj'),
+								data: JSON.stringify(params),
+								dataType: 'json',
+								contentType: 'application/json;charset=utf-8',
+								success: $http.ok(function(result) {
+									console.log(result);
+									var loanTasks = result.data;
+									var taskObj = [];
+									for(var i = 0, len = loanTasks.length; i < len; i++) {
+										var obj = loanTasks[i];
+										taskObj.push({
+											key: obj.category,
+											id: obj.id,
+											name: obj.sceneName
+										})
+									}
+									// target为即将跳转任务列表的第一个任务
+									var target = loanTasks[0];
+									router.render('loanProcess/' + target.category, {
+										taskId: target.id, 
+										orderNo: target.orderNo,
+										tasks: taskObj,
+										path: 'loanProcess'
+									});
+									// router.render('loanProcess');
+									// toast.hide();
+								})
+							})
+			            }
+			        }
+			        
+			    }
+			})
+			
+		})
+	}
+
+	/**
+	 * 取消订单弹窗内事件逻辑处理
+	 */
+	var dialogEvt = function($dialog) {
+		var $reason = $dialog.find('#suggestion');
+		$scope.$checks = $dialog.find('.checkbox').checking();
+		// 复选框
+		$scope.$checks.filter('.checkbox-normal').each(function() {
+			var that = this;
+			that.$checking.onChange(function() {
+				//用于监听意见有一个选中，则标题项选中
+				var flag = 0;
+				var str = '';
+				$(that).parent().parent().find('.checkbox-normal').each(function() {
+					if($(this).attr('checked')) {
+						str += $(this).data('value') + ',';
+						flag++;
+					}
+				})
+				str = '#' + str.substring(0, str.length - 1) + '#';				
+				$reason.val(str);
+				if(flag > 0) {
+					$(that).parent().parent().find('.checkbox-radio').removeClass('checked').addClass('checked').attr('checked', true);
+				} else {
+					$reason.val('');
+					$(that).parent().parent().find('.checkbox-radio').removeClass('checked').attr('checked', false);
+				}
+				$(that).parent().parent().siblings().find('.checkbox').removeClass('checked').attr('checked', false);
+
+				// if()
+			});
+		})
+
+		// 单选框
+		$scope.$checks.filter('.checkbox-radio').each(function() {
+			var that = this;
+			that.$checking.onChange(function() {
+				$reason.val('');
+				$(that).parent().parent().find('.checkbox-normal').removeClass('checked').attr('checked', false);
+				$(that).parent().parent().siblings().find('.checkbox').removeClass('checked').attr('checked', false);
+			});
 		})
 	}
 
 
-	var commitData = function() {
-		
+	var commitData = function(cb) {
+		$.ajax({
+			type: 'post',
+			url: $http.api('creditUser/updCreditList', 'jbs'),
+			data: JSON.stringify($scope.apiParams),
+			dataType: 'json',
+			contentType: 'application/json;charset=utf-8',
+			success: $http.ok(function(result) {
+				console.log(result);
+				if(cb && typeof cb == 'function') {
+					cb();
+				}
+			})
+		})
 	}
+
 
 	/***
 	* 加载页面模板
@@ -227,23 +419,9 @@ page.ctrl('creditApproval', [], function($scope) {
 		}
 		loadOrderInfo($scope.idx, function() {
 			setupLocation();
+			evt();
 		});
+		
 	});
 
-	/***
-	* 删除图片后的回调函数
-	*/
-	$scope.deletecb = function() {
-		loadOrderInfo($scope.idx);
-	}
-
-	/***
-	* 上传图片成功后的回调函数
-	*/
-	$scope.uploadcb = function(self) {
-		console.log(self.$el);
-		self.$el.find('.imgs-item-p').html('征信报告' + self.$el.data('count'));
-		self.$el.after(self.outerHTML);
-		self.$el.next().imgUpload();
-	}
 });

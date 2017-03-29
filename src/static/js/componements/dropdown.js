@@ -10,10 +10,12 @@
 */
 'use strict';
 (function($, _) {
+	window.dropdownCollections = [];
 	$.fn.dropdown = function() {
 		return this.each(function() {
 			var that = $(this);
 			that.$dropdown = new dropdown(that, that.data());
+			dropdownCollections.push(that.$dropdown);
 		})
 	}
 
@@ -37,7 +39,7 @@
 		self.textInstance = [];
 		self.actionIdx = 0;
 		self.defautKey = '__internaldefaultkey__';
-
+		self.originKey = md5(new Date().getTime());
 		self.defaults();
 
 		self.setup();
@@ -77,7 +79,10 @@
 		if(!self.opts.selected) {
 			self.opts.selected = '';
 		}
-		self.$el.append(_.template(internal.template.fields)({readonly: !self.search, selected: self.opts.selected}));
+		if(!self.opts.placeholder) {
+			self.opts.placeholder = false;
+		}
+		self.$el.append(_.template(internal.template.fields)({readonly: !self.search, selected: self.opts.selected, placeholder: self.opts.placeholder}));
 		self.$dropdown = $('<div class="select-box"></div>').appendTo(self.$el);
 		self.$text = self.$el.find('.select-text');
 		if(self.opts.tabs.length > 1) {
@@ -101,13 +106,10 @@
 			self.open();
 		})
 		self.$el.on('click', function (evt) {
-			if(self.opened) return false;
-		})
-		$(document).on('click', function(e) {
-			if(self.opened) {
-				self.opened = false;
-				self.close();
+			if(dropdownCollections.length > 0) {
+				closeDropDowns(self);
 			}
+			if(self.opened) return false;
 		})
 	};
 	/**
@@ -116,7 +118,7 @@
 	dropdown.prototype.compileItems = function(idx, parentId){
 		var self = this;
 		var items = self.sourceData[self.opts.tabs[idx] || self.defautKey];
-		if(!items) {
+		if(!items || self.opts.forceload) {
 			self.onTrigger(self.opts.tabs[idx], parentId, function(data) {
 				if(idx == 0) {
 					self.sourceData[self.opts.tabs[idx] || self.defautKey] = data;	
@@ -138,18 +140,31 @@
 		}
 		self.$items.find('.itemEvt').on('click', function() {
 			var $that = $(this);
+			var inputItem = $(this).parents(".select").siblings("input");
 			var id = $that.data('id'),
-				name = $that.text(),
 				accountName = $that.data('accountname'),
-				bankName = $that.data('bankname');
+				bankName = $that.data('bankname'),
+				name = $that.text();
 			self.text.push(name);
 			//只有一级，选中即表示结束
 			if(self.opts.tabs.length <= 1) {
-				self.picked = {
-					id: id,
-					name: name
+				if(!accountName || !bankName){
+					self.picked = {
+						id: id,
+						name: name
+					}
+				}else{
+					self.picked = {
+						id: id,
+						name: name,
+						accountName: accountName,
+						bankName: bankName
+					}
 				}
 				self.onDropdown(self.picked);
+				if(inputItem){
+					inputItem.val(id)
+				}
 				self.close(true);
 			} else {
 				self.picked[self.opts.tabs[self.actionIdx]] = {
@@ -159,6 +174,9 @@
 				//选中最后一级，也关闭
 				if(self.actionIdx == self.opts.tabs.length - 1) {
 					self.onDropdown(self.picked);
+					if(inputItem){
+						inputItem.val(id)
+					}
 					self.close(true);
 				} else {
 					self.$tabs.eq(self.actionIdx).removeClass('select-tab-item-active');
@@ -178,6 +196,7 @@
 		self.text = [];
 		self.actionIdx = 0;
 		self.$el.find('.select-box').show();
+		self.$el.find('.select-area').scrollTop(0);
 		self.$el.find('#arrow').removeClass('arrow-bottom').addClass('arrow-top');
 		if(!!self.opts.tabs.length) {
 			self.$tabPanel.find('.select-tab-item-active').removeClass('select-tab-item-active');
@@ -197,14 +216,31 @@
 			self.text = self.textInstance;
 			self.textInstance = [];
 		}
+		self.opened = false;
 		self.$el.find('.select-box').hide();
 		self.$el.find('#arrow').removeClass('arrow-top').addClass('arrow-bottom');
 	}
-
+	function closeDropDowns(current) {
+		for(var i = 0, len = dropdownCollections.length; i < len; i++) {
+			var $d = dropdownCollections[i];
+			if(current && current.originKey == $d.originKey) {
+				continue;
+			}
+			if($d.opened)
+				$d.close();
+		}
+	}
+	$(document).on('click', function(e) {
+		closeDropDowns();
+	})
 	var internal = {};
 	internal.template = {};
 	internal.template.fields = '<div class="select-field{{=(it.readonly ? \" readonly\": \"\")}}">\
-									<input type="text" placeholder="{{=(it.readonly ? \"请选择\":\"可输入过滤条件\")}}" class="select-text" value="{{=it.selected}}" />\
+									{{ if(it.placeholder) { }}\
+									<input type="text" placeholder="{{=(it.readonly ? \"全部\" : \"可输入过滤条件\")}}" class="select-text" value="{{=it.selected}}" />\
+									{{ } else { }}\
+									<input type="text" placeholder="{{=(it.readonly ? \"请选择\" : \"可输入过滤条件\")}}" class="select-text" value="{{=it.selected}}" />\
+									{{ } }}\
 									<span class="arrow arrow-bottom" id="arrow"></span>\
 									<a class="arrow-trigger"></a>\
 								</div>';
@@ -213,8 +249,11 @@
 									<li class="select-tab-item{{=(i==0?\" select-tab-item-active\":\"\")}}">{{= row }}</li>\
 								{{ } }}\
 							</ul>';
-	internal.template.single = '{{ for(var i = 0, len = it.items.length; i < len; i++) { var row = it.items[i]; }}\
+	internal.template.single = '{{ for(var i = 0, len = it.items.length; i < len; i++) { var row = it.items[i];if(row[it.bankName] && row[it.accountName]){ }}\
+									<li class="select-item itemEvt" data-id="{{=row[it.id]}}" data-bankName="{{=row[it.bankName]}}" data-accountName="{{=row[it.accountName]}}">{{=row[it.name]}}</li>\
+								{{ }else{ }}\
 									<li class="select-item itemEvt" data-id="{{=row[it.id]}}">{{=row[it.name]}}</li>\
+								{{ } }}\
 								{{ } }}';
 	internal.template.brandContent = '<dl class="word-area">\
 										<dt>A</dt>\

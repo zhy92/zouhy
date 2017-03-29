@@ -3,8 +3,8 @@ page.ctrl('organizationManage', [], function($scope) {
 	var $console = render.$console,
 		$params = $scope.$params,
 		apiParams = {
-			organId: 99,  //机构id(登录用户)
-			pageNum: $params.pageNum || 1
+			// organId: 99,  //机构id(登录用户)
+			pageNum: 1
 		};
 	$scope.tabs = ['合作银行管理', '合作车商管理'];
 	$scope.idx = 0;
@@ -30,6 +30,7 @@ page.ctrl('organizationManage', [], function($scope) {
 			dataType: 'json',
 			success: $http.ok(function(result) {
 				console.log(result);
+				$scope.result = result;
 				render.compile($scope.$el.$tbl, $scope.def.bankListTmpl, result.data.resultlist, true);
 				setupPaging(result.page, true);
 				setupBankEvt();
@@ -46,14 +47,17 @@ page.ctrl('organizationManage', [], function($scope) {
 	* @params {function} cb 回调函数
 	*/
 	var loadCarList = function(params, cb) {
+		console.log(params)
 		$.ajax({
 			url: $http.api('demandCarShop/get', 'cyj'),
 			type: 'post',
 			data: params,
 			dataType: 'json',
 			success: $http.ok(function(result) {
+				result.data.shopTypeName = $scope.shopTypeName  || '';
+				result.data.shopName = $scope.shopName || '';
 				console.log(result);
-				render.compile($scope.$el.$tbl, $scope.def.carListTmpl, result.data.resultlist, true);
+				render.compile($scope.$el.$tbl, $scope.def.carListTmpl, result.data, true);
 				setupPaging(result.page, true);
 				setupCarEvt();
 				if(cb && typeof cb == 'function') {
@@ -84,10 +88,25 @@ page.ctrl('organizationManage', [], function($scope) {
 				if(cb && typeof cb == 'function') {
 					cb();
 				}
-			}),
-			error: function() {
-				alert('删除失败！');
-			}
+			})
+		})
+	 }
+
+	 /**
+	 * 删除合作车商
+	 */
+	 var deleteCar = function(params, cb) {
+	 	$.ajax({
+			url: $http.api('demandCarShop/del', 'cyj'),
+			type: 'post',
+			data: params,
+			dataType: 'json',
+			success: $http.ok(function(result) {
+				console.log(result);
+				if(cb && typeof cb == 'function') {
+					cb();
+				}
+			})
 		})
 	 }
 
@@ -96,8 +115,8 @@ page.ctrl('organizationManage', [], function($scope) {
 	*/
 	var setupPaging = function(count, isPage) {
 		$scope.$el.$paging.data({
-			current: parseInt(apiParams.pageNum),
-			pages: isPage ? count.pages : (tool.pages(count.pages || 0, apiParams.pageSize)),
+			current: parseInt(count.pageNum),
+			pages: isPage ? count.pages : (tool.pages(count.pages || 0, count.pageSize)),
 			size: apiParams.pageSize
 		});
 		$('#pageToolbar').paging();
@@ -151,7 +170,6 @@ page.ctrl('organizationManage', [], function($scope) {
 	var setupTabEvt = function() {
 		$console.find('.tabEvt').on('click', function() {
 			apiParams.pageNum = 1;
-			$params.pageNum = 1;
 			var that = $(this);
 			if(that.hasClass('role-item-active')) return;
 			var _type = that.data('type');
@@ -168,24 +186,44 @@ page.ctrl('organizationManage', [], function($scope) {
 	*/
 	var setupBankEvt = function() {
 		// 模糊搜索
-		$console.find('#searchBankName').on('keydown', function(evt) {
+		$console.find('#searchBankName input').on('keydown', function(evt) {
 			if(evt.which == 13) {
 				var that = $(this),
 					searchText = $.trim(that.val());
 				if(!searchText) {
 					return false;
 				}
-				apiParams.bankName = searchText;
-				$params.bankName = searchText;
-				apiParams.pageNum = 1;
-				$params.pageNum = 1;
+				apiParams = {
+					bankName: searchText,
+					pageNum: 1
+				}
 				loadBankList(apiParams, function() {
 					delete apiParams.bankName;
-					delete $params.bankName;
-					that.blur();
 				});
-				// router.updateQuery($scope.$path, $params);
 			}
+		});
+
+		// 文本框失去焦点记录文本框的值
+		$console.find('#searchBankName input').on('blur', function(evt) {
+			var that = $(this),
+				searchText = $.trim(that.val());
+			if(!searchText) {
+				delete apiParams.bankName;
+				return false;
+			} else {
+				apiParams.bankName = searchText;
+			}
+		});
+
+		$console.find('#searchBankName .iconfont').on('click', function() {
+			apiParams.pageNum = 1;
+			if(!apiParams.bankName) {
+				$console.find('#searchBankName input').focus();
+				return false;
+			}
+			loadBankList(apiParams, function() {
+				delete apiParams.bankName;
+			});
 		});
 		
 		//  任务类型点击显示/隐藏
@@ -221,38 +259,38 @@ page.ctrl('organizationManage', [], function($scope) {
 			var _params = {
 				id: that.data('id')
 			}
-			that.openWindow({
+			$.confirm({
 				title: '删除合作银行',
-				content: '<div>确定删除所选合作银行吗？</div>',
-				commit: dialogTml.wCommit.cancelSure
-			}, function($dialog) {
-				// 窗口确定按钮
-				$dialog.find('.w-sure').on('click', function() {
-					$dialog.remove();
-					deleteBank(_params, function() {
-						apiParams.pageNum = 1;
-						$params.pageNum = 1;
-						loadBankList(apiParams);
-					});
-					
-				})
-			})
+				content: tool.alert('确定删除所选合作银行吗？'),
+				buttons: {
+					close: {
+						text: '取消',
+						btnClass: 'btn-default btn-cancel'
+					},
+					ok: {
+						text: '确定',
+						action: function () {
+							deleteBank(_params, function() {
+								apiParams = {
+									pageNum: 1
+								};
+								loadBankList(apiParams);
+							});
+						}
+					}
+				}
+			});
 		})
 
 		// 查看费率
 		$console.find('#organizationManageTable .view-fee').on('click', function() {
 			var that = $(this);
-
-			that.openWindow({
-				title: '查看费率',
-				content: '<div>确定删除所选合作银行吗？</div>',
-				commit: dialogTml.wCommit.cancelSure
-			}, function($dialog) {
-				// 窗口确定按钮
-				$dialog.find('.w-sure').on('click', function() {
-					$dialog.remove();
-				})
-			})
+			var idx = that.data('idx');
+			$.dialog({
+				title: '银行费率表',
+				boxWidth: '800px',
+				content: doT.template(dialogTml.wContent.viewFee)($scope.result.data.resultlist[idx].demandBankRateList)
+			});
 		})
 	}
 
@@ -277,25 +315,60 @@ page.ctrl('organizationManage', [], function($scope) {
 			}
 		})
 
-		// 编辑合作银行按钮
+		// 编辑合作车商按钮
 		$console.find('#organizationManageTable .toNewCar').on('click', function() {
 			var that = $(this);
 			router.render(that.data('href'), {
-				shopId: parseInt(that.data('shopId')),
+				id: parseInt(that.data('id')),
 				carShopId: parseInt(that.data('carShopId')),
 				path: 'organizationManage'
 			});
 		})
 
-		//搜索按钮
-		$console.find('#carListSearch').on('click', function() {
-			apiParams.shopType = $scope.shopType;
-			apiParams.shopName = $scope.shopName;
-			loadCarList(apiParams, function() {
-				delete apiParams.shopType;
-				delete apiParams.shopName;
+		// 删除合作车商
+		$console.find('#organizationManageTable .deleteCar').on('click', function() {
+			var that = $(this);
+			var _params = {
+				id: that.data('id')
+			}
+			$.confirm({
+				title: '删除合作车商',
+				content: tool.alert('确定删除所选合作车商吗？'),
+				buttons: {
+					close: {
+						text: '取消',
+						btnClass: 'btn-default btn-cancel'
+					},
+					ok: {
+						text: '确定',
+						action: function () {
+							deleteCar(_params, function() {
+								apiParams = {
+									pageNum: 1
+								};
+								loadCarList(apiParams);
+							});
+						}
+					}
+				}
 			});
 		})
+
+		//搜索按钮
+		$console.find('#carListSearch').on('click', function() {
+			loadCarList(apiParams);
+		})
+
+		//绑定重置按钮事件
+		$console.find('#search-reset').on('click', function() {
+			// 下拉框数据以及输入框数据重置
+			$console.find('.select input').val('');
+			$scope.shopTypeName = '';
+			$scope.shopName = '';
+			apiParams = {
+		    	pageNum: 1       //当前页码
+			};
+		});
 
 		setupDropDown();
 	}
@@ -327,8 +400,6 @@ page.ctrl('organizationManage', [], function($scope) {
 	 */
 	$scope.paging = function(_pageNum, _size, $el, cb) {
 		apiParams.pageNum = _pageNum;
-		$params.pageNum = _pageNum;
-		// router.updateQuery($scope.$path, $params);
 		setupTablePanel($scope.idx);
 		cb();
 	}
@@ -339,6 +410,10 @@ page.ctrl('organizationManage', [], function($scope) {
 	$scope.dropdownTrigger = {
 		shopType: function(t, p, cb) {
 			var data = [
+				{
+					id: '全部',
+					name: '全部'
+				},
 				{
 					id: 0,
 					name: '4s'
@@ -358,12 +433,16 @@ page.ctrl('organizationManage', [], function($scope) {
 		shopName: function(t, p, cb) {
 			$.ajax({
 				type: 'post',
-				url: $http.api('demandCarShop/getList', 'zyj'),
+				url: $http.api('demandCarShop/getList', 'cyj'),
 				data: {
-					shopType: $scope.shopType//车商类型   0:4s  1:二级经销商
+					shopType: apiParams.shopType//车商类型   0:4s  1:二级经销商
 				}, 	
 				dataType: 'json',
 				success: $http.ok(function(xhr) {
+					xhr.data.unshift({
+						shopId: '全部',
+						shopName: '全部'
+					});
 					var sourceData = {
 						items: xhr.data,
 						id: 'shopId',
@@ -376,12 +455,20 @@ page.ctrl('organizationManage', [], function($scope) {
 	}
 
 	$scope.shopTypePicker = function(picked) {
-		console.log(picked);
-		$scope.shopType = picked.id;
+		if(picked.id == '全部') {
+			delete apiParams.shopType;
+			return false;
+		}
+		apiParams.shopType = picked.id;
+		$scope.shopTypeName = picked.name;
 	}
 
 	$scope.shopNamePicker = function(picked) {
-		console.log(picked);
+		if(picked.shopName == '全部') {
+			delete apiParams.shopName;
+			return false;
+		}
+		apiParams.shopName = picked.name;
 		$scope.shopName = picked.name;
 	}
 

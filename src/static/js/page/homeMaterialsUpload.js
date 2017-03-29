@@ -2,9 +2,9 @@
 page.ctrl('homeMaterialsUpload', function($scope) {
 	var $params = $scope.$params,
 		$console = $params.refer ? $($params.refer) : render.$console;
-		
-	$scope.tasks = $params.tasks;
+	$scope.tasks = $params.tasks || [];
 	$scope.activeTaskIdx = $params.selected || 0;
+	// $params.taskId = 2;
 
 	/**
 	* 加载上门材料上传数据
@@ -12,20 +12,26 @@ page.ctrl('homeMaterialsUpload', function($scope) {
 	* @params {function} cb 回调函数
 	*/
 	var loadOrderInfo = function(cb) {
+		var params = {
+			taskId: $params.taskId
+		}
+		if($params.refer) {
+			params.frameCode = $params.code;
+		}
 		$.ajax({
-			// url: 'http://127.0.0.1:8083/mock/loanMaterialUpload',
-			// type: flag,
 			type: 'post',
 			url: $http.api('materials/index', 'zyj'),
-			data: {
-				// taskId: $scope.$params.taskId
-				taskId: 2
-			},
+			data: params,
 			dataType: 'json',
 			success: $http.ok(function(result) {
 				console.log(result);
 				$scope.result = result;
-				$scope.result.tasks = $params.tasks.length;
+				$scope.result.tasks = $params.tasks ? $params.tasks.length : 1;
+				if($params.refer) {
+					$scope.result.editable = 0;
+				} else {
+					$scope.result.editable = 1;
+				}
 				if($params.path) {
 					setupLocation();	
 				}
@@ -84,9 +90,48 @@ page.ctrl('homeMaterialsUpload', function($scope) {
 			alert('增加征信人员')
 		})
 
-		// 增加征信人员
+		// 提交按钮
 		$console.find('#submitOrder').on('click', function() {
-			alert("提交订单");
+			// 流程跳转
+			var taskIds = [];
+			for(var i = 0, len = $params.tasks.length; i < len; i++) {
+				taskIds.push(parseInt($params.tasks[0].id));
+			}
+			var params = {
+				taskIds: $params.taskId,
+				orderNo: $params.orderNo
+			}
+			console.log(params)
+			$.ajax({
+				type: 'post',
+				url: $http.api('tasks/complete', 'zyj'),
+				data: JSON.stringify(params),
+				dataType: 'json',
+				contentType: 'application/json;charset=utf-8',
+				success: $http.ok(function(result) {
+					console.log(result);
+					var loanTasks = result.data;
+					var taskObj = [];
+					for(var i = 0, len = loanTasks.length; i < len; i++) {
+						var obj = loanTasks[i];
+						taskObj.push({
+							key: obj.category,
+							id: obj.id,
+							name: obj.sceneName
+						})
+					}
+					// target为即将跳转任务列表的第一个任务
+					var target = loanTasks[0];
+					router.render('loanProcess/' + target.category, {
+						taskId: target.id, 
+						orderNo: target.orderNo,
+						tasks: taskObj,
+						path: 'loanProcess'
+					});
+					// router.render('loanProcess');
+					// toast.hide();
+				})
+			})
 		})
 	}
 
@@ -107,6 +152,8 @@ page.ctrl('homeMaterialsUpload', function($scope) {
 		console.log(item);
 		router.render('loanProcess/' + item.key, {
 			tasks: $scope.tasks,
+			taskId: $scope.tasks[idx].id,
+			orderNo: $params.orderNo,
 			selected: idx,
 			path: 'loanProcess'
 		});

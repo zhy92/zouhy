@@ -1,7 +1,8 @@
 "use strict";
 page.ctrl('loanLog', function($scope) {
-	var $console = render.$console;
-
+	var $params = $scope.$params,
+		$console = $params.refer ? $($params.refer) : render.$console;
+	// $params.orderNo = 'nfdb2016102421082285';
 	
 	/**
 	* 加载订单日志数据
@@ -11,18 +12,21 @@ page.ctrl('loanLog', function($scope) {
 	var loadloanLog = function(_type, cb) {
 		$.ajax({
 			type: 'post',
-			url: $http.api('loanLog/getLoanLog', 'jbs'),
+			// url: $http.api('loanLog/getLoanLog', 'jbs'),
+			url: 'http://192.168.1.108:8080/loanLog/getLoanLog',
 			data: {
-				// orderNo: $scope.$params.orderNo
-				orderNo: 'nfdb2016102421082285'
+				orderNo: $params.orderNo
 			},
 			dataType: 'json',
 			success: $http.ok(function(result) {
 				console.log(result);
 				$scope.result = result;
-				setupLocation();
-				render.compile($scope.$el.$modifyPanel, $scope.def.modifyTmpl, result.data.loanEditLog, true);
-				render.compile($scope.$el.$loanLogPanel, $scope.def.logTmpl, result.data, true);
+				if($params.path) {
+					setupLocation();	
+				}
+				render.compile($scope.$el.$modifyPanel, $scope.def.modifyTmpl, $scope.result.data.loanEditLog, true);
+				render.compile($scope.$el.$telApproval, $scope.def.telApprovalTmpl, $scope.result.data.telPhoneApprovalLog, true);
+				render.compile($scope.$el.$loanLogPanel, $scope.def.logTmpl, $scope.result.data, true);
 				if( cb && typeof cb == 'function' ) {
 					cb();
 				}
