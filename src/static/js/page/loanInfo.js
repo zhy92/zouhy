@@ -4,6 +4,8 @@ page.ctrl('loanInfo', function($scope) {
 		$console = $params.refer ? $($params.refer) : render.$console,
 		$source = $scope.$source = {},
 		apiParams = {};
+	$scope.tasks = $params.tasks || [];
+	$scope.activeTaskIdx = $params.selected || 0;
 
 	var postUrl = {
 		"saveDDXX": urlStr+"/loanInfoInput/updLoanOrder",
@@ -41,10 +43,8 @@ page.ctrl('loanInfo', function($scope) {
 				}
 				render.compile($scope.$el.$tbl, $scope.def.listTmpl, result,true);
 				loanFinishedInput();
-				loanFinishedSelect();
 				loanFinishedCheckbox();
 				loanFinishedGps();
-				loanFinishedBxxb();
 				setupEvt();
 //				console.log(page.$scope.loanInfo.result.cfgData);
 				if(cb && typeof cb == 'function') {
@@ -68,6 +68,23 @@ page.ctrl('loanInfo', function($scope) {
 		});
 		$location.location();
 	}
+
+	/**
+	* 并行任务切换触发事件
+	* @params {int} idx 触发的tab下标
+	* @params {object} item 触发的tab对象
+	*/
+	var tabChange = function (idx, item) {
+		console.log(item);
+		router.render('loanProcess/' + item.key, {
+			tasks: $scope.tasks,
+			taskId: $scope.tasks[idx].id,
+			orderNo: $params.orderNo,
+			selected: idx,
+			path: 'loanProcess'
+		});
+	}
+
 	/**
 	* 页面加载完成对所有带“*”的input进行必填绑定
 	*/
@@ -89,60 +106,6 @@ page.ctrl('loanInfo', function($scope) {
 			}
 		});
 	}
-
-//页面加载完成对所有下拉框进行赋值	
-	var loanFinishedSelect = function(){
-		$(".selecter").each(function(){
-			var that =$("div",$(this));
-			var key = $(this).data('key');
-			var inputSearch = $(".searchInp",$(this));
-			if(inputSearch){
-				inputSearch.hide();
-			};
-			var boxKey = key + 'Box';
-			$(this).attr("id",boxKey);
-			var datatype = $(this).data('type');
-			if(datatype){
-				render.compile(that, $scope.def.selectOpttmpl, dataMap[key], true);
-			}
-			if(key == 'remitAccountNumber'){
-				var data={};
-					data['carShopId'] = $("#busiSourceId").val();
-				$.ajax({
-					url: urlStr+"/demandCarShopAccount/getAccountList",
-					data: data,
-					dataType: 'json',
-					success: $http.ok(function(result) {
-						render.compile(that, $scope.def.selectOpttmpl, result.data, function(){
-							$("#remitAccountNumberBox").find(".selectOptBox").hide();
-						}, true);
-					})
-				})
-			}	
-			var value1 = $("input",$(this)).val();
-			$("li",$(this)).each(function(){
-				var val = $(this).data('key');
-				var text = $(this).text();
-				var keybank = $(this).data('bank');
-				var keyname = $(this).data('name');
-				if(value1 == val){
-					$(this).parent().parent().siblings(".placeholder").html(text);
-					$(this).parent().parent().siblings("input").val(val);
-					if(keybank && keyname){
-						$("#bankName").val(keybank);
-						$("#accountName").val(keyname);
-						
-					}
-					var value2 = $(this).parent().parent().siblings("input").val();
-					if(!value2){
-						$(this).parent().parent().siblings(".placeholder").html("请选择")
-					}
-					$(".selectOptBox").hide()
-				}
-			});
-		});
-	}
-	
 	
 	
 	/**
@@ -150,10 +113,10 @@ page.ctrl('loanInfo', function($scope) {
 	*/
 	var keyType;
 	var setupEvt = function($el) {
-//		$console.find('.select').on('click', function() {
-//			var keyType = $(this).data('key');
-//			console.log(keyType);
-//		});
+		$console.find('.check-key').on('click', function() {
+			var keyType = $(this).data('key');
+			console.log(keyType);
+		});
 		// 提交
 		$console.find('#submitOrder').on('click', function() {
 			console.log("提交订单");
@@ -269,48 +232,6 @@ page.ctrl('loanInfo', function($scope) {
 			})
 		})
 	}		
-	
-//点击下拉框拉取选项
-	$(document).on('click','.selecter', function() {
-		var that =$("div",$(this));
-		var inputSearch =$(".searchInp",$(this));
-		var key = $(this).data('key');
-		var boxKey = key + 'Box';
-		var datatype = $(this).data('type');
-		if(datatype){
-			console.log(datatype);
-			render.compile(that, $scope.def.selectOpttmpl, dataMap[key], true);
-			console.log(dataMap[key]);
-			var selectOptBox = $(".selectOptBox",$(this));
-			selectOptBox.style.display = 'block';
-//			selectOptBox.show();
-			console.log(selectOptBox);
-			
-		}
-		if(key == 'remitAccountNumber'){
-			var data={};
-				data['carShopId'] = $("#busiSourceId").val();
-			$.ajax({
-				url:  urlStr+"/demandCarShopAccount/getAccountList",
-				data: data,
-				dataType: 'json',
-				success: $http.ok(function(result) {
-					render.compile(that, $scope.def.selectOpttmpl, result.data, true);
-					console.log(result.data);
-					var selectOptBox = $(".selectOptBox");
-					selectOptBox.attr("id",key);
-				})
-			})
-		}
-	})
-	$(document).on('click', '#remitAccountNumber li', function() {
-		var keyvalue = $(this).data('key');
-		var keybank = $(this).data('bank');
-		var keyname = $(this).data('name');
-		console.log(keyvalue);
-		$("#bankName").val(keybank);
-		$("#accountName").val(keyname);
-	})
 //点击本地常驻类型复选框
 	$(document).on('click', '.checkbox', function() {
 		returnCheckboxVal();
@@ -345,72 +266,175 @@ page.ctrl('loanInfo', function($scope) {
 		})
 	}
 //复选框
-//$(document).on('selectstart', '.checkbox-normal', false);
    $(document).on('click', '.checkbox-normal', function() {
    	var keyData = $(this).attr("data-key");
    	var keyCode = $(this).attr("data-code");
    	var keyMark = $(this).attr("data-mark");
-   	if(keyData){
-   		$(".hklx").each(function(){
-   			$(this).removeClass('checked').attr('checked',false);
-   			$(this).html('');
-   		})
-   	}
-   	if(keyCode){
-   		$(".gzd").each(function(){
-   			$(this).removeClass('checked').attr('checked',false);
-   			$(this).html('');
-   		})
-   	}
-   	if(keyMark){
-   		$(".jzlx").each(function(){
-   			$(this).removeClass('checked').attr('checked',false);
-   			$(this).html('');
-   		})
-   	}
    	if(!$(this).attr('checked')) {
+	   	if(keyData){
+	   		$(".hklx").each(function(){
+	   			$(this).removeClass('checked').attr('checked',false);
+	   			$(this).html('');
+	   		})
+	   	}
+	   	if(keyCode){
+	   		$(".gzd").each(function(){
+	   			$(this).removeClass('checked').attr('checked',false);
+	   			$(this).html('');
+	   		})
+	   	}
+	   	if(keyMark){
+	   		$(".jzlx").each(function(){
+	   			$(this).removeClass('checked').attr('checked',false);
+	   			$(this).html('');
+	   		})
+	   	}
    		$(this).addClass('checked').attr('checked',true);
    		$(this).html('<i class="iconfont">&#xe659;</i>');
    	} else {
+	   	if(keyData){
+	   		$(".hklx").each(function(){
+	   			$(this).removeClass('checked').attr('checked',false);
+	   			$(this).html('');
+	   		})
+	   	}
+	   	if(keyCode){
+	   		$(".gzd").each(function(){
+	   			$(this).removeClass('checked').attr('checked',false);
+	   			$(this).html('');
+	   		})
+	   	}
+	   	if(keyMark){
+	   		$(".jzlx").each(function(){
+	   			$(this).removeClass('checked').attr('checked',false);
+	   			$(this).html('');
+	   		})
+	   	}
    		$(this).removeClass('checked').attr('checked',false);
    		$(this).html('');
    	}
    })
 
 //gps
-	$(document).on('click', '#isInstallGpsBox li', function() {
-		loanFinishedGps();
-	})
 	var loanFinishedGps = function(){
-		var gps = $("#gps").val();
+		var gps = $("input[name='isInstallGps']").val();
 		if(gps != 1){
-			$("#isInstallGpsBox").removeClass("gpssel");
-			$("#gps1").hide();
-			$("#gps2").hide();
+			$("input[name='gpsNumber1']").parents(".info-key-value-box").hide();
+			$("input[name='gpsNumber2']").parents(".info-key-value-box").hide();
 		}else{
-			$("#isInstallGpsBox").addClass("gpssel");
-			$("#gps1").show();
-			$("#gps2").show();
+			$("input[name='gpsNumber1']").parents(".info-key-value-box").show();
+			$("input[name='gpsNumber2']").parents(".info-key-value-box").show();
 		}
 	}
 //保险续保
-	$(document).on('click', '#renewalModeBox li', function() {
+	$(document).on('click', '.select li', function() {
 		loanFinishedBxxb();
+		loanFinishedGps();
 	})
 	var loanFinishedBxxb = function(){
-		var bxxbInput = $("#bxxbInput").val();
-//		console.log(bxxbInput);
-		if(bxxbInput != 1){
-			$(".bxxbYear").hide();
-		}else{
-			$(".bxxbYear").show();
-			$(".bxxbYear").each(function (){
-				var ipt = $(this).find('input');
-				if(ipt.val() == '555'){
-					$(this).hide()
+		var bxxbInput = $("input[name='renewalMode']").val();
+		var repayInput = $("input[name='repayPeriod']").val();
+		if(bxxbInput == 1){
+			if(!repayInput){
+				$.alert({
+					title: '提示',
+					content: '<div class="w-content"><div>请填写还款期限！</div></div>',
+					useBootstrap: false,
+					boxWidth: '500px',
+					theme: 'light',
+					type: 'purple',
+					buttons: {
+						'确定': {
+				            action: function () {
+				            }
+				        }
+				    }
+				})
+				return false;
+			}else{
+				if(bxxbLength == 1){
+					$("#year1").show();
+					$("#year1").find('input').val(1);
+					$("#year1").find('.placeholder').html("单位承保");
+				}else if(bxxbLength == 2){
+					$("#year1").show();
+					$("#year2").show();
+					$("#year1").find('input').val(1);
+					$("#year1").find('.placeholder').html("单位承保");
+					$("#year2").find('input').val(1);
+					$("#year2").find('.placeholder').html("单位承保");
+				}else if(bxxbLength == 3){
+					$("#year1").show();
+					$("#year2").show();
+					$("#year3").show();
+					$("#year1").find('input').val(1);
+					$("#year1").find('.placeholder').html("单位承保");
+					$("#year2").find('input').val(1);
+					$("#year2").find('.placeholder').html("单位承保");
+					$("#year3").find('input').val(1);
+					$("#year3").find('.placeholder').html("单位承保");
+				}else if(bxxbLength == 4){
+					$("#year1").show();
+					$("#year2").show();
+					$("#year3").show();
+					$("#year4").show();
+					$("#year1").find('input').val(1);
+					$("#year1").find('.placeholder').html("单位承保");
+					$("#year2").find('input').val(1);
+					$("#year2").find('.placeholder').html("单位承保");
+					$("#year3").find('input').val(1);
+					$("#year3").find('.placeholder').html("单位承保");
+					$("#year4").find('input').val(1);
+					$("#year4").find('.placeholder').html("单位承保");
+				}else if(bxxbLength == 5){
+					$("#year1").show();
+					$("#year2").show();
+					$("#year3").show();
+					$("#year4").show();
+					$("#year5").show();
+					$("#year1").find('input').val(1);
+					$("#year1").find('.placeholder').html("单位承保");
+					$("#year2").find('input').val(1);
+					$("#year2").find('.placeholder').html("单位承保");
+					$("#year3").find('input').val(1);
+					$("#year3").find('.placeholder').html("单位承保");
+					$("#year4").find('input').val(1);
+					$("#year4").find('.placeholder').html("单位承保");
+					$("#year5").find('input').val(1);
+					$("#year5").find('.placeholder').html("单位承保");
+				}else{
+					$("#year1").show();
+					$("#year2").show();
+					$("#year3").show();
+					$("#year4").show();
+					$("#year5").show();
+					$("#year6").show();
+					$("#year1").find('input').val(1);
+					$("#year1").find('.placeholder').html("单位承保");
+					$("#year2").find('input').val(1);
+					$("#year2").find('.placeholder').html("单位承保");
+					$("#year3").find('input').val(1);
+					$("#year3").find('.placeholder').html("单位承保");
+					$("#year4").find('input').val(1);
+					$("#year4").find('.placeholder').html("单位承保");
+					$("#year5").find('input').val(1);
+					$("#year5").find('.placeholder').html("单位承保");
+					$("#year6").find('input').val(1);
+					$("#year6").find('.placeholder').html("单位承保");
 				}
-			})
-			loanFinishedrepay();
+//				$("input[name='renewalMode']").parents('.info-key-value-box').append("<div class='zzz'>11111</div>")
+			}
+		}else{
+			$("#year1").hide();
+			$("#year2").hide();
+			$("#year3").hide();
+			$("#year4").hide();
+			$("#year5").hide();
+			$("#year6").hide();
+//			var zzz = $(".zzz");
+//			if(zzz){
+//				$(".zzz").remove();
+//			}
 		}
 	}
 	
@@ -607,6 +631,65 @@ page.ctrl('loanInfo', function($scope) {
 	        }
 		}
 	})
+
+	/**
+	* 设置底部按钮操作栏
+	*/
+	var setupSubmitBar = function() {
+		var $submitBar = $console.find('#submitBar');
+		$submitBar.data({
+			taskId: $params.taskId
+		});
+		$submitBar.submitBar(function($el) {
+			evt($el);
+		});
+	}
+
+	/**
+	* 底部按钮操作栏事件
+	*/
+	var evt = function($el) {
+		/**
+		 * 审核通过按钮
+		 */
+		$el.find('#taskSubmit').on('click', function() {
+			process();
+		})
+	}
+
+	/**
+	 * 跳流程
+	 */
+	function process() {
+		$.confirm({
+			title: '提交',
+			content: dialogTml.wContent.suggestion,
+			buttons: {
+				close: {
+					text: '取消',
+					btnClass: 'btn-default btn-cancel',
+					action: function() {}
+				},
+				ok: {
+					text: '确定',
+					action: function () {
+						var taskIds = [];
+						for(var i = 0, len = $params.tasks.length; i < len; i++) {
+							taskIds.push(parseInt($params.tasks[i].id));
+						}
+						var params = {
+							taskIds: taskIds,
+							orderNo: $params.orderNo
+						}
+						var reason = $.trim(this.$content.find('#suggestion').val());
+						if(reason) params.reason = reason;
+						console.log(params);
+						tasksJump(params, 'complete');
+					}
+				}
+			}
+		})
+	}
 	
 	$console.load(router.template('iframe/loanInfo'), function() {
 		$scope.def.listTmpl = render.$console.find('#loanlisttmpl').html();
@@ -615,6 +698,8 @@ page.ctrl('loanInfo', function($scope) {
 			$tbl: $console.find('#loanInfoTable')
 		}
 		loadLoanList(function(){
+			router.tab($console.find('#tabPanel'), $scope.tasks, $scope.activeTaskIdx, tabChange);
+			setupSubmitBar();
 			setupDropDown();
 		});
 		setupEvt();
