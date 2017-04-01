@@ -14,11 +14,8 @@ page.ctrl('loan', function($scope) {
 		if(!params.process) {
 			delete params.process;
 		}
-		console.log(params);
 		$.ajax({
-			// 贷款办理列表的在线接口，为调试并行任务各页面，先使用假数据
 			type: 'post',
-			// url: 'http://192.168.0.144:8080/loanOrder/workbench',
 			dataType:"json",
 			url: $http.api('loanOrder/workbench', 'jbs'),
 			data: params,
@@ -29,16 +26,13 @@ page.ctrl('loan', function($scope) {
 				setupPaging(result.page, true);
 				setupEvent();
 
-
-
 				// 测试复选框
-				$scope.$checks = $('.checkbox').checking();
+				// $scope.$checks = $('.checkbox').checking();
 
-				$scope.$checks[0].$checking.onChange(function() {
-					console.log(this)
-				});
+				// $scope.$checks[0].$checking.onChange(function() {
+				// 	console.log(this)
+				// });
 
-				
 				if(cb && typeof cb == 'function') {
 					cb();
 				}  
@@ -68,8 +62,6 @@ page.ctrl('loan', function($scope) {
 	* 绑定表格中立即处理事件
 	*/
 	var setupEvent = function() {
-		
-
 		/**
 		* 绑定立即处理事件
 		*/
@@ -93,6 +85,32 @@ page.ctrl('loan', function($scope) {
 				path: 'loanProcess'
 			});
 		});
+
+		/**
+		 * 消失隐藏
+		 */
+		$console.find('#loanTable .loanTasks').hover(function() {
+			$(this).find('.meanwhile-hover').toggle();
+		})
+
+		/**
+		* 任务类型点击显示/隐藏
+		*/
+		$console.find('#loanTable .arrow').on('click', function() {
+			var that = $(this);
+			var $tr = that.parent().parent().parent().find('.loantask-item');
+			if(!that.data('isShow')) {
+				$tr.show();
+				that.data('isShow', true);
+				that.removeClass('arrow-bottom').addClass('arrow-top');
+			} else {
+				$tr.hide();
+				that.data('isShow', false);
+				that.removeClass('arrow-top').addClass('arrow-bottom');
+				$tr.eq(0).show();
+				$tr.eq(1).show();
+			}
+		})
 
 	}
 
@@ -161,24 +179,7 @@ page.ctrl('loan', function($scope) {
 			});
 		})
 
-		/**
-		* 任务类型点击显示/隐藏
-		*/
-		$console.find('#loanTable .arrow').on('click', function() {
-			var that = $(this);
-			var $tr = that.parent().parent().parent().find('.loantask-item');
-			if(!that.data('isShow')) {
-				$tr.show();
-				that.data('isShow', true);
-				that.removeClass('arrow-bottom').addClass('arrow-top');
-			} else {
-				$tr.hide();
-				that.data('isShow', false);
-				that.removeClass('arrow-top').addClass('arrow-bottom');
-				$tr.eq(0).show();
-				$tr.eq(1).show();
-			}
-		})
+		
  	}
  	
 	/***

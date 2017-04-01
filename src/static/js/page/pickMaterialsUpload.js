@@ -36,7 +36,7 @@ page.ctrl('pickMaterialsUpload', function($scope) {
 					setupLocation();	
 				}
 				setupBackReason(result.data.loanTask.backApprovalInfo);
-				render.compile($scope.$el.$loanPanel, $scope.def.listTmpl, result, function(){
+				render.compile($scope.$el.$loanPanel, $scope.def.listTmpl, $scope.result, function(){
 					setupEvt();
 				}, true);
 				if(cb && typeof cb == 'function') {
@@ -54,7 +54,7 @@ page.ctrl('pickMaterialsUpload', function($scope) {
 		var $location = $console.find('#location');
 		$location.data({
 			backspace: $scope.$params.path,
-			current: $scope.result.data.loanTask.sceneName,
+			current: $scope.result.data.loanTask.taskName,
 			loanUser: $scope.result.data.loanTask.loanOrder.realName,
 			orderDate: tool.formatDate($scope.result.data.loanTask.createDate, true)
 		});
@@ -81,30 +81,144 @@ page.ctrl('pickMaterialsUpload', function($scope) {
 	}
 
 	/**
-	 * 首次加载完页面时绑定事件
-	 */
-	var evt = function () {
-		// 增加征信人员
-		$console.find('#addCreditUser').on('click', function() {
-			$.ajax({
-				// url: 'http://127.0.0.1:8083/mock/loanMaterialUpload',
-				// type: flag,
-				type: 'post',
-				url: $http.apiMap.materialUpdate,
-				data: {
-					// 参数1：id 材料id （必填）
-					// 参数2：materialsType 材料类型 0图片1视频
-					// 参数3：sceneCode 场景编码 
-					// 参数4：userId 材料所属用户
-					// 参数5：ownerCode 材料归属类型
-					// 参数6：materialsPic 材料地址（必填）
+	* 设置底部按钮操作栏
+	*/
+	var setupSubmitBar = function() {
+		var $submitBar = $console.find('#submitBar');
+		$submitBar.data({
+			taskId: $params.taskId
+		});
+		$submitBar.submitBar(function($el) {
+			evt($el);
+		});
+	}
+
+	/**
+	* 底部按钮操作栏事件
+	*/
+	var evt = function($el) {
+		/**
+		 * 提交订单按钮
+		 */
+		$el.find('#taskSubmit').on('click', function() {
+			process();
+		})
+
+		/**
+		 * 订单退回的条件选项分割
+		 */
+		var taskJumps = $scope.result.data.loanTask.taskJumps;
+		for(var i = 0, len = taskJumps.length; i < len; i++) {
+			taskJumps[i].jumpReason = taskJumps[i].jumpReason.split(',');
+		}
+		/**
+		 * 退回订单按钮
+		 */
+		$el.find('#backOrder').on('click', function() {
+			$.alert({
+				title: '退回订单',
+				content: doT.template(dialogTml.wContent.back)($scope.result.data.loanTask.taskJumps),
+				onContentReady: function() {
+					dialogEvt(this.$content);
 				},
-				dataType: 'json',
-				success: $http.ok(function(result) {
-					console.log(result);
-					
-				})
+				buttons: {
+					close: {
+						text: '取消',
+						btnClass: 'btn-default btn-cancel'
+					},
+					ok: {
+						text: '确定',
+						action: function () {
+							var _reason = $.trim(this.$content.find('#suggestion').val());
+							this.$content.find('.checkbox-radio').each(function() {
+								if($(this).hasClass('checked')) {
+									$scope.jumpId = $(this).data('id');
+								}
+							})
+							if(!_reason) {
+								$.alert({
+									title: '提示',
+									content: tool.alert('请填写处理意见！'),
+									buttons: {
+										ok: {
+											text: '确定',
+											action: function() {
+											}
+										}
+									}
+								});
+								return false;
+							} 
+							if(!$scope.jumpId) {
+								$.alert({
+									title: '提示',
+									content: tool.alert('请至少选择一项原因！'),
+									buttons: {
+										ok: {
+											text: '确定',
+											action: function() {
+											}
+										}
+									}
+								});
+								return false;
+							}
+							var _params = {
+								taskId: $params.taskId,
+								jumpId: $scope.jumpId,
+								reason: _reason
+							}
+							console.log(_params)
+							$.ajax({
+								type: 'post',
+								url: $http.api('task/jump', 'zyj'),
+								data: _params,
+								dataType: 'json',
+								success: $http.ok(function(result) {
+									console.log(result);
+									
+									router.render('loanProcess');
+									// toast.hide();
+								})
+							})
+						}
+					}
+				}
 			})
+		})
+	}
+
+	/**
+	 * 跳流程
+	 */
+	function process() {
+		$.confirm({
+			title: '提交',
+			content: dialogTml.wContent.suggestion,
+			buttons: {
+				close: {
+					text: '取消',
+					btnClass: 'btn-default btn-cancel',
+					action: function() {}
+				},
+				ok: {
+					text: '确定',
+					action: function () {
+						var taskIds = [];
+						for(var i = 0, len = $params.tasks.length; i < len; i++) {
+							taskIds.push(parseInt($params.tasks[i].id));
+						}
+						var params = {
+							taskId: $params.taskId,
+							taskIds: taskIds,
+							orderNo: $params.orderNo
+						}
+						var reason = $.trim(this.$content.find('#suggestion').val());
+						if(reason) params.reason = reason;
+						tasksJump(params, 'complete');
+					}
+				}
+			}
 		})
 	}
 
@@ -144,7 +258,9 @@ page.ctrl('pickMaterialsUpload', function($scope) {
 		}
 		loadOrderInfo(function() {
 			router.tab($console.find('#tabPanel'), $scope.tasks, $scope.activeTaskIdx, tabChange);
-			evt();
+			if(!$params.refer) {
+				setupSubmitBar();
+			}
 		});
 	});
 

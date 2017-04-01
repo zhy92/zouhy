@@ -89,9 +89,9 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 		var $location = $console.find('#location');
 		$location.data({
 			backspace: $scope.$params.path,
-			current: '征信材料审核',
+			current: $scope.result.data.loanTask.taskName,
 			loanUser: $scope.result.data.loanTask.loanOrder.realName,
-			orderDate: tool.formatDate($scope.result.data.loanTask.createDate, true)
+			orderDate: $scope.result.data.loanTask.loanOrder.createDateStr
 		});
 		$location.location();
 	}
@@ -178,7 +178,7 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 									success: $http.ok(function(result) {
 										console.log(result);
 										
-										// router.render('loanProcess');
+										router.render('loanProcess');
 										// toast.hide();
 									})
 								})
@@ -186,43 +186,6 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 						}
 					}
 				})
-
-
-
-
-
-				// $.alert({
-				// 	title: '退回订单',
-				// 	content: tool.alert('确定要取消该笔贷款申请吗？'),
-				// 	buttons: {
-				// 		close: {
-				// 			text: '取消',
-				// 			btnClass: 'btn-default btn-cancel'
-				// 		},
-				// 		ok: {
-				// 			text: '确定',
-				// 			action: function () {
-				// 				var params = {
-				// 					orderNo: $params.orderNo
-				// 				}
-				// 				var reason = $.trim(this.$content.find('#suggestion').val());
-				// 				if(reason) params.reason = reason;
-				// 				$.ajax({
-				// 					type: 'post',
-				// 					url: $http.api('loanOrder/cancel', 'zyj'),
-				// 					data: params,
-				// 					dataType: 'json',
-				// 					success: $http.ok(function(result) {
-				// 						console.log(result);
-				// 						if(cb && typeof cb == 'function') {
-				// 							cb();
-				// 						}
-				// 					})
-				// 				})
-				// 			}
-				// 		}
-				// 	}
-				// })
 			})
 
 			/**
@@ -255,6 +218,7 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 							taskIds.push(parseInt($params.tasks[i].id));
 						}
 						var params = {
+							taskId: $params.taskId,
 							taskIds: taskIds,
 							orderNo: $params.orderNo
 						}
