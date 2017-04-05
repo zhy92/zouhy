@@ -19,6 +19,7 @@ page.ctrl('expireInfoInput', [], function($scope) {
 			data: params,
 			success: $http.ok(function(result) {
 				render.compile($scope.$el.$tbl, $scope.def.listTmpl, result.data, true);
+				
 				// setupPaging(result.page.pages, true);
 				if(cb && typeof cb == 'function') {
 					cb();

@@ -27,8 +27,10 @@ page.ctrl('loanInfoAudit', function($scope) {
 	*/
 	var loadLoanList = function(cb) {
 		var data={};
-//			 data['taskId']=80871;
 			data['taskId']=$params.taskId;
+		if($params.refer) {
+			data.frameCode = $params.code;
+		}
 		$.ajax({
 			url: $http.api('loanInfoInput/info','jbs'),
 			data: data,
@@ -165,32 +167,9 @@ page.ctrl('loanInfoAudit', function($scope) {
 		   	var renewalStr = '';
 			for(var i=0;i<boxChecked.length;i++){
 				var rene = boxChecked[i];
-//				if(rene.hasClass('checked')){
-//			        rene.value = '';
-//				}
 				renewalStr += rene.getAttribute('data-value')+',';
 			}
 			$("input[name='residentType']").val(renewalStr);
-//		   	boxChecked.each(function(){
-//		   		if($(this).hasClass('checked')){
-//		   			var dVal = $(this).data('value');
-//				   	var data = '';
-//				   	data += dVal;
-//				   	$("input[name='residentType']").val(data);
-//		   		}
-//		   	})
-		   	
-//			function returnCheckboxVal(){
-//				$(".info-key-check-box").each(function(){
-//					var data="";
-//					$('.checked',$(this)).each(function(){
-//						data += $(this).attr("data-value")+",";
-//					});
-//					var value = data.substring(0,data.length-1);
-//					$("input",$(this)).val(value);
-//					return;
-//				})
-//			}
 	    })
 	    /***
 		* 保存按钮
@@ -233,7 +212,6 @@ page.ctrl('loanInfoAudit', function($scope) {
 		        if(formList.length == 1){
 			        var params = formList.serialize();
 		            params = decodeURIComponent(params,true);
-	//	            params = decodeURI(params,true);
 		            var paramArray = params.split("&");
 		            var data1 = {};
 		            for(var i=0;i<paramArray.length;i++){
@@ -279,13 +257,6 @@ page.ctrl('loanInfoAudit', function($scope) {
 						success: function(result){
 							console.log(result.msg);
 							console.log(key);
-//							if(){
-//								
-//							}else if(){
-//								
-//							}else{
-//								
-//							}
 						}
 					});
 		        }
@@ -601,6 +572,14 @@ page.ctrl('loanInfoAudit', function($scope) {
 			});
 		})
 	}
+	var cannotClick = function(){
+		$(".info-key-value-box").each(function(){
+			$(this).addClass("pointDisabled");
+		});
+		$(".info-key-check-box").each(function(){
+			$(this).addClass("pointDisabled");
+		});
+	}
 	
 	/**
 	 * 加载页面模板
@@ -614,6 +593,7 @@ page.ctrl('loanInfoAudit', function($scope) {
 			router.tab($console.find('#tabPanel'), $scope.tasks, $scope.activeTaskIdx, tabChange);
 			setupSubmitBar();
 			setupDropDown();
+//			cannotClick();
 		});
 	});
 	
