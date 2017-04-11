@@ -52,6 +52,36 @@ page.ctrl('loan', function($scope) {
 	}
 
 	/**
+	 * 新建业务
+	 */
+	var setupNewOrder = function() {
+		var tml = '<div class="button button-deep" id="newBusiness" data-href="loanProcess/newBusiness">\
+					<i class="iconfont">&#xe615;</i>新建业务\
+				</div>';
+		$.ajax({
+			type: 'post',
+			dataType:"json",
+			url: $http.api('func/list', 'jbs'),
+			success: $http.ok(function(result) {
+				console.log(result);
+				for(var i = 0, len = result.data.length; i < len; i++) {
+					if(result.data[i].funcId == 'newOrder') {
+						$console.find('.search-bar').append(tml);
+						// 新建业务
+						$console.find('#newBusiness').on('click', function() {
+							var that = $(this);
+							router.render(that.data('href'), {
+								path: 'loanProcess'
+							});
+						})
+						break;
+					}
+				}
+			})
+		})
+	}
+
+	/**
 	* 日历控件
 	*/
 	var setupDatepicker = function() {
@@ -148,7 +178,9 @@ page.ctrl('loan', function($scope) {
 				}
 				apiParams.fuzzyParam = searchText;
 				apiParams.pageNum = 1;
-				loadLoanList(apiParams);
+				loadLoanList(apiParams, function() {
+					that.blur();
+				});
 			}
 		});
 		$console.find('#search .iconfont').on('click', function() {
@@ -163,17 +195,7 @@ page.ctrl('loan', function($scope) {
 			loadLoanList(apiParams, function() {
 				delete apiParams.fuzzyParam;
 			});
-		});
-
-		// 新建业务
-		$console.find('#newBusiness').on('click', function() {
-			var that = $(this);
-			router.render(that.data('href'), {
-				path: 'loanProcess'
-			});
-		})
-
-		
+		});		
  	}
  	
 	/***
@@ -195,6 +217,7 @@ page.ctrl('loan', function($scope) {
 		});
 		setupDatepicker();
 		setupDropDown();
+		setupNewOrder();
 	});
 
 	$scope.paging = function(_page, _size, $el, cb) {

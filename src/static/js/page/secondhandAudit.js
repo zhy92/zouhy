@@ -12,12 +12,23 @@ page.ctrl('secondhandAudit', function($scope) {
 	* @params {function} cb 回调函数
 	*/
 	var loadLoanList = function(cb) {
-		var params = {
-			taskId:80880
+		var data = {},
+			url = 'loanCarAssess/index';
+		if($params.taskId) {
+			data.taskId = $params.taskId;
+		}
+		if($params.refer) {
+			data.frameCode = $params.code;
+		}
+		if($params.type) {
+			data.orderNo = $params.orderNo;	
+			data.type = $params.type;
+			url = 'loanCarAssess/carInfoByOrderNo';
 		}
 		$.ajax({
-			url: urlStr+'/loanCarAssess/index',
-			data: params,
+			type: 'post',
+			url: $http.api(url, true),
+			data: data,
 			dataType: 'json',
 			success: $http.ok(function(result) {
 				$scope.result = result;
@@ -26,6 +37,60 @@ page.ctrl('secondhandAudit', function($scope) {
 					cb();
 				}
 			})
+		})
+	}
+
+	/**
+	* 设置底部按钮操作栏
+	*/
+	var setupSubmitBar = function() {
+		var $submitBar = $console.find('#submitBar');
+		$submitBar.data({
+			taskId: $params.taskId
+		});
+		$submitBar.submitBar();
+		var $sub = $submitBar[0].$submitBar;
+
+		/**
+		 * 提交
+		 */
+		$sub.on('approvalPass', function() {
+			process();
+		})
+
+	}
+
+	/**
+	 * 任务提交跳转
+	 */
+	function process() {
+		$.confirm({
+			title: '提交订单',
+			content: dialogTml.wContent.suggestion,
+			buttons: {
+				close: {
+					text: '取消',
+					btnClass: 'btn-default btn-cancel',
+					action: function() {}
+				},
+				ok: {
+					text: '确定',
+					action: function () {
+						var taskIds = [];
+						for(var i = 0, len = $params.tasks.length; i < len; i++) {
+							taskIds.push(parseInt($params.tasks[i].id));
+						}
+						var params = {
+							taskId: $params.taskId,
+							taskIds: taskIds,
+							orderNo: $params.orderNo
+						}
+						var reason = $.trim(this.$content.find('#suggestion').val());
+						if(reason) params.reason = reason;
+						flow.tasksJump(params, 'approval');
+					}
+				}
+			}
 		})
 	}
 

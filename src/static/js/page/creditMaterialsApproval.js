@@ -49,7 +49,7 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 
 				// 编译tab项对应内容
 				setupCreditPanel(_type, $scope.result.data, function() {
-					setupEvt($scope.$el.$tbls.eq(_type));
+					setupEvt($scope.$el.$tbls.eq(_type), _type);
 				});
 
 				if( cb && typeof cb == 'function' ) {
@@ -136,10 +136,17 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 							var _reason = $.trim(this.$content.find('#suggestion').val());
 							this.$content.find('.checkbox-radio').each(function() {
 								if($(this).hasClass('checked')) {
-									$scope.jumpId = $(this).data('id');
+									var flag = 0;
+									$(this).parent().parent().find('.checkbox-normal').each(function() {
+										if($(this).hasClass('checked')) {
+											flag++;
+										}
+									})
+									if(flag > 0) {
+										$scope.jumpId = $(this).data('id');
+									}
 								}
 							})
-
 							if(!_reason) {
 								$.alert({
 									title: '提示',
@@ -154,6 +161,7 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 								});
 								return false;
 							} 
+							console.log($scope.jumpId)
 							if(!$scope.jumpId) {
 								$.alert({
 									title: '提示',
@@ -329,10 +337,10 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 				$scope.tabs[_type] = _tabTrigger;
 				$scope.result.data.currentType = _type;
 				render.compile(_tabTrigger, $scope.def.listTmpl, $scope.result.data, function() {
-					setupEvt(_tabTrigger);
+					setupEvt(_tabTrigger, _type);
 				}, true);
 			}
-			$scope.$el.$tabs.eq($scope.currentType).removeClass('role-item-active');
+			$scope.$el.$tabs.removeClass('role-item-active');
 			$this.addClass('role-item-active');
 			$scope.$el.$tbls.eq($scope.currentType).hide();
 			$scope.$el.$tbls.eq(_type).show();
@@ -340,12 +348,38 @@ page.ctrl('creditMaterialsApproval', function($scope) {
 		})
 	}
 
-	var setupEvt = function($self) {
+	var setupEvt = function($self, _type) {
 
 		/**
 		 * 启动图片控件
 		 */
-		$self.find('.uploadEvt').imgUpload();
+		var imgsBars = $self.find('.credit-imgs-bar');
+		imgsBars.each(function(index) {
+			$(this).find('.uploadEvt').imgUpload({
+				viewable: true,
+				getimg: function(cb) {
+					cb($scope.result.data.creditUsers[_type][index].loanUserCredit.creditMaterials)
+				},
+				marker: function (img, mark, cb) {
+					console.log(img);
+					console.log(mark);
+					$.ajax({
+						type: 'post',
+						url: $http.api('creditMaterials/material/mark', 'zyj'),
+						data: {
+							id: img.id,
+							auditResult: mark,
+							auditOpinion: '原因原因原因。屁原因啊啊啊啊啊啊。？？？！！ldf'
+						},
+						dataType: 'json',
+						success: $http.ok(function(result) {
+							console.log(result);
+							cb();
+						})
+					})
+				}
+			});
+		});
 	}
 
 	// 加载页面模板
