@@ -12,8 +12,7 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 	$scope.tabs = {};
 	$scope.currentType = $scope.$params.type || 0;
 	$scope.$el = {};
-	//征信查询机构弹窗确定按钮是否可点击
-	$scope.clickable = false;
+	
 
 	
 	/**
@@ -590,8 +589,13 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 			dataType: 'json',
 			data: params,
 			global: false,
-			success: $http.ok(function() {
-
+			success: $http.ok(function(xhr) {
+				if(xhr.data.refresh) {
+					loadOrderInfo($scope.currentType, function() {
+						setupCreditBank();
+						initApiParams();
+					});
+				}
 			})
 		})
 	}
@@ -635,7 +639,8 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 			$creditPanel: $console.find('#creditUploadPanel'),
 			$modifyBankPanel: $console.find('#modifyBankPanel')
 		}
-		
+		//征信查询机构弹窗确定按钮是否可点击
+		$scope.clickable = false;
 		loadOrderInfo($scope.currentType, function() {
 			setupBackReason($scope.result.data.loanTask.backApprovalInfo)
 			setupCreditBank();
@@ -651,21 +656,23 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 	 * 上传图片数据回调
 	 */
 	$scope.uploadcb = function(self, xhr) {
-		console.log(self)
+		console.log(self.$el)
 		if(self.options.code == 'sfzzm') {
+			self.$el.find('.imgs-item-upload').LoadingOverlay("show");
 			$.ajax({
 				type: 'post',
 				url: $http.api('materials/ocr', true),
 				data: {
 					materialsId: xhr.data.id
 				},
+				global: false,
 				dataType: 'json',
 				success: $http.ok(function(result) {
 					console.log(result)
-					var $name =  $scope.$el.$tbls.eq($scope.currentType).find('.credit-datas-bar .input-name');
-					var $idc =  $scope.$el.$tbls.eq($scope.currentType).find('.credit-datas-bar .input-idc');
-					$name.find('input').val(result.data.userName);
-					$idc.find('input').val(result.data.idCard);
+					var $name = self.$el.parent().prev().find('.input-name');
+					var $idc = self.$el.parent().prev().find('.input-idc');
+					if(result.data.userName) $name.find('input').val(result.data.userName);
+					if(result.data.idCard) $idc.find('input').val(result.data.idCard);
 					$name.removeClass('error-input');
 					$name.find('.input-err').remove();
 					$idc.removeClass('error-input');
@@ -677,13 +684,14 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 							$scope.apiParams[i].idCard = result.data.idCard;
 						}
 					}
-				})
+				}),
+				complete: function() {
+					self.$el.find('.imgs-item-upload').LoadingOverlay("hide");
+				}
 			});
 		}
 		if(xhr.data.refresh) {
-			$scope.currentType = 0;
 			loadOrderInfo($scope.currentType, function() {
-				setupCreditBank();
 				initApiParams();
 			});
 		}
@@ -700,7 +708,6 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 		// 		initApiParams();
 		// 	})
 		// })
-		
 	}
 
 	/**
@@ -708,7 +715,6 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 	 */
 	$scope.deletecb = function(self, xhr) {
 		if(xhr.data.refresh) {
-			$scope.currentType = 0;
 			loadOrderInfo($scope.currentType, function() {
 				setupCreditBank();
 				setupLocation();
