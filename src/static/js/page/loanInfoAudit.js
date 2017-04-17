@@ -95,6 +95,9 @@ page.ctrl('loanInfoAudit', function($scope) {
 	*/
 	var keyType;
 	var setupEvt = function($el) {
+		$(".select-text").each(function(){
+			$(this).attr('readonly','readonly')
+		})
 		$('i').each(function(){
 			var dataNum = $(this).data('num');
 			var that = $(this);
@@ -697,7 +700,6 @@ page.ctrl('loanInfoAudit', function($scope) {
 			if((selected && re.test(selected)) || selected=='0'){
 				$(this).find('.arrow-trigger').click();
 				var lilist = $(this).find('li');
-				console.log(lilist.length);
 				$("li",$(this)).each(function(){
 					var idx = $(this).data('id');
 					if(selected == idx){

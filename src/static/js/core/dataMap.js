@@ -146,10 +146,10 @@
 	        }
 	    ],
 	    "userRelationship":[
-	        {
-	            "name":"本人",
-	            "value":"0"
-	        },
+//	        {
+//	            "name":"本人",
+//	            "value":"0"
+//	        },
 	        {
 	            "name":"配偶",
 	            "value":"1"
@@ -339,6 +339,16 @@
 	        {
 	            "name":"其他",
 	            "value":"6"
+	        }
+	    ],
+	    "yesNo":[
+	        {
+	            "name":"是",
+	            "value":"1"
+	        },
+	        {
+	            "name":"否",
+	            "value":"0"
 	        }
 	    ]
 	},

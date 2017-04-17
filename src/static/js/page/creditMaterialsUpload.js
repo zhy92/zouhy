@@ -12,6 +12,8 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 	$scope.tabs = {};
 	$scope.currentType = $scope.$params.type || 0;
 	$scope.$el = {};
+	//征信查询机构弹窗确定按钮是否可点击
+	$scope.clickable = false;
 
 	
 	/**
@@ -53,23 +55,8 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 					setupTabEvt();
 				});
 
-				// console.log($scope.apiParams)
-				// //重置$scope.apiParams
-				// for(var i in $scope.result.data.creditUsers) {
-				// 	var row = $scope.result.data.creditUsers[i];
-				// 	for(var j = 0, len = row.length; j < len; j++) {
-				// 		for(var k = 0, len2 = $scope.apiParams.length; k < len2.length; k++) {
-				// 			if(row[j].userId = $scope.apiParams[k].userId) {
-				// 				row[j].userName = row[j].userName || $scope.apiParams[k].userName;
-				// 				row[j].idCard = row[j].idCard || $scope.apiParams[k].idCard;
-				// 				row[j].userRelationship = row[j].idCard || $scope.apiParams[k].userRelationship;
-				// 			}
-				// 		}
-				// 	}
-				// }
-				// console.log($scope.result);
+				//重置征信查询待传参数
 				initApiParams();
-				console.log($scope.apiParams)
 
 				// 编译tab项对应内容
 				setupCreditPanel(_type, $scope.result.data, function() {
@@ -110,7 +97,6 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 			demandBankId: $scope.demandBankId,
 			busiAreaCode: $scope.busiAreaCode
 		}
-		console.log(params)
 	 	$.ajax({
 			type: 'post',
 			url: $http.api('creditMaterials/order/update', 'zyj'),
@@ -154,6 +140,7 @@ page.ctrl('creditMaterialsUpload', function($scope) {
             		});
             		return false;
             	}
+            	$scope.clickable = true;
             	updBank(function() {
             		setupCreditBank();
             	});
@@ -166,7 +153,7 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 				$('.jconfirm').find('.select').dropdown();
 		    },
 		    onClose: function () {
-		    	if(!$scope.demandBankId) {
+		    	if(!$scope.clickable) {
             		router.render('loanProcess');
             	}
 		    }
@@ -310,17 +297,17 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 				flag = true;
 			for(var j in item) {
 				if(j == 'idCard' && !item[j]) {
-					_alert += '请填写' + $scope.userMap[item.userType] + item.idx + '的身份证号！<br/>';
+					_alert += '请填写' + $scope.userMap[item.userType] + (item.userType != 0 ? item.idx : '') + '的身份证号！<br/>';
 					flag = false;
 					break;
 				}
 				if(j == 'userName' && !item[j]) {
-					_alert += '请填写' + $scope.userMap[item.userType] + item.idx + '的真实姓名！<br/>';
+					_alert += '请填写' + $scope.userMap[item.userType] + (item.userType != 0 ? item.idx : '') + '的真实姓名！<br/>';
 					flag = false;
 					break;
 				}
 				if(j == 'mobile' && !item[j]) {
-					_alert += '请填写' + $scope.userMap[item.userType] + item.idx + '的手机号！<br/>';
+					_alert += '请填写' + $scope.userMap[item.userType] + (item.userType != 0 ? item.idx : '') + '的手机号！<br/>';
 					flag = false;
 					break;
 				}
@@ -621,7 +608,7 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 				item.userId = row.userId;
 				item.userName = row.userName || '';
 				item.idCard = row.idCard || '';
-				item.userType = row.userType || '';
+				item.userType = row.userType;
 				item.mobile = row.mobile || '';
 				item.userRelationship = row.userRelationship;
 				item.idx = j + 1;
@@ -664,6 +651,7 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 	 * 上传图片数据回调
 	 */
 	$scope.uploadcb = function(self, xhr) {
+		console.log(self)
 		if(self.options.code == 'sfzzm') {
 			$.ajax({
 				type: 'post',
@@ -674,10 +662,17 @@ page.ctrl('creditMaterialsUpload', function($scope) {
 				dataType: 'json',
 				success: $http.ok(function(result) {
 					console.log(result)
-					$scope.$el.$tbls.eq(0).find('.credit-datas-bar .input-name input').val(result.data.userName);
-					$scope.$el.$tbls.eq(0).find('.credit-datas-bar .input-idc input').val(result.data.idCard);
+					var $name =  $scope.$el.$tbls.eq($scope.currentType).find('.credit-datas-bar .input-name');
+					var $idc =  $scope.$el.$tbls.eq($scope.currentType).find('.credit-datas-bar .input-idc');
+					$name.find('input').val(result.data.userName);
+					$idc.find('input').val(result.data.idCard);
+					$name.removeClass('error-input');
+					$name.find('.input-err').remove();
+					$idc.removeClass('error-input');
+					$idc.find('.input-err').remove();
+
 					for(var i = 0, len = $scope.apiParams.length; i < len; i++) {
-						if($scope.apiParams[i].userId == self.options.userId) {
+						if($scope.apiParams[i].userId == self.options.user) {
 							$scope.apiParams[i].userName = result.data.userName;
 							$scope.apiParams[i].idCard = result.data.idCard;
 						}
