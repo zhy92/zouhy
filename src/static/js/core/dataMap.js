@@ -1,11 +1,11 @@
 'use strict';
 (function(g) {
-	// g.urlStr = "http://192.168.1.86:8089";
+	g.urlStr = "http://192.168.1.68:8089";
 	// g.urlStr = "http://192.168.1.124:8080";
 	// g.urlStr = "http://192.168.0.22:8080";
 	// g.urlStr = "http://192.168.1.55:8080";
 	// g.urlStr = "http://192.168.1.132:8080";
-	g.urlStr = "http://192.168.0.186:9999";
+	// g.urlStr = "http://192.168.0.186:9999";
 	g.dataMap = {
 	    "sex":[
 	        {
@@ -127,12 +127,16 @@
 	    ],
 	    "houseStatus":[
 	        {
-	            "name":"有商品房",
+	            "name":"无",
 	            "value":"0"
 	        },
 	        {
-	            "name":"有自建房",
+	            "name":"有商品房",
 	            "value":"1"
+	        },
+	        {
+	            "name":"有自建房",
+	            "value":"2"
 	        }
 	    ],
 	    "isEnterprise":[
