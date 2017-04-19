@@ -50,20 +50,15 @@
 			refer: [],
 			page: 'historyInspectDetail'
 		},
-		'materialInspection': {
+		'loanProcess/materialInspection': {
 			title: '材料验真',
 			refer: [],
 			page: 'materialInspection'
 		},
-		'dataAssistant': {
+		'loanProcess/dataAssistant': {
 			title: '数据辅证',
 			refer: [],
 			page: 'dataAssistant'
-		},
-		'riskManagement': {
-			title: '风控服务统计',
-			refer: [],
-			page: 'riskManagement'
 		},
 		'riskManagementDetail': {
 			title: '风控服务统计明细',
@@ -387,6 +382,14 @@
 			title: '逾期记录',
 			page: 'expireSingleDetail'
 		},
+		'expireProcess/overdueList': {
+			title: '逾期处理详情',
+			page: 'expireOverdueList'
+		},
+		'expireProcess/overdueIdea': {
+			title: '逾期处理详情',
+			page: 'expireOverdueIdea'
+		},
 		'licenceProcess/licenceProcessDetail': {
 			title: '上牌办理详情',
 			page: 'licenceProcessDetail'
@@ -420,6 +423,15 @@
 			page: 'newCar'
 		},
 
+		'message' :{
+			title: '消息列表',
+			page: 'message'
+		},
+		'message/detail': {
+			title: '消息详情',
+			page: 'msgdetail'
+		},	
+
 		'test': {
 			title: '测试文件',
 			page: 'test'
@@ -431,8 +443,8 @@
 		'T0023': 'loanMaterialsUpload',//贷款材料
 //		'T0024': 'cardAudit',//开卡信息表
 		'T0024': 'cardInfoApproval',//开卡信息表
-		'T0025': '',//材料验真
-		'T0026': '',//数据辅证
+		'T0025': 'materialInspection',//材料验真
+		'T0026': 'dataAssistant',//数据辅证
 		'T0027': '',//材料交叉验证
 		'T0028': 'loanLog',//订单日志
 		'T0038': 'loanLog',//订单日志
@@ -485,7 +497,9 @@
 		'T00108': 'loanMaterialsUpload',//贷款材料
 		'T00109': 'signMaterialsUpload',//签约材料
 		'T00110': 'loanMaterialsUpload',//贷款材料
-		'T00111': 'homeMaterialsUpload'//上门材料
+		'T00111': 'homeMaterialsUpload',//上门材料
+		'O001': 'overdueList',
+		'O002': 'overdueIdea'
 	}
 	var todoMap = {'T0004': '',
 	'T0005': '',
