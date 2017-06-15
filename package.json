@@ -2,7 +2,7 @@
   "name": "system2.0",
   "version": "2.0.1",
   "description": "业务云2.0系统前端框架",
-  "author": "sjdong",
+  "author": "hyzou",
   "license": "ISC",
   "path": {
     "mock": "http://127.0.0.1:8020/mock/",
@@ -11,10 +11,10 @@
   },
   "devDependencies": {
     "body-parser": "^1.15.2",
-    "express": "^4.14.0",
+    "express": "^4.15.2",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
-    "gulp-concat": "*",
+    "gulp-concat": "^2.6.1",
     "gulp-content-includer": "0.0.7",
     "gulp-copy": "^1.0.0",
     "gulp-csso": "*",
@@ -23,5 +23,9 @@
     "gulp-sequence": "^0.3.2",
     "gulp-uglify": "*",
     "gulp-watch": "^4.3.11"
+  },
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.17.1"
   }
 }
