@@ -211,13 +211,13 @@ person.sex = "女";
 person.age = 20;
 arrPerson.push(person);
 console.log(person);
-//测试删除
-showPersonInfo("原始数组：\r\t", arrPerson);
+//测试删除（更改alert样式调用）
+//showPersonInfo("原始数组：\r\t", arrPerson);
 arrPerson = remove(arrPerson, "id", 1);
-showPersonInfo("删除之后：\r\t", arrPerson);
+//showPersonInfo("删除之后：\r\t", arrPerson);
 //测试获取
 arrPerson = get(arrPerson, "id", 3);
-showPersonInfo("只获取ID为3的元素：\r\t", arrPerson);
+//showPersonInfo("只获取ID为3的元素：\r\t", arrPerson);
 console.log(arrPerson);
 
 

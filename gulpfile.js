@@ -24,7 +24,7 @@ var path = {
         img: branch(packageJson.path.dist + 'static/css/image')
     }
 }
-
+console.log(packageJson.path.src)
 // compile less
 gulp.task('less', function() {
     return gulp.src([

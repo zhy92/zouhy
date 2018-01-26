@@ -15,9 +15,10 @@ page.ctrl('loan', function($scope) {
 			delete params.process;
 		}
 		$.ajax({
-			type: 'post',
+			//type: 'post',
 			dataType:"json",
-			url: $http.api('loanOrder/workbench', true),
+			//url: $http.api('loanOrder/workbench', true),
+			url: $http.api('loan/list',''),
 			data: params,
 			success: $http.ok(function(result) {
 				console.log(result);
@@ -42,9 +43,9 @@ page.ctrl('loan', function($scope) {
 	}
 
 	$.ajax({
-		type: 'post',
+		//type: 'post',
 		dataType:"json",
-		url: $http.api('task/todo', true),
+		url: $http.api('todo'),
 		success: $http.ok(function(result) {
 			console.log(result);
 		})
@@ -69,9 +70,9 @@ page.ctrl('loan', function($scope) {
 					<i class="iconfont">&#xe615;</i>新建业务\
 				</div>';
 		$.ajax({
-			type: 'post',
+			//type: 'post',
 			dataType:"json",
-			url: $http.api('func/list', 'jbs'),
+			url: $http.api('loan/list'),
 			success: $http.ok(function(result) {
 				console.log(result);
 				for(var i = 0, len = result.data.length; i < len; i++) {
@@ -275,7 +276,7 @@ page.ctrl('loan', function($scope) {
 	var car = {
 		brand: function(cb) {
 			$.ajax({
-				url: 'http://localhost:8083/mock/carBrandlist',
+				url: $http.api('carBrandlist'),
 				success: function(xhr) {
 					var sourceData = {
 						items: xhr.data,
@@ -288,7 +289,7 @@ page.ctrl('loan', function($scope) {
 		},
 		series: function(brandId, cb) {
 			$.ajax({
-				url: 'http://localhost:8083/mock/carSeries',
+				url: $http.api('carSeries'),
 				data: {brandId: brandId},
 				success: function(xhr) {
 					var sourceData = {
@@ -302,7 +303,7 @@ page.ctrl('loan', function($scope) {
 		},
 		specs: function(seriesId, cb) {
 			$.ajax({
-				url: 'http://localhost:8083/mock/carSpecs',
+				url: $http.api('carSpecs'),
 				data: {
 					serieId: seriesId
 				},
@@ -342,7 +343,7 @@ page.ctrl('loan', function($scope) {
 		bank: function(t, p, cb) {
 			$.ajax({
 				// url: $http.api('demandBank/selectBank', 'zyj'),
-				url: 'http://localhost:8083/mock/carSpecs',
+				url: $http.api('carSpecs'),
 				dataType: 'json',
 				success: $http.ok(function(xhr) {
 					var sourceData = {

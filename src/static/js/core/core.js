@@ -38,25 +38,17 @@
 	_.$http.api = function(method, name) {
 		// name不传值，代表取mock中假数据
 		if(!name) 
-			//return 'http://192.168.1.92:8083/mock/' + method;
-			return 'http://192.168.2.190:8083/mock/' + method;
-			// return 'http://192.168.1.144:8083/mock/' + method;
+			return 'http://192.168.2.111:8083/mock/' + method;
 		else
-			switch (name) {
+			return 'http://192.168.2.85:8080/' + method;
+			/*switch (name) {
 				case 'operations':
 					return 'http://192.168.0.187:8090/' + method;
 				case 'test':
 					return 'http://192.168.0.33:8080/' + method;
 				default:
-					// return 'http://192.168.1.86:8089/' + method;
 					 return 'http://192.168.0.187:9999/' + method;
-					// return 'http://192.168.0.186:9999/' + method;
-					// return 'http://192.168.1.194:8686/' + method;//cyj
-					// return 'http://192.168.1.74:8080/' + method;
-					// return 'http://192.168.1.124:8080/' + method;
-					// return 'http://192.168.1.55:8080/' + method;
-					// return 'http://192.168.0.22:8080/' + method;
-			}
+			}*/
 	}
 
 	_.$http.authorization = function(key) {
